@@ -1,7 +1,12 @@
 <template>
-    <div>
+    <v-app>
         <router-view />
-    </div>
+    </v-app>
 </template>
 
-<style></style>
+<style>
+html, body, .container{
+    height: 100%;
+    width: 100%;
+}
+</style>
