@@ -22,6 +22,15 @@ const actions = {
             })
         })
     },
+    logout(){
+        return new Promise((resolve, reject) => {
+            if(!auth.currentUser) return resolve({ message: 'No esta logueado' })
+
+            auth.signOut()
+            .then( () => resolve({ message: 'Logout exitoso' }) )
+            .catch( () => reject({ message: 'Error al cerrar sesion' }) )
+        })
+    }
 }
 
 export default {

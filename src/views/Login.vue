@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex container login">
+    <div class="d-flex login ma-0">
         <v-card width="350px" class="ma-auto rounded-lg">
             <v-img 
                 src="@/assets/logo.png" 
@@ -71,6 +71,8 @@ export default {
 
 <style>
 .login{
+    height: 100%;
+    width: 100%;
     background: rgb(5,188,205);
     background: linear-gradient(151deg, rgba(5,188,205,1) 27%, rgba(62,118,218,1) 94%);
 }
