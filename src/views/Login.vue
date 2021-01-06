@@ -9,6 +9,7 @@
             ></v-img>
             <v-card-text class="px-9 py-6">
                 <v-text-field
+                    v-model="email"
                     label="Email"
                     type="email"
                     hide-details
@@ -17,6 +18,7 @@
                     solo
                 ></v-text-field>
                 <v-text-field
+                    v-model="password"
                     label="Contraseña"
                     type="password"
                     class="mt-3"
@@ -25,7 +27,10 @@
                     flat
                     solo
                 ></v-text-field>
-                <v-btn block class="mt-12" color="primary">
+                <v-alert dense type="error" v-if="error" class="mt-3">
+                    {{error}}
+                </v-alert>
+                <v-btn block class="mt-12" color="primary" @click="login">
                     Login
                 </v-btn>
             </v-card-text>
@@ -34,8 +39,33 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+        return {
+            email: '',
+            password: '',
+            error: null
+        }
+    },
+    methods: {
+        ...mapActions({ doLogin: 'user/login' }),
+        async login(){
+            try {
+                this.error = null
+                await this.doLogin({
+                    email: this.email,
+                    password: this.password
+                })
+                this.$router.push({ name: 'Home' })
+            } catch (error) {
+                if(error.message)
+                    this.error = error.message
+            }
+        }
+    },
 }
 </script>
 
