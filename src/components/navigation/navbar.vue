@@ -12,7 +12,12 @@
             </template>
 
             <v-card>
-                <v-list dense nav>
+                <v-card-text class="text-center">
+                    <v-icon x-large class="py-3">mdi-account-circle</v-icon>
+                    <p class="my-1 font-weight-bold">{{ profile.name }}</p>
+                    <p class="my-1">{{ profile.email }}</p>
+                </v-card-text>
+                <v-list dense nav outlined>
                     <v-list-item @click="logout">
                         <v-list-item-content>
                             <v-list-item-title>Cerrar sesión</v-list-item-title>
@@ -28,9 +33,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
     name: 'navbar',
+    computed:{
+        ...mapState({ profile: state => state.user.profile })
+    },
     methods: {
         ...mapActions({ doLogout: 'user/logout' }),
         async logout(){

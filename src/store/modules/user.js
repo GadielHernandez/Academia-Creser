@@ -1,13 +1,13 @@
-import { auth } from '../../plugins/firebase'
+import { auth, db } from '../../plugins/firebase'
 
-const state = {}
+const state = {
+    profile: {}
+}
 
 const getters = {}
 
-const mutations = {}
-
 const actions = {
-    login(ctx, credentials){
+    login( ctx, credentials){
         return new Promise((resolve, reject) => {
             if(auth.currentUser) return resolve({ message: 'Ya esta logueado' })
             
@@ -30,6 +30,22 @@ const actions = {
             .then( () => resolve({ message: 'Logout exitoso' }) )
             .catch( () => reject({ message: 'Error al cerrar sesion' }) )
         })
+    },
+    fetchProfile({ commit }){
+        return new Promise((resolve, reject) => {
+            db.doc(`users/${auth.currentUser.uid}`).get()
+            .then( doc => {
+                commit( 'UPDATE_PROFILE', doc.data() )
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    }
+}
+
+const mutations = {
+    UPDATE_PROFILE(state, payload){
+        state.profile = payload
     }
 }
 
