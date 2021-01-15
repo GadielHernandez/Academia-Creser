@@ -1,18 +1,18 @@
 <template>
-    <div>
-        <v-list-item class="px-2 py-3">
+    <div style="height: 100%">
+        <v-list-item class="px-2 py-3 logo">
             <v-list-item-avatar>
                 <v-img
                     src="@/assets/logo.png"
                 ></v-img>
             </v-list-item-avatar>
 
-            <v-list-item-title class="white--text">FUENTE DE VIDA</v-list-item-title>
+            <v-list-item-title>FUENTE DE VIDA</v-list-item-title>
         </v-list-item>
 
-        <v-list dark nav>
-            <v-list-item-group mandatory active-class="selected">
-                <v-list-item dense @click="$router.push({ name: 'Home' })">
+        <v-list nav class="menu">
+            <v-list-item-group mandatory class="group" active-class="selected">
+                <v-list-item class="" dense @click="$router.push({ name: 'Home' })">
                     <v-list-item-icon>
                         <v-icon>mdi-home</v-icon>
                     </v-list-item-icon>
@@ -21,7 +21,7 @@
                         <v-list-item-title>Inicio</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item dense @click="$router.push({ name: 'Academia' })">
+                <v-list-item class="" dense @click="$router.push({ name: 'Academia' })">
                     <v-list-item-icon>
                         <v-icon>mdi-school</v-icon>
                     </v-list-item-icon>
@@ -36,11 +36,20 @@
 </template>
 
 <style scoped>
-.v-list-item{
-    color: white !important;
+.logo{
+    height: 10%;
 }
+
+.menu{
+    height: 80%;
+    display: flex;
+}
+.group{
+    width: 100%;
+    margin: auto;
+}
+
 .selected{
-    
-    background-color: var(--v-secondary-base)
+    color: var(--v-primary-base)
 }
 </style>

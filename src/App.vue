@@ -12,7 +12,7 @@
 
         <v-navigation-drawer
             v-if="auth.currentUser"
-            color="primary" 
+            
             mini-variant
             expand-on-hover
             permanent 
