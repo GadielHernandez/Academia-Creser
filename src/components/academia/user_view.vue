@@ -22,6 +22,12 @@
             <v-tab-item class="h-100 main-background">
                 <Lessons/>
             </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Tasks/>
+            </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Examns/>
+            </v-tab-item>
         </v-tabs-items>
     </div>
 </template>
@@ -29,9 +35,11 @@
 <script>
 import Progress from './user/progress.vue'
 import Lessons from './user/lessons.vue'
+import Tasks from './user/tasks.vue'
+import Examns from './user/examns.vue'
 export default {
     name: 'Academia-user',
-    components: { Progress, Lessons },
+    components: { Progress, Lessons, Tasks, Examns },
     data() {
         return {
             tab: null
@@ -46,8 +54,5 @@ export default {
 }
 .title{
     height: 8%;
-}
-.v-tabs-items{
-    height: 80%;
 }
 </style>
