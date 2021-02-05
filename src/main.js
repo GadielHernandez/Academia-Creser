@@ -4,7 +4,9 @@ import { auth } from './plugins/firebase'
 import vuetify from './plugins/vuetify';
 import router from './router'
 import store from './store'
-
+import VueYoutube from 'vue-youtube'
+ 
+Vue.use(VueYoutube)
 Vue.config.productionTip = false
 
 let app

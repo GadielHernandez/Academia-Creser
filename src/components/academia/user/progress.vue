@@ -1,7 +1,7 @@
 <template>
-    <div class="h-100">
+    <div class="h-100 main-background mx-1">
         <v-row>
-            <v-col class="h-100" cols="12" md="4">
+            <v-col cols="12" md="4">
                 <v-card min-height="100%" class="d-flex">
                     <v-card-text class="ma-auto">
                         <p class="ml-3 primary--text font-weight-bold">
@@ -26,7 +26,7 @@
                 <v-card min-height="100%">
                     <v-card-text>
                         <v-row>
-                            <v-col class="text-center mt-3 ma-md-0 pa-0 d-flex" cols="12" md="4">
+                            <v-col class="text-center mb-3 ma-md-0 pa-0 d-flex" cols="12" md="4">
                                 <v-progress-circular
                                     :rotate="-90"
                                     :size="130"
@@ -89,7 +89,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card outlined>
+                <v-card >
                     <v-card-text>
                         <p class="ml-3 primary--text font-weight-bold">
                             Tabla de punteo
@@ -136,3 +136,4 @@
         </v-row>
     </div>
 </template>
+

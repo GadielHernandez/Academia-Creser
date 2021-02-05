@@ -2,7 +2,7 @@
     <v-app>
         <v-app-bar
             v-if="auth.currentUser"
-            color="white" 
+            color="background" 
             flat
             app
         >
@@ -12,7 +12,6 @@
 
         <v-navigation-drawer
             v-if="auth.currentUser"
-            
             mini-variant
             expand-on-hover
             permanent 
@@ -21,7 +20,7 @@
             <sidebar/>
         </v-navigation-drawer>
 
-        <v-main>
+        <v-main class="main-background">
             <v-container v-if="auth.currentUser" fluid>
                 <router-view></router-view>
             </v-container>
@@ -47,8 +46,14 @@ export default {
 </script>
 
 <style>
-html, body, .container{
+html, body {
     height: 100%;
     width: 100%;
 }
+.main-background{
+    background-color: var(--v-background-base);
+}
+/* .v-window__container, .h-100 {
+    min-height: 100%  !important;
+} */
 </style>
