@@ -1,7 +1,8 @@
 import { auth, db } from '../../plugins/firebase'
 
 const state = {
-    profile: {}
+    profile: {},
+    courses: null
 }
 
 const getters = {}
@@ -34,8 +35,10 @@ const actions = {
     fetchProfile({ commit }){
         return new Promise((resolve, reject) => {
             db.doc(`users/${auth.currentUser.uid}`).get()
-            .then( doc => {
+            .then( async doc => {
                 commit( 'UPDATE_PROFILE', doc.data() )
+                const courses = await db.collection(`users/${auth.currentUser.uid}/courses`).get()
+                commit( 'UPDATE_COURSES', courses.docs.map( course => ({ id: course.id, ...course.data()})) ) 
                 return resolve()
             })
             .catch( () => reject() )
@@ -46,6 +49,9 @@ const actions = {
 const mutations = {
     UPDATE_PROFILE(state, payload){
         state.profile = payload
+    },
+    UPDATE_COURSES(state, payload){
+        state.courses = payload
     }
 }
 

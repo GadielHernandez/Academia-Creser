@@ -8,16 +8,16 @@
                             Información
                         </p>
                         <p class="ml-3 font-weight-bold text-h6"> 
-                            Curso de discipulado
+                            {{ course_name }}
                         </p>
                         <p class="ml-3 ma-0">
-                            <span>Inicio: </span> 30/1/2021
+                            <span>Inicio: </span> {{ new Date(group.starts).toLocaleDateString() }}
                         </p>
                         <p class="ml-3 ma-0">
-                            <span>Fin: </span> 30/1/2021
+                            <span>Fin: </span> {{ new Date(group.ends).toLocaleDateString() }}
                         </p>
                         <p class="ml-3 ma-0"> 
-                            <span>Maestro: </span> Luis Ordonez
+                            <span>Maestro: </span> {{ group.teacher.name }}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -31,54 +31,26 @@
                                     :rotate="-90"
                                     :size="130"
                                     :width="18"
-                                    :value="50"
-                                    color="amber"
+                                    :value="total"
+                                    :color="total > 50 ? 'green': 'amber'"
                                     class="ma-auto"
                                 >
-                                    <p class="ma-0 font-weight-black amber--text text-h5"> 50</p>
+                                    <p class="ma-0 font-weight-black text-h5" >{{ total }}</p>
                                 </v-progress-circular>
                             </v-col>
                             <v-col class="pa-0" cols="12" md="8">
-                                <v-list-item dense>
+                                <v-list-item dense v-for="cr in criteria" :key="cr.name">
                                     <v-list-item-avatar class="primary">
-                                        <v-icon dark>mdi-checkbox-marked-outline</v-icon>
+                                        <v-icon dark>{{ cr.icon }}</v-icon>
                                     </v-list-item-avatar>
 
                                     <v-list-item-content>
-                                        <v-list-item-title>Asistencias</v-list-item-title>
-                                        <v-list-item-subtitle>25 obtenidas</v-list-item-subtitle>
+                                        <v-list-item-title>{{ cr.name }}</v-list-item-title>
+                                        <v-list-item-subtitle>{{ cr.completed }} obtenidas</v-list-item-subtitle>
                                     </v-list-item-content>
 
                                     <v-list-item-action>
-                                        <p class="ma-0 font-weight-black primary--text text-h6"> 25 pts</p>
-                                    </v-list-item-action>
-                                </v-list-item>
-                                <v-list-item dense>
-                                    <v-list-item-avatar class="secondary">
-                                        <v-icon dark>mdi-lead-pencil</v-icon>
-                                    </v-list-item-avatar>
-
-                                    <v-list-item-content>
-                                        <v-list-item-title>Tareas</v-list-item-title>
-                                        <v-list-item-subtitle>2 realizadas</v-list-item-subtitle>
-                                    </v-list-item-content>
-
-                                    <v-list-item-action>
-                                        <p class="ma-0 font-weight-black secondary--text text-h6"> 25 pts</p>
-                                    </v-list-item-action>
-                                </v-list-item>
-                                <v-list-item dense>
-                                    <v-list-item-avatar class="tertiary">
-                                        <v-icon dark>mdi-clipboard-text</v-icon>
-                                    </v-list-item-avatar>
-
-                                    <v-list-item-content>
-                                        <v-list-item-title>Parciales</v-list-item-title>
-                                        <v-list-item-subtitle>3 realizadas</v-list-item-subtitle>
-                                    </v-list-item-content>
-
-                                    <v-list-item-action>
-                                        <p class="ma-0 font-weight-black tertiary--text text-h6"> 25 pts</p>
+                                        <p class="ma-0 font-weight-black primary--text text-h6"> {{ (cr.completed * cr.value / cr.number).toFixed(2) }} pts</p>
                                     </v-list-item-action>
                                 </v-list-item>
                             </v-col>
@@ -105,23 +77,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Asistencias</td>
-                                        <td>30</td>
-                                        <td>1.2</td>
-                                        <td>25</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tareas</td>
-                                        <td>30</td>
-                                        <td>1.8</td>
-                                        <td>17</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Parciales</td>
-                                        <td>40</td>
-                                        <td>10</td>
-                                        <td>4</td>
+                                    <tr v-for="cr in criteria" :key="cr.name">
+                                        <td>{{ cr.name }}</td>
+                                        <td>{{ cr.value }}</td>
+                                        <td>{{ (cr.value/cr.number).toFixed(2) }}</td>
+                                        <td>{{ cr.number }}</td>
                                     </tr>
                                     <tr>
                                         <td>Nota Final</td>
@@ -137,3 +97,41 @@
     </div>
 </template>
 
+<script>
+import { mapState } from 'vuex'
+export default {
+    name: 'Progress',
+    computed:{
+        ...mapState({ 
+            course_name: state => state.academia.info.name,
+            group: state => state.academia.group,
+            criteria: state => {
+                const icons = {
+                    Asistencias: 'mdi-checkbox-marked-outline',
+                    Tareas: 'mdi-lead-pencil',
+                    Examenes: 'mdi-clipboard-text'
+                }
+                const criteria = state.academia.info.criteria
+                const progress = state.user.courses.find( c => c.id === state.academia.course_selected)
+                criteria.forEach(cr => {
+                    cr.icon = icons[cr.name]
+                    const user_prog = progress.criteria.find( c => c.name === cr.name)
+                    if(user_prog) cr.completed = user_prog.completed
+                    else cr.completed = 0
+                });
+                return criteria
+            },
+            total: state => {
+                let total = 0
+                const criteria = state.academia.info.criteria
+                const progress = state.user.courses.find( c => c.id === state.academia.course_selected)
+                criteria.forEach(cr => {
+                    const user_prog = progress.criteria.find( c => c.name === cr.name)
+                    if(user_prog) total += user_prog.completed * cr.value / cr.number
+                });
+                return Math.round(total)
+            }
+        })
+    }
+}
+</script>
