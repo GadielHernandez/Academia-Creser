@@ -1,6 +1,7 @@
 <template>
     <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
-        <userAcademia v-if="loaded"/>
+        <userAcademia v-if="profile.level === USER && loaded"/>
+        <teacherAcademia v-else-if="profile.level === TEACHER && loaded"/>
         <v-progress-circular
             v-else
             :size="60"
@@ -13,25 +14,47 @@
 </template>
 
 <script>
+import { USER, TEACHER, ADMIN, atLeastUserIs } from '../plugins/user-types'
 import { mapState, mapActions } from 'vuex'
 import userAcademia from '../components/academia/user_view'
+import teacherAcademia from '../components/academia/teacher_view'
 export default {
     name:'Academia',
-    components: { userAcademia },
+    components: { userAcademia, teacherAcademia },
     computed:{
         ...mapState({
-            loaded: state => state.academia.loaded,
+            profile: state => state.user.profile,
+            loaded: state => state.student.loaded || state.teacher.hasCourse !== null,
             courses: state => state.user.courses
         })
     },
+    data() {
+        return {
+            USER, TEACHER, ADMIN, atLeastUserIs
+        }
+    },
     methods: {
-        ...mapActions({ fetchCourses: 'academia/fetchCourses' })
+        ...mapActions({ 
+            fetchStudentCourses: 'student/fetchCourses',
+            fecthTeacherCourse: 'teacher/fetchCourse'
+        }),
+        getData(){
+            if(this.profile.level === USER){
+                if(this.courses !== null) 
+                    this.fetchStudentCourses()
+            }
+            else if(this.profile.level === TEACHER)
+                this.fecthTeacherCourse()
+        }
     },
     watch:{
         courses(){
-            if(this.courses !== null) this.fetchCourses()
+            this.getData()
         }
-    }
+    },
+    mounted() {
+        this.getData()
+    },
 }
 </script>
 

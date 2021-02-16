@@ -103,16 +103,16 @@ export default {
     name: 'Progress',
     computed:{
         ...mapState({ 
-            course_name: state => state.academia.info.name,
-            group: state => state.academia.group,
+            course_name: state => state.student.info.name,
+            group: state => state.student.group,
             criteria: state => {
                 const icons = {
                     Asistencias: 'mdi-checkbox-marked-outline',
                     Tareas: 'mdi-lead-pencil',
                     Examenes: 'mdi-clipboard-text'
                 }
-                const criteria = state.academia.info.criteria
-                const progress = state.user.courses.find( c => c.id === state.academia.course_selected)
+                const criteria = state.student.info.criteria
+                const progress = state.user.courses.find( c => c.id === state.student.course_selected)
                 criteria.forEach(cr => {
                     cr.icon = icons[cr.name]
                     const user_prog = progress.criteria.find( c => c.name === cr.name)
@@ -123,8 +123,8 @@ export default {
             },
             total: state => {
                 let total = 0
-                const criteria = state.academia.info.criteria
-                const progress = state.user.courses.find( c => c.id === state.academia.course_selected)
+                const criteria = state.student.info.criteria
+                const progress = state.user.courses.find( c => c.id === state.student.course_selected)
                 criteria.forEach(cr => {
                     const user_prog = progress.criteria.find( c => c.name === cr.name)
                     if(user_prog) total += user_prog.completed * cr.value / cr.number
