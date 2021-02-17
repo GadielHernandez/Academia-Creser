@@ -20,8 +20,12 @@ firebase.analytics()
 
 const auth = firebase.auth()
 const db = firebase.firestore()
+const timeServer = firebase.firestore.Timestamp.now
+const FieldValue = firebase.firestore.FieldValue
 
 export {
     auth,
-    db
+    db,
+    timeServer,
+    FieldValue
 }

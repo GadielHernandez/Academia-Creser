@@ -53,7 +53,7 @@ html, body {
 .main-background{
     background-color: var(--v-background-base);
 }
-/* .v-window__container, .h-100 {
-    min-height: 100%  !important;
-} */
+.v-card{
+    border-radius: 15px !important;
+}
 </style>

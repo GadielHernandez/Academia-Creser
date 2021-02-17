@@ -4,8 +4,8 @@
             <v-col cols="12" md="4">
                 <v-card min-height="100%" class="d-flex">
                     <v-card-text class="ma-auto">
-                        <p class="ml-3 primary--text font-weight-bold">
-                            Información
+                        <p class="ml-3 primary--text text-caption font-weight-bold">
+                            INFORMACIÓN
                         </p>
                         <p class="ml-3 font-weight-bold text-h6"> 
                             {{ course_name }}
@@ -63,8 +63,8 @@
             <v-col>
                 <v-card >
                     <v-card-text>
-                        <p class="ml-3 primary--text font-weight-bold">
-                            Tabla de punteo
+                        <p class="ml-3 primary--text text-caption font-weight-bold">
+                            TABLA DE PUNTEO
                         </p>
                         <v-simple-table fixed-header>
                             <template v-slot:default>
@@ -99,6 +99,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { ATTENDANCE, EXAMS, TASKS } from '../../../plugins/criteria-types'
 export default {
     name: 'Progress',
     computed:{
@@ -106,17 +107,17 @@ export default {
             course_name: state => state.student.info.name,
             group: state => state.student.group,
             criteria: state => {
-                const icons = {
-                    Asistencias: 'mdi-checkbox-marked-outline',
-                    Tareas: 'mdi-lead-pencil',
-                    Examenes: 'mdi-clipboard-text'
-                }
+                const icons = {}
+                icons[ATTENDANCE] = 'mdi-checkbox-marked-outline'
+                icons[TASKS] = 'mdi-lead-pencil'
+                icons[EXAMS] = 'mdi-clipboard-text'
+                
                 const criteria = state.student.info.criteria
                 const progress = state.user.courses.find( c => c.id === state.student.course_selected)
                 criteria.forEach(cr => {
                     cr.icon = icons[cr.name]
                     const user_prog = progress.criteria.find( c => c.name === cr.name)
-                    if(user_prog) cr.completed = user_prog.completed
+                    if(user_prog) cr.completed = user_prog.completed.length
                     else cr.completed = 0
                 });
                 return criteria
@@ -127,11 +128,16 @@ export default {
                 const progress = state.user.courses.find( c => c.id === state.student.course_selected)
                 criteria.forEach(cr => {
                     const user_prog = progress.criteria.find( c => c.name === cr.name)
-                    if(user_prog) total += user_prog.completed * cr.value / cr.number
+                    if(user_prog) total += user_prog.completed.length * cr.value / cr.number
                 });
                 return Math.round(total)
             }
         })
-    }
+    },
+    data() {
+        return {
+            ATTENDANCE, EXAMS, TASKS
+        }
+    },
 }
 </script>
