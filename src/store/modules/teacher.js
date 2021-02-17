@@ -1,8 +1,9 @@
-import { db, auth } from '../../plugins/firebase'
+import { db, auth, timeServer } from '../../plugins/firebase'
 
 const state = {
     course: null,
-    hasCourse: null
+    hasCourse: null,
+    lessons: []
 }
 
 const getters = {}
@@ -19,8 +20,12 @@ const actions = {
 
                 let group = resp.docs[0]
                 let group_data = await db.doc(`courses/${group.data().course}/groups/${group.id}`).get()
-
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
+
+                const now = timeServer().toMillis()
+                const lessons = await db.collection(`courses/${group.data().course}/lessons`).where('available_after', '<', now - group_data.data().starts ).get()
+                if(lessons.docs.length > 0) commit( 'UPDATE_LESSONS', lessons.docs.map( l => ({ id: l.id, ...l.data() }) ) )
+                
                 commit('UPDATE_STATUS', true)
                 return resolve()
             })
@@ -35,6 +40,9 @@ const mutations = {
     },
     UPDATE_STATUS(state, payload){
         state.hasCourse = payload
+    },
+    UPDATE_LESSONS(state, payload){
+        state.lessons = payload
     }
 }
 
