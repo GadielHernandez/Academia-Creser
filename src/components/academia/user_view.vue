@@ -29,11 +29,17 @@
                 <Examns/>
             </v-tab-item>
         </v-tabs-items>
-        <div v-else class="inactive d-flex">
+        <div v-else-if="starts !== null && ends !== null" class="inactive d-flex">
             <div class="ma-auto font-weight-bold blue-grey--text text-center">
                 <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
                 <p class="mb-1">Aun no inicia el curso</p>
                 <p>{{ new Date(starts).toLocaleDateString() }} - {{ new Date(ends).toLocaleDateString() }}</p>
+            </div>
+        </div>
+        <div v-else class="inactive d-flex">
+            <div class="ma-auto font-weight-bold blue-grey--text text-center">
+                <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
+                <p class="mb-1">No tiene un curso asignado</p>
             </div>
         </div>
     </div>

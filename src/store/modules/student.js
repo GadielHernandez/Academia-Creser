@@ -5,7 +5,7 @@ const state = {
     course_selected: null,
     info: {},
     group: {
-        active: null,
+        active: false,
         ends: null,
         id: null,
         name: null,
@@ -21,8 +21,10 @@ const getters = {}
 
 const actions = {
     fetchCourses({ commit, rootState, state }){
-        if(rootState.user.courses.length === 0)
+        if(rootState.user.courses.length === 0){
+            commit( 'UPDATE_STATUS', true )
             return
+        }
             
         commit('UPDATE_SELECTED', rootState.user.courses[0].id)
         return new Promise((resolve, reject) => {
