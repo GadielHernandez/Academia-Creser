@@ -4,7 +4,16 @@ const state = {
     loaded: false,
     course_selected: null,
     info: {},
-    group: {},
+    group: {
+        active: null,
+        ends: null,
+        id: null,
+        name: null,
+        progress: null,
+        starts: null,
+        students: null,
+        teacher: null
+    },
     lessons: []
 }
 
@@ -25,7 +34,21 @@ const actions = {
                     const group = await db.doc(`courses/${state.course_selected}/groups/${rootState.user.courses[0].group}`).get()
                     const now = timeServer().toMillis()
                     const active = group.data().starts < now && group.data().ends > now
-                    commit( 'UPDATE_GROUP', { id: group.id, ...group.data(), active } )
+                    const my_group = { id: group.id, ...group.data(), active }
+                    const my_progress = {}
+                    for(let criteria in my_group.progress){
+                        my_progress[criteria] = []
+                        if(Object.prototype.hasOwnProperty.call(my_group.progress, criteria)){
+                            for(let element in  my_group.progress[criteria]){
+                                if(Object.prototype.hasOwnProperty.call(my_group.progress[criteria], element)){
+                                    const completed = my_group.progress[criteria][element].find( p => p.user === auth.currentUser.uid )
+                                    if(completed) my_progress[criteria].push({ id: element })
+                                }
+                            }
+                        }
+                    }
+                    my_group.progress = my_progress
+                    commit( 'UPDATE_GROUP', my_group )
  
                     if(active){
                         const lessons = await db.collection(`courses/${state.course_selected}/lessons`).where('available_after', '<', now - group.data().starts ).get()
@@ -39,7 +62,7 @@ const actions = {
             .catch( error => reject(error))
         })
     },
-    seCriteriaCompleted({ state, rootState }, criteria_payload){
+    seCriteriaCompleted({ state, commit }, criteria_payload){
         return new Promise((resolve, reject) => {
             const criteria = criteria_payload.criteria
             const id = criteria_payload.id
@@ -50,13 +73,8 @@ const actions = {
 
             db.doc(`courses/${state.course_selected}/groups/${state.group.id}`)
             .update(update)
-            .then( async () => {
-                const criteria_update = rootState.user.courses[0].criteria ? rootState.user.courses[0].criteria : []
-                const indexCriteria = criteria_update.findIndex( c => c.name === criteria )
-                if(indexCriteria >= 0) criteria_update[indexCriteria].completed.push(id)
-                else criteria_update.push({ name: criteria, completed: [id] })
-                
-                await db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ criteria: criteria_update })
+            .then( () => {
+                commit('UPDATE_CRITERIA_COMPLETE', { criteria, id })
                 resolve()
             })
             .catch( (e) => {
@@ -82,6 +100,11 @@ const mutations = {
     },
     UPDATE_LESSONS(state, payload){
         state.lessons = payload
+    },
+    UPDATE_CRITERIA_COMPLETE(state, payload){
+        const old = state.group.progress
+        old[payload.criteria].push({ id: payload.id })
+        state.group.progress = old
     }
 }
 

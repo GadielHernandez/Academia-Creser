@@ -111,25 +111,29 @@ export default {
                 icons[ATTENDANCE] = 'mdi-checkbox-marked-outline'
                 icons[TASKS] = 'mdi-lead-pencil'
                 icons[EXAMS] = 'mdi-clipboard-text'
-                
+
+                const result = []
+                const progress = state.student.group.progress
                 const criteria = state.student.info.criteria
-                const progress = state.user.courses.find( c => c.id === state.student.course_selected)
                 criteria.forEach(cr => {
-                    cr.icon = icons[cr.name]
-                    const user_prog = progress.criteria.find( c => c.name === cr.name)
-                    if(user_prog) cr.completed = user_prog.completed.length
-                    else cr.completed = 0
+                    const obj_crt = cr
+                    obj_crt.icon = icons[cr.name]
+                    
+                    if(progress[cr.name] !== undefined)
+                        obj_crt.completed = progress[cr.name].length
+                    else
+                        obj_crt.completed = 0
+
+                    result.push(obj_crt)
                 });
-                return criteria
+
+                return result
             },
-            total: state => {
+            total() {
                 let total = 0
-                const criteria = state.student.info.criteria
-                const progress = state.user.courses.find( c => c.id === state.student.course_selected)
-                criteria.forEach(cr => {
-                    const user_prog = progress.criteria.find( c => c.name === cr.name)
-                    if(user_prog) total += user_prog.completed.length * cr.value / cr.number
-                });
+                this.criteria.forEach(cr => 
+                        total += cr.completed * cr.value / cr.number
+                );
                 return Math.round(total)
             }
         })

@@ -59,15 +59,11 @@ export default {
             lessons: state => state.student.lessons,
             completed: state => {
                 const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: false }))
-                const course = state.user.courses.find( c => c.id === state.student.course_selected)
-
-                if(course.criteria){
-                    const attendance = course.criteria.find( c => c.name === ATTENDANCE )
-                    if(!attendance) return completed
-                    if(!attendance.completed) return completed
+                const progress = state.student.group.progress[ATTENDANCE]
+                if(progress != undefined){
                     completed.forEach(lesson => {
-                        const index = attendance.completed.findIndex( id => id === lesson.id )
-                        if(index >= 0) completed[index].completed = true
+                        const index = progress.findIndex( p => p.id === lesson.id )
+                        if(index >= 0) lesson.completed = true
                     });
                 }
                 return completed
@@ -94,7 +90,7 @@ export default {
             const status = this.completed.find( c => c.id === this.actual_video.id )
             if(status.completed) return
             if(this.actual_video.type !== ONLINE) return
-            console.log('SAVED')
+            console.log('END')
             await this.setCompleted({
                 id: this.actual_video.id,
                 criteria: ATTENDANCE
