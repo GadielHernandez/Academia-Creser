@@ -1,5 +1,21 @@
 <template>
-    <div>
+    <v-app-bar
+        hide-on-scroll
+        color="white" 
+        flat
+        app
+        class="px-md-16"
+    >
+        <v-avatar size="40">
+            <v-img
+                src="@/assets/logo.png"
+            ></v-img>
+        </v-avatar>
+    
+        <v-toolbar-title class="ml-3 primary--text font-weight-medium">FDV</v-toolbar-title>
+        
+        <v-spacer></v-spacer>
+
         <v-menu
             :close-on-content-click="false"
             :nudge-width="200"
@@ -7,7 +23,9 @@
         >
             <template v-slot:activator="{ on, attrs }">
                 <v-btn v-bind="attrs" v-on="on" icon>
-                    <v-icon>mdi-account-circle</v-icon>
+                    <v-avatar>
+                        <v-icon>mdi-account-circle</v-icon>
+                    </v-avatar>
                 </v-btn>
             </template>
 
@@ -29,7 +47,7 @@
                 </v-list>
             </v-card>
         </v-menu>
-    </div>
+    </v-app-bar>
 </template>
 
 <script>

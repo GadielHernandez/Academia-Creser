@@ -1,16 +1,10 @@
 <template>
     <v-app>
-        <v-app-bar
-            v-if="auth.currentUser"
-            color="background" 
-            flat
-            app
-        >
-            <v-spacer></v-spacer>
-            <navbar />
-        </v-app-bar>
+        
+        <Navbar v-if="auth.currentUser"/>
+        
 
-        <v-navigation-drawer
+        <!-- <v-navigation-drawer
             v-if="auth.currentUser"
             mini-variant
             expand-on-hover
@@ -18,10 +12,11 @@
             app
         >
             <sidebar/>
-        </v-navigation-drawer>
+        </v-navigation-drawer> -->
 
         <v-main class="main-background">
-            <v-container v-if="auth.currentUser" fluid>
+            <navbarApps v-if="auth.currentUser"/> 
+            <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
             </v-container>
             <router-view v-else></router-view>
@@ -30,12 +25,13 @@
 </template>
 
 <script>
-import navbar from './components/navigation/navbar'
-import sidebar from './components/navigation/sidebar'
+import Navbar from './components/navigation/navbar.vue'
+import navbarApps from './components/navigation/navbarApps.vue'
+// import sidebar from './components/navigation/sidebar'
 import { auth } from './plugins/firebase'
 export default {
     name: 'app',
-    components: { sidebar, navbar },
+    components: { Navbar, navbarApps },
     data() {
         return {
             mini: true,

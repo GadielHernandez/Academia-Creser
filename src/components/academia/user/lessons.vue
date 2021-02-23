@@ -60,7 +60,6 @@ export default {
             completed: state => {
                 const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'primary' }))
                 const progress = state.student.group.progress[ATTENDANCE]
-                console.log(progress)
                 if(progress != undefined){
                     completed.forEach(lesson => {
                         const index = progress.findIndex( p => p.id === lesson.id )
