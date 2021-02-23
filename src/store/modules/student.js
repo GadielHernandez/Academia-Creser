@@ -44,7 +44,7 @@ const actions = {
                             for(let element in  my_group.progress[criteria]){
                                 if(Object.prototype.hasOwnProperty.call(my_group.progress[criteria], element)){
                                     const completed = my_group.progress[criteria][element].find( p => p.user === auth.currentUser.uid )
-                                    if(completed) my_progress[criteria].push({ id: element })
+                                    if(completed) my_progress[criteria].push({ id: element, ...completed })
                                 }
                             }
                         }

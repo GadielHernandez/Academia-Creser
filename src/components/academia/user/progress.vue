@@ -119,8 +119,11 @@ export default {
                     const obj_crt = cr
                     obj_crt.icon = icons[cr.name]
                     
-                    if(progress[cr.name] !== undefined)
+                    if(progress[cr.name] !== undefined){
                         obj_crt.completed = progress[cr.name].length
+                        const out_of_time = progress[cr.name].filter( c => c.out_of_time === true)
+                        obj_crt.completed = obj_crt.completed - parseInt(out_of_time.length / 2)
+                    }
                     else
                         obj_crt.completed = 0
 

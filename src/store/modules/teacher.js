@@ -1,7 +1,18 @@
+import { ATTENDANCE } from '../../plugins/criteria-types'
 import { db, auth, timeServer } from '../../plugins/firebase'
 
 const state = {
-    course: null,
+    id: null,
+    course: {
+        active: false,
+        ends: null,
+        id: null,
+        name: null,
+        progress: null,
+        starts: null,
+        students: null,
+        teacher: null
+    },
     hasCourse: null,
     lessons: []
 }
@@ -20,6 +31,7 @@ const actions = {
 
                 let group = resp.docs[0]
                 let group_data = await db.doc(`courses/${group.data().course}/groups/${group.id}`).get()
+                commit('UPDATE_ID', group.data().course)
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
 
                 const now = timeServer().toMillis()
@@ -31,10 +43,25 @@ const actions = {
             })
             .catch( error => reject(error))
         })
+    },
+    setAttendances({ state, commit }, payload){
+        return new Promise((resolve, reject) => {
+            const update = {}
+            update[`progress.${ATTENDANCE}.${payload.id}`] = payload.data
+            db.doc(`courses/${state.id}/groups/${state.course.id}`).update(update)
+            .then(() => {
+                commit('UPDATE_ATTENDANCE', payload)
+                resolve()
+            })
+            .catch(() => reject())
+        })
     }
 }
 
 const mutations = {
+    UPDATE_ID(state, payload){
+        state.id = payload
+    },
     UPDATE_COURSE(state, payload){
         state.course = payload
     },
@@ -43,6 +70,9 @@ const mutations = {
     },
     UPDATE_LESSONS(state, payload){
         state.lessons = payload
+    },
+    UPDATE_ATTENDANCE(state, payload){
+        state.course.progress[ATTENDANCE][payload.id] = payload.data
     }
 }
 

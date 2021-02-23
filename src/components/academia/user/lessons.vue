@@ -31,7 +31,7 @@
                             </v-list-item>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar :color="completed.find( l => l.id == lesson.id ).completed ? 'success' : 'primary'">
+                                    <v-list-item-avatar :color="completed.find( l => l.id == lesson.id ).completed">
                                         <v-icon class="white--text">mdi-clipboard-text</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -58,12 +58,17 @@ export default {
         ...mapState({ 
             lessons: state => state.student.lessons,
             completed: state => {
-                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: false }))
+                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'primary' }))
                 const progress = state.student.group.progress[ATTENDANCE]
+                console.log(progress)
                 if(progress != undefined){
                     completed.forEach(lesson => {
                         const index = progress.findIndex( p => p.id === lesson.id )
-                        if(index >= 0) lesson.completed = true
+                        if(index >= 0) 
+                            lesson.completed = progress[index].out_of_time 
+                                ? 'warning'
+                                : 'success'
+                        
                     });
                 }
                 return completed
@@ -88,7 +93,7 @@ export default {
         },
         async setEnd(){
             const status = this.completed.find( c => c.id === this.actual_video.id )
-            if(status.completed) return
+            if(status.completed === 'success') return
             if(this.actual_video.type !== ONLINE) return
             console.log('END')
             await this.setCompleted({
