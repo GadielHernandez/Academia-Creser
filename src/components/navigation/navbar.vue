@@ -1,10 +1,11 @@
 <template>
     <v-app-bar
-        hide-on-scroll
         color="white" 
         flat
-        app
+        height="50px"
         class="px-md-16"
+        app
+        dense
     >
         <v-avatar size="40">
             <v-img
