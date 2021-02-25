@@ -1,5 +1,25 @@
 <template>
     <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
+        <v-card dark v-if="loaded" color="primary">
+            <!-- eslint-disable -->
+            <v-img
+              src="@/assets/banner_blue.png"
+              max-height="130px"
+            >
+                <div class="pa-3">
+                    <v-row>
+                        <v-col cols="12 text-center">
+                            <p class="text-h3 ma-0">&#127891</p>
+                            <p class="text-h4 mb-0 font-weight-bold">
+                                Academia
+                            </p>
+                            <!-- <p class="mt-3 mb-0">Bienvenido nuevamente a la plataforma de fuente de vida, es un gusto tener de nuevo por acá</p> -->
+                        </v-col>
+                    </v-row>
+                </div>
+            </v-img>
+            <!-- eslint-enable -->
+        </v-card>
         <userAcademia v-if="profile.level === USER && loaded"/>
         <teacherAcademia v-else-if="profile.level === TEACHER && loaded"/>
         <v-progress-circular

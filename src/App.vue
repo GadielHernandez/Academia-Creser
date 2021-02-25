@@ -3,26 +3,16 @@
         
         <Navbar v-if="auth.currentUser"/>
 
-        <!-- <v-navigation-drawer
-            v-if="auth.currentUser"
-            mini-variant
-            expand-on-hover
-            permanent 
-            app
-        >
-            <sidebar/>
-        </v-navigation-drawer> -->
-
         <v-main class="main-background">
-            <navbarApps v-if="auth.currentUser" class="d-none d-md-block"/> 
+            <navbarApps v-if="auth.currentUser" class="d-none d-md-block mb-3"/> 
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
             </v-container>
             <router-view v-else></router-view>
         </v-main>
 
-        <v-footer app>
-            <bottomNav class="d-md-none d-flex"/>
+        <v-footer class="d-md-none d-block" app v-if="auth.currentUser">
+            <bottomNav/>
         </v-footer>
         
     </v-app>
@@ -55,5 +45,8 @@ html, body {
 }
 .v-card{
     border-radius: 15px !important;
+}
+.v-footer{
+    bottom: 0 !important;
 }
 </style>

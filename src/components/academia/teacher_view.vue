@@ -1,6 +1,5 @@
 <template>
     <div class="academia-user">
-        <p class="text-h5 font-weight-bold title">Academia</p>
         <v-tabs v-model="tab" v-if="hasCourse" background-color="background">
             <v-tab >
                 Alumnos

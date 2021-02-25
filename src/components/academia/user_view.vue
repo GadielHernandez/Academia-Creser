@@ -1,7 +1,6 @@
 <template>
     <div class="academia-user">
-        <p class="text-h5 font-weight-bold title">Academia</p>
-        <v-tabs v-model="tab" background-color="background" v-if="active">
+        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="active">
             <v-tab >
                 Progreso
             </v-tab>
@@ -72,9 +71,6 @@ export default {
 <style>
 .academia-user{
     height: 100%;
-}
-.title{
-    height: 8%;
 }
 .v-slide-group__prev{
     display: none !important;

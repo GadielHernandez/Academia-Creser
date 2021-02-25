@@ -1,8 +1,19 @@
 <!-- eslint-disable -->
 <template>
     <div class="home px-4">
-        <p class="text-h5 mb-0">¡<span class="font-weight-bold">Hola</span> {{ profile.nickname }}! &#128075 </p>
-        <p class="blue-grey--text">Bienvenido nuevamente a la plataforma de fuente de vida</p>
+        <v-card light flat outlined>
+            <div class="pa-5">
+                <v-row>
+                    <v-col cols="4" md="2" class="font-weight-bold text-center text-h2 d-flex">
+                        <span class="ma-auto">&#128075</span>
+                    </v-col>
+                    <v-col cols="8" md="10">
+                        <p class="text-h5 mb-0">¡<span class="font-weight-bold">Hola</span> {{ profile.nickname }}!</p>
+                        <p class="mt-3 mb-0">Bienvenido nuevamente a la plataforma de fuente de vida, es un gusto tener de nuevo por acá</p>
+                    </v-col>
+                </v-row>
+            </div>
+        </v-card>
         <v-row>
             <v-col class="secondary--text font-weight-bold">
                 Academia
