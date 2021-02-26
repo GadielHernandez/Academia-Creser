@@ -14,7 +14,7 @@ const state = {
         teacher: null
     },
     hasCourse: null,
-    lessons: []
+    lessons: null
 }
 
 const getters = {}
@@ -33,15 +33,21 @@ const actions = {
                 let group_data = await db.doc(`courses/${group.data().course}/groups/${group.id}`).get()
                 commit('UPDATE_ID', group.data().course)
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
-
-                const now = timeServer().toMillis()
-                const lessons = await db.collection(`courses/${group.data().course}/lessons`).where('available_after', '<', now - group_data.data().starts ).get()
-                if(lessons.docs.length > 0) commit( 'UPDATE_LESSONS', lessons.docs.map( l => ({ id: l.id, ...l.data() }) ) )
                 
                 commit('UPDATE_STATUS', true)
                 return resolve()
             })
             .catch( error => reject(error))
+        })
+    },
+    fetchLessons({commit, state}){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.id}/lessons`).where('available_after', '<', now - state.course.starts ).get()
+            .then( resp => {
+                if(resp.docs.length > 0) commit( 'UPDATE_LESSONS', resp.docs.map( l => ({ id: l.id, ...l.data() }) ) )
+            })
+            .catch( e => reject(e) )
         })
     },
     setAttendances({ state, commit }, payload){

@@ -14,7 +14,7 @@ const state = {
         students: null,
         teacher: null
     },
-    lessons: []
+    lessons: null
 }
 
 const getters = {}
@@ -51,17 +51,22 @@ const actions = {
                     }
                     my_group.progress = my_progress
                     commit( 'UPDATE_GROUP', my_group )
- 
-                    if(active){
-                        const lessons = await db.collection(`courses/${state.course_selected}/lessons`).where('available_after', '<', now - group.data().starts ).get()
-                        if(lessons.docs.length > 0) commit( 'UPDATE_LESSONS', lessons.docs.map( l => ({ id: l.id, ...l.data() }) ) )
-                    }
 
                 }
                 commit( 'UPDATE_STATUS', true )
                 return resolve()
             })
             .catch( error => reject(error))
+        })
+    },
+    fetchLessons({ commit, state }){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.course_selected}/lessons`).where('available_after', '<', now - state.group.starts ).get()
+            .then( lessons => {
+                commit( 'UPDATE_LESSONS', lessons.docs.map( l => ({ id: l.id, ...l.data() }) ) )
+            })
+            .catch( e => reject(e) )
         })
     },
     seCriteriaCompleted({ state, commit }, criteria_payload){

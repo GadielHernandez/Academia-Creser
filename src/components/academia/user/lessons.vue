@@ -1,7 +1,7 @@
 <template>
     <div class="main-background mx-1">
         <v-row>
-            <v-col cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') }">
+            <v-col v-if="lessons != null" cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') }">
                 <youtube 
                     ref="video"
                     class="border"
@@ -20,7 +20,7 @@
                     <p>No existe video asignado</p>
                 </div>
             </v-col>
-            <v-col class="h-100" cols="12" md="3">
+            <v-col v-if="lessons != null" class="h-100" cols="12" md="3">
                 <v-card>
                     <v-card-text class="pa-1 menu-lessons">
                         <v-list nav>
@@ -43,6 +43,15 @@
                         </v-list>
                     </v-card-text>
                 </v-card>
+            </v-col>
+            <v-col v-if="lessons == null" class="loading d-flex">
+                <v-progress-circular
+                    :size="60"
+                    :width="7"
+                    color="primary"
+                    class="ma-auto"
+                    indeterminate
+                ></v-progress-circular>
             </v-col>
         </v-row>
     </div>
@@ -81,7 +90,10 @@ export default {
         }
     },
     methods: {
-        ...mapActions({ setCompleted: 'student/seCriteriaCompleted' }),
+        ...mapActions({ 
+            setCompleted: 'student/seCriteriaCompleted',
+            getLessons: 'student/fetchLessons' 
+        }),
         videoEnded(){
             this.setEnd()
         },
@@ -120,7 +132,10 @@ export default {
                 this.actual_video = null
             }  
         }
-    }
+    },
+    async mounted() {
+        await this.getLessons()
+    },
 }
 </script>
 
@@ -151,5 +166,8 @@ export default {
 }
 iframe{
     border-radius: 15px;
+}
+.loading{
+    min-height: 60vh;
 }
 </style>

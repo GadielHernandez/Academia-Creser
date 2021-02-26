@@ -1,14 +1,20 @@
 <template>
     <div class="academia-user">
-        <v-tabs v-model="tab" v-if="hasCourse" background-color="background">
-            <v-tab >
+        <v-tabs fixed-tabs v-model="tab" v-if="hasCourse" background-color="background">
+            <v-tab>
                 Alumnos
             </v-tab>
-            <v-tab >
+            <v-tab>
                 Clases
             </v-tab>
-            <v-tab >
+            <v-tab>
                 Asistencias
+            </v-tab>
+            <v-tab>
+                Tareas
+            </v-tab>
+            <v-tab>
+                Examenes
             </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab" v-if="hasCourse">
