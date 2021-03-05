@@ -19,6 +19,11 @@
                     <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-crop-landscape</v-icon>
                     <p>No existe video asignado</p>
                 </div>
+                <transition name="fade">
+                    <v-btn fab dark x-large color="success" class="icon-completed" v-if="show_complete">
+                        <v-icon dark>mdi-check</v-icon>
+                    </v-btn>
+                </transition>
             </v-col>
             <v-col v-if="lessons != null" class="h-100" cols="12" md="3">
                 <v-card>
@@ -31,13 +36,19 @@
                             </v-list-item>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar :color="completed.find( l => l.id == lesson.id ).completed">
-                                        <v-icon class="white--text">mdi-clipboard-text</v-icon>
+                                    <v-list-item-avatar :color="seens.find( l => l.id == lesson.id ).seens">
+                                        <v-icon class="white--text" v-if="lesson.type === ONLINE">mdi-laptop</v-icon>
+                                        <v-icon class="white--text" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-title>{{ lesson.name }}</v-list-item-title>
                                         <v-list-item-subtitle>{{ lesson.description }}</v-list-item-subtitle>
                                     </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-btn icon>
+                                            <v-icon :color="completed.find( l => l.id == lesson.id ).completed">mdi-checkbox-blank</v-icon>
+                                        </v-btn>
+                                    </v-list-item-action>
                                 </v-list-item>
                             </v-list-item-group>
                         </v-list>
@@ -60,39 +71,54 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { ATTENDANCE } from '../../../plugins/criteria-types'
-import { ONLINE } from '../../../plugins/lessons-types'
+import { ONLINE, FACETOFACE } from '../../../plugins/lessons-types'
 export default {
     name: 'Lessons',
     computed:{
         ...mapState({ 
             lessons: state => state.student.lessons,
-            completed: state => {
+            seens(state){
+                const lessons = state.student.lessons.map( lesson => ({ id: lesson.id, seens: 'primary' }))
+                const seens = state.student.lessons_seen
+                if(seens != undefined){
+                    lessons.forEach(lesson => {
+                        const index = seens.findIndex( l => l === lesson.id )
+                        if(index >= 0) 
+                            lesson.seens = 'success'
+                    })
+                }
+                return lessons
+            },
+            completed(state){
                 const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'primary' }))
                 const progress = state.student.group.progress[ATTENDANCE]
                 if(progress != undefined){
                     completed.forEach(lesson => {
                         const index = progress.findIndex( p => p.id === lesson.id )
-                        if(index >= 0) 
-                            lesson.completed = progress[index].out_of_time 
-                                ? 'warning'
-                                : 'success'
-                        
+                        if(index >= 0) {
+                            lesson.completed = 'success'
+                            if(progress[index].out_of_time) lesson.completed = 'warning'
+                            if(progress[index].no_attendance) lesson.completed = 'red'
+                        }
                     });
                 }
                 return completed
-            } 
+            },
         })
     },
     data() {
         return {
             selected: null,
-            actual_video: null
+            actual_video: null,
+            show_complete: false,
+            ONLINE, FACETOFACE
         }
     },
     methods: {
         ...mapActions({ 
             setCompleted: 'student/setCriteriaCompleted',
-            getLessons: 'student/fetchLessons' 
+            getLessons: 'student/fetchLessons',
+            setSeen: 'student/uploadSeenLesson'
         }),
         videoEnded(){
             this.setEnd()
@@ -104,13 +130,19 @@ export default {
         },
         async setEnd(){
             const status = this.completed.find( c => c.id === this.actual_video.id )
-            if(status.completed === 'success') return
-            if(this.actual_video.type !== ONLINE) return
             console.log('END')
-            await this.setCompleted({
-                id: this.actual_video.id,
-                criteria: ATTENDANCE
-            })
+            if(this.actual_video.type === ONLINE && status.completed !== 'success'){
+                await this.setCompleted({
+                    id: this.actual_video.id,
+                    criteria: ATTENDANCE
+                })
+            }
+            const is_seen = this.seens.find( l => l.id === this.actual_video.id )
+            if(is_seen.seens !== 'success') {
+                await this.setSeen(this.actual_video.id)
+                this.show_complete = true
+                setTimeout( () => this.show_complete = false, 3000)
+            }
         }
     },
     watch:{
@@ -157,6 +189,7 @@ export default {
     color: white !important;
 }
 .video{
+    position: relative;
     min-height: 50vh;
     border-radius: 10px;
     overflow: hidden;
@@ -169,5 +202,15 @@ iframe{
 }
 .loading{
     min-height: 60vh;
+}
+.icon-completed{
+    z-index: 1000;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 43%;
+    text-align: center;
 }
 </style>

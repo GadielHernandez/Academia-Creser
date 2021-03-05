@@ -1,4 +1,5 @@
 import { db, timeServer, auth, FieldValue } from '../../plugins/firebase'
+import { ATTENDANCE, TASKS, EXAMS } from '../../plugins/criteria-types'
 
 const state = {
     loaded: false,
@@ -15,7 +16,8 @@ const state = {
         teacher: null
     },
     lessons: null,
-    tasks: null
+    tasks: null,
+    lessons_seen: []
 }
 
 const getters = {}
@@ -39,8 +41,10 @@ const actions = {
                     const active = group.data().starts < now && group.data().ends > now
                     const my_group = { id: group.id, ...group.data(), active }
                     const my_progress = {}
+                    my_progress[ATTENDANCE] = []
+                    my_progress[EXAMS] = []
+                    my_progress[TASKS] = []
                     for(let criteria in my_group.progress){
-                        my_progress[criteria] = []
                         if(Object.prototype.hasOwnProperty.call(my_group.progress, criteria)){
                             for(let element in  my_group.progress[criteria]){
                                 if(Object.prototype.hasOwnProperty.call(my_group.progress[criteria], element)){
@@ -60,12 +64,15 @@ const actions = {
             .catch( error => reject(error))
         })
     },
-    fetchLessons({ commit, state }){
+    fetchLessons({ commit, state, rootState }){
         return new Promise((resolve, reject) => {
             const now = timeServer().toMillis()
             db.collection(`courses/${state.course_selected}/lessons`).where('available_after', '<', now - state.group.starts ).get()
             .then( lessons => {
                 commit( 'UPDATE_LESSONS', lessons.docs.map( l => ({ id: l.id, ...l.data() }) ) )
+                if(rootState.user.courses[0].lessons_seen)
+                    commit('SET_LESSONS_SEEN', rootState.user.courses[0].lessons_seen)
+                resolve()
             })
             .catch( e => reject(e) )
         })
@@ -98,6 +105,20 @@ const actions = {
             .update(update)
             .then( () => {
                 commit('UPDATE_CRITERIA_COMPLETE', { criteria, id })
+                resolve()
+            })
+            .catch( (e) => {
+                console.log(e)
+                reject()
+            } )
+        })
+    },
+    uploadSeenLesson({ state, commit }, lesson){
+        return new Promise((resolve, reject) => {
+            const addLesson = FieldValue.arrayUnion(lesson)
+            db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ lessons_seen: addLesson })
+            .then( () => { 
+                commit('UPDATE_LESSON_SEEN', lesson)
                 resolve()
             })
             .catch( (e) => {
@@ -152,6 +173,12 @@ const mutations = {
     UPDATE_TASK_RESPONSE(state, payload){
         let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
         state.tasks[taskIndex].responses = payload.responses
+    },
+    SET_LESSONS_SEEN(state, payload){
+        state.lessons_seen = payload
+    },
+    UPDATE_LESSON_SEEN(state, payload){
+        state.lessons_seen.push(payload)
     }
 }
 

@@ -122,10 +122,12 @@ export default {
                     const value = { id: s.id, attendance: null }
                     if(saved_attendances){
                         let user_in_saved = saved_attendances.find( a => a.user === s.id )
-                        if(user_in_saved) 
-                            value.attendance = user_in_saved.out_of_time ? this.RETARD : this.ATTENDANCE
-                        else
-                            value.attendance = this.NO_ATTENDANCE
+                        if(user_in_saved) {
+                            let user_attendance = this.ATTENDANCE
+                            if(user_in_saved.out_of_time) user_attendance = this.RETARD
+                            if(user_in_saved.no_attendance) user_attendance = this.NO_ATTENDANCE
+                            value.attendance = user_attendance
+                        }
                     }
 
                     const user_in_actual = actual_values.find(v => v.user === s.id)
@@ -148,7 +150,10 @@ export default {
         }
     },
     methods: {
-        ...mapActions({ setAttendance: 'teacher/setAttendances' }),
+        ...mapActions({ 
+            setAttendance: 'teacher/setAttendances',
+            getLessons: 'teacher/fetchLessons' 
+        }),
         changeState(user, value){
             const index = this.attendances_actual.findIndex( v => v.user === user )
             if(index >= 0) this.attendances_actual.splice(index, 1)
@@ -158,9 +163,11 @@ export default {
             const values = []
             this.attendances_ui.forEach( att => {
                 if(att.attendance === this.ATTENDANCE) 
-                    values.push({ user: att.id, out_of_time: false })
+                    values.push({ user: att.id })
                 else if(att.attendance === this.RETARD)
                     values.push({ user: att.id, out_of_time: true })
+                else if(att.attendance === this.NO_ATTENDANCE)
+                    values.push({ user: att.id, no_attendance: true })
             })
             
             await this.setAttendance({ id: this.lesson_selected, data: values })
@@ -170,7 +177,11 @@ export default {
         lesson_selected(){
             this.attendances_actual = []
         }
-    }
+    },
+    async mounted() {
+        if(this.lessons === null)
+            await this.getLessons()
+    },
 }
 </script>
 
