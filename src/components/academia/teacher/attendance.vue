@@ -1,6 +1,15 @@
 <template>
     <div class="mx-1 main-background">
-        <v-row>
+        <v-col v-if="lessons == null" class="loading d-flex">
+                <v-progress-circular
+                    :size="60"
+                    :width="7"
+                    color="primary"
+                    class="ma-auto"
+                    indeterminate
+                ></v-progress-circular>
+        </v-col>
+        <v-row v-else>
             <v-col>
                 <p class="primary--text text-caption font-weight-bold">SELECCIONA UNA CLASE</p>
                 <v-card>
