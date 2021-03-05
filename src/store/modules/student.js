@@ -14,7 +14,8 @@ const state = {
         students: null,
         teacher: null
     },
-    lessons: null
+    lessons: null,
+    tasks: null
 }
 
 const getters = {}
@@ -69,7 +70,22 @@ const actions = {
             .catch( e => reject(e) )
         })
     },
-    seCriteriaCompleted({ state, commit }, criteria_payload){
+    fetchTasks({ commit, rootState }){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.course_selected}/tasks`).where('available_after', '<', now - state.group.starts ).get()
+            .then( tasks => {
+                commit( 'UPDATE_TASKS', tasks.docs.map( t => ({ id: t.id, ...t.data(), course_start: state.group.starts }) ) )
+                if(rootState.user.courses[0].tasks){
+                    rootState.user.courses[0].tasks.forEach( task => {
+                        commit('UPDATE_TASK_RESPONSE', task)
+                    })
+                }
+            })
+            .catch( e => reject(e) )
+        })
+    },
+    setCriteriaCompleted({ state, commit }, criteria_payload){
         return new Promise((resolve, reject) => {
             const criteria = criteria_payload.criteria
             const id = criteria_payload.id
@@ -82,6 +98,20 @@ const actions = {
             .update(update)
             .then( () => {
                 commit('UPDATE_CRITERIA_COMPLETE', { criteria, id })
+                resolve()
+            })
+            .catch( (e) => {
+                console.log(e)
+                reject()
+            } )
+        })
+    },
+    uploadTask({ state, commit }, task){
+        return new Promise((resolve, reject) => {
+            const addTask = FieldValue.arrayUnion(task)
+            db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ tasks: addTask })
+            .then( () => { 
+                commit('UPDATE_TASK_RESPONSE', task)
                 resolve()
             })
             .catch( (e) => {
@@ -108,10 +138,20 @@ const mutations = {
     UPDATE_LESSONS(state, payload){
         state.lessons = payload
     },
+    UPDATE_TASKS(state, payload){
+        state.tasks = payload
+    },
     UPDATE_CRITERIA_COMPLETE(state, payload){
         const old = state.group.progress
-        old[payload.criteria].push({ id: payload.id })
+        if(old[payload.criteria] == undefined)
+            old[payload.criteria] = [{ id: payload.id }]
+        else
+            old[payload.criteria].push({ id: payload.id })
         state.group.progress = old
+    },
+    UPDATE_TASK_RESPONSE(state, payload){
+        let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
+        state.tasks[taskIndex].responses = payload.responses
     }
 }
 

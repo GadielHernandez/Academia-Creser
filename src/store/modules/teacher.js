@@ -45,7 +45,7 @@ const actions = {
             const now = timeServer().toMillis()
             db.collection(`courses/${state.id}/lessons`).where('available_after', '<', now - state.course.starts ).get()
             .then( resp => {
-                if(resp.docs.length > 0) commit( 'UPDATE_LESSONS', resp.docs.map( l => ({ id: l.id, ...l.data() }) ) )
+                commit( 'UPDATE_LESSONS', resp.docs.map( l => ({ id: l.id, ...l.data() }) ) )
             })
             .catch( e => reject(e) )
         })

@@ -91,7 +91,7 @@ export default {
     },
     methods: {
         ...mapActions({ 
-            setCompleted: 'student/seCriteriaCompleted',
+            setCompleted: 'student/setCriteriaCompleted',
             getLessons: 'student/fetchLessons' 
         }),
         videoEnded(){
