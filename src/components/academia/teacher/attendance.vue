@@ -124,7 +124,9 @@ export default {
                     : [],
             attendances: state => state.teacher.course.progress[ATTENDANCE],
             attendances_ui(state){
-                const saved_attendances = state.teacher.course.progress[ATTENDANCE][this.lesson_selected]
+                const saved_attendances = state.teacher.course.progress[ATTENDANCE] 
+                    ? state.teacher.course.progress[ATTENDANCE][this.lesson_selected]
+                    : undefined
                 
                 const actual_values = this.attendances_actual ? this.attendances_actual : []
                 const res = state.teacher.course.students.map( s => {

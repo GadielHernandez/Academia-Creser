@@ -1,5 +1,5 @@
 import { ATTENDANCE } from '../../plugins/criteria-types'
-import { db, auth, timeServer } from '../../plugins/firebase'
+import { db, auth, timeServer, FieldValue } from '../../plugins/firebase'
 
 const state = {
     id: null,
@@ -8,13 +8,14 @@ const state = {
         ends: null,
         id: null,
         name: null,
-        progress: null,
+        progress: {},
         starts: null,
         students: null,
-        teacher: null
+        teacher: { tasks: null }
     },
     hasCourse: null,
-    lessons: null
+    lessons: null,
+    tasks: null
 }
 
 const getters = {}
@@ -33,6 +34,9 @@ const actions = {
                 let group_data = await db.doc(`courses/${group.data().course}/groups/${group.id}`).get()
                 commit('UPDATE_ID', group.data().course)
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
+
+                if(group.data().tasks)
+                    commit('UPDATE_FEEDBACKS', group.data().tasks)
                 
                 commit('UPDATE_STATUS', true)
                 return resolve()
@@ -61,7 +65,67 @@ const actions = {
             })
             .catch(() => reject())
         })
-    }
+    },
+    setFeedback({ commit, state }, payload){
+        return new Promise((resolve, reject) => {
+            const task = payload.task
+            const student = payload.student
+            const feedback = payload.feedback
+            const addvalue = FieldValue.arrayUnion(student)
+
+            const update = {}
+            update[`tasks.${task}`] = addvalue
+
+            db.doc(`users/${auth.currentUser.uid}/groups/${state.course.id}`)
+            .update(update)
+            .then( async () => {
+                await db.doc(`users/${student}/courses/${state.id}`).update({ feedback: FieldValue.arrayUnion({ id: task, feedback: feedback }) })
+                commit('SET_FEEDBACK', payload)
+                commit('UPDATE_USER_FEEDBACKS', { student, feedbacks: [{ id: task, feedback }] })
+                resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
+    fetchTasks({ commit, state }){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.id}/tasks`).where('available_after', '<', now - state.course.starts ).get()
+            .then( tasks => {
+                commit( 'UPDATE_TASKS', tasks.docs.map( t => ({ id: t.id, ...t.data(), course_start: state.course.starts }) ) )
+                resolve()
+            })
+            .catch( e => reject(e) )
+        })
+    },
+    fetchAnswersFeedback({ state, commit }, payload){
+        if(state.course.students != null){
+            const user_state = state.course.students.find( s => s.id === payload.student )
+            if(user_state.tasks)
+                if(user_state.tasks.find(t => t.id == payload.task))
+                    return user_state.tasks.find(t => t.id == payload.task)
+        }
+        return new Promise((resolve, reject) => {
+            db.doc(`users/${payload.student}/courses/${state.id}`).get()
+            .then( student => {
+                const user_data = student.data()
+                let response = { id: payload.task }
+                if(user_data.tasks){
+                    commit('UPDATE_USER_ANSWERS', { student: payload.student , answ: user_data.tasks})
+                    response.responses = user_data.tasks.find( t => t.id == payload.task ).responses
+                }
+
+                if(user_data.feedback){
+                    commit('UPDATE_USER_FEEDBACKS', { student: payload.student, feedbacks: user_data.feedback })
+                    let taskfeedback = user_data.feedback.find( t => t.id == payload.task )
+                    if(taskfeedback) response.feedback = taskfeedback.feedback
+                }
+                
+                resolve(response)    
+            })
+            .catch( e => reject(e) )
+        })
+    },
 }
 
 const mutations = {
@@ -69,7 +133,11 @@ const mutations = {
         state.id = payload
     },
     UPDATE_COURSE(state, payload){
-        state.course = payload
+        for (var prop in payload) {
+            if (Object.prototype.hasOwnProperty.call(payload, prop)) {
+                state.course[prop] = payload[prop]
+            }
+        }
     },
     UPDATE_STATUS(state, payload){
         state.hasCourse = payload
@@ -78,7 +146,41 @@ const mutations = {
         state.lessons = payload
     },
     UPDATE_ATTENDANCE(state, payload){
-        state.course.progress[ATTENDANCE][payload.id] = payload.data
+        if(state.course.progress[ATTENDANCE])
+            state.course.progress[ATTENDANCE][payload.id] = payload.data
+        else{
+            state.course.progress[ATTENDANCE] = {}
+            state.course.progress[ATTENDANCE][payload.id] = payload.data
+        }
+    },
+    UPDATE_TASKS(state, payload){
+        state.tasks = payload
+    },
+    UPDATE_USER_ANSWERS(state, payload){
+        const user_index = state.course.students.findIndex( s => s.id === payload.student )
+        state.course.students[user_index].tasks = payload.answ
+    },
+    UPDATE_USER_FEEDBACKS(state, payload){
+        const user_index = state.course.students.findIndex( s => s.id === payload.student )
+        payload.feedbacks.forEach(feedback => {
+            const task_index = state.course.students[user_index].tasks.findIndex( t => t.id === feedback.id )
+            state.course.students[user_index].tasks[task_index].feedback = feedback.feedback
+        });
+    },
+    UPDATE_FEEDBACKS(state, payload){
+        state.course.teacher.tasks = payload
+    },
+    SET_FEEDBACK(state, payload){
+        if(state.course.teacher.tasks){
+            if(state.course.teacher.tasks[payload.task])
+                state.course.teacher.tasks[payload.task].push(payload.student)
+            else
+            state.course.teacher.tasks[payload.task] = [ payload.student ]
+        } 
+        else{
+            state.course.teacher.tasks = {}
+            state.course.teacher.tasks[payload.task] = [ payload.student ]
+        }
     }
 }
 

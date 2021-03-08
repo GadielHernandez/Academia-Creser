@@ -1,0 +1,247 @@
+<template>
+    <div class="mx-1 main-background">
+        <v-row v-if="tasks == null">
+            <v-col class="loading d-flex">
+                <v-progress-circular
+                    :size="60"
+                    :width="7"
+                    color="primary"
+                    class="ma-auto"
+                    indeterminate
+                ></v-progress-circular>
+            </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-col>
+                <p class="primary--text text-caption font-weight-bold">SELECCIONA UNA TAREA</p>
+                <v-card>
+                    <v-card-text>
+                        <v-toolbar dense flat>
+                            <v-select
+                                v-model="tasks_selected"
+                                :items="tasks"
+                                item-text="name"
+                                item-value="id"
+                                hide-details
+                                flat
+                                solo
+                                dense
+                                label="Tarea"
+                            ></v-select>
+                        </v-toolbar>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row v-if="students.length > 0 && tasks_selected">
+            <v-col>
+                <p class="primary--text text-caption font-weight-bold">ALUMNOS</p>
+                <v-card flat color="background">
+                    <v-card-text class="px-2 py-0">
+                        <v-list-item dense>
+                            <v-list-item-avatar></v-list-item-avatar>
+                            <v-list-item-content
+                                class="text-caption font-weight-bold blue-grey--text"
+                            >
+                                NOMBRE
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card-text>
+                </v-card>
+                <v-card v-for="student in students" :key="student.id">
+                    <v-card-text class="pa-2 mb-2">
+                        <v-list-item dense @click="openDialog(student.id)">
+                            <v-list-item-avatar>
+                                <v-icon>mdi-account-circle</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ student.name }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action 
+                                class="ml-0 mr-6 font-weight-medium" 
+                                :class="{ 
+                                    'primary--text': student.status === 'PENDIENTE',
+                                    'warning--text': student.status === 'ENTREGADA',
+                                    'success--text': student.status === 'REVISADA'
+                                }">
+                                {{ student.status }}
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-dialog v-model="dialog" fullscreen persistent max-width="600px">
+            <v-card class="rounded-0" v-if="student_selected">
+                <v-toolbar dark color="primary" v-if="student_selected != null" flat>
+                    <v-toolbar-title>Respuestas</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon dark @click="closeDialog">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <v-card-text>
+                    <v-container v-if="actual_questions">
+                        <v-row v-if="tasks_selected">
+                            <v-col>
+                                <v-card outlined>
+                                    <v-card-text>
+                                        <p class="ma-1"> <span class="font-weight-black">Clase:</span> {{ tasks.find( t => t.id === tasks_selected ).name }}</p>
+                                        <p class="ma-1"> <span class="font-weight-black">Alumno:</span> {{ students.find( s => s.id === student_selected ).name }}</p>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row v-for="(question, index) in actual_questions" :key="index">
+                            <v-col cols="12">
+                                <v-card flat>
+                                    <v-card-text class="pa-0 py-2">
+                                        <p class="ma-0">
+                                            {{ question.question }}
+                                        </p>
+                                        <v-textarea
+                                            :value="actual_answers[index]"
+                                            required
+                                            auto-grow
+                                            outlined
+                                            hide-details
+                                            rows="1"
+                                            readonly
+                                        ></v-textarea>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row >
+                            <v-col cols="12" class="mb-16">
+                                <v-card flat>
+                                    <v-card-text class="pa-0">
+                                        <p class="ma-0 primary--text text-caption font-weight-bold">
+                                            Retroalimentación
+                                        </p>
+                                        <v-textarea
+                                            v-model="feedback"
+                                            required
+                                            auto-grow
+                                            outlined
+                                            hide-details
+                                            rows="1"
+                                            :readonly="students.find( s => s.id === student_selected ).status === 'REVISADA'"
+                                        ></v-textarea>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions class="save-toolbar mt-6">
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click="save" :disabled="students.find( s => s.id === student_selected ).status === 'REVISADA'">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </div>
+</template>
+
+<script>
+import { TASKS } from '../../../plugins/criteria-types'
+import { mapActions, mapState } from 'vuex'
+export default {
+    name: 'Tasks',
+    computed: {
+        ...mapState({
+            tasks: state => state.teacher.tasks,
+            students(state){
+                const result = state.teacher.course.students.map( s => ({ ...s, status: 'PENDIENTE' }) )
+                
+                this.student_selected
+                if(this.tasks_selected == null) return result
+                if(state.teacher.course.progress == {}) return result
+                if(state.teacher.course.progress[TASKS] == undefined) return result
+                
+                const task_id = this.tasks_selected
+                const progress = state.teacher.course.progress[TASKS]
+                const feedbacks = state.teacher.course.teacher.tasks
+                const task_feedback = feedbacks 
+                    ? state.teacher.course.teacher.tasks[task_id]
+                    : undefined
+
+                if(progress[task_id] == undefined) return result
+
+                const uploads = progress[task_id]
+                
+                uploads.forEach(upload => {
+                    const index = result.findIndex( std => std.id == upload.user )
+                    result[index].status = 'ENTREGADA'
+                });
+                
+                if(task_feedback)
+                    task_feedback.forEach(student => {
+                        const index = result.findIndex( std => std.id == student )
+                        result[index].status = 'REVISADA'
+                    })
+                
+                return result
+            }
+        })
+    },
+    data() {
+        return {
+            dialog: null,
+            tasks_selected: null,
+            student_selected: null,
+            feedback: null,
+            actual_questions: [],
+            actual_answers: []
+        }
+    },
+    methods: {
+        ...mapActions({ 
+            getTasks: 'teacher/fetchTasks',
+            fetchAnswersFeedback: 'teacher/fetchAnswersFeedback',
+            setFeedback: 'teacher/setFeedback'
+        }),
+        async openDialog(id){
+            const student = this.students.find( std => std.id === id )
+            if(student.status === 'PENDIENTE') return
+            const answers = await this.fetchAnswersFeedback({ student: id, task: this.tasks_selected })
+            const this_task = this.tasks.find( t => t.id === this.tasks_selected )
+            this.actual_questions = this_task.questions
+            this.actual_answers = answers.responses
+            this.feedback = answers.feedback
+            this.student_selected = id
+            this.dialog = true
+        },
+        closeDialog(){
+            this.student_selected = null
+            this.actual_questions = []
+            this.actual_answers = []
+            this.feedback = null
+            this.dialog = false
+        },
+        async save(){
+            console.log('SAVE')
+            await this.setFeedback({
+                student: this.student_selected,
+                task: this.tasks_selected,
+                feedback: this.feedback
+            })
+            this.closeDialog()
+        }
+    },
+    mounted() {
+        if(this.tasks === null)
+            this.getTasks()
+    },
+}
+</script>
+
+<style scoped>
+.save-toolbar{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+</style>

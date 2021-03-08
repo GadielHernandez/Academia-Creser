@@ -27,6 +27,9 @@
             <v-tab-item class="h-100 main-background">
                 <Attendance/>
             </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Tasks/>
+            </v-tab-item>
         </v-tabs-items>
         <div v-else class="no-course d-flex">
             <div class="ma-auto font-weight-bold blue-grey--text text-center">
@@ -42,9 +45,10 @@ import { mapState } from 'vuex'
 import Students from './teacher/students.vue'
 import Lessons from './teacher/lessons.vue'
 import Attendance from './teacher/attendance.vue'
+import Tasks from './teacher/task.vue'
 export default {
     name: 'Academia-user',
-    components: { Students , Lessons, Attendance },
+    components: { Students , Lessons, Attendance, Tasks },
     computed:{
         ...mapState({
             hasCourse: state => state.teacher.hasCourse
