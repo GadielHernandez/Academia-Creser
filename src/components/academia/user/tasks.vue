@@ -10,11 +10,11 @@
                                     <tr>
                                         <th class="text-left">Tarea</th>
                                         <th class="text-left">Descripcion</th>
-                                        <th class="text-left">
+                                        <th class="text-center">
                                             Fecha de liberacion
                                         </th>
-                                        <th class="text-left">Estado</th>
-                                        <th class="text-left">
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">
                                             Retroalimentacion
                                         </th>
                                     </tr>
@@ -27,14 +27,16 @@
                                     >
                                         <td>{{ task.name }}</td>
                                         <td>{{ task.description }}</td>
-                                        <td>{{ new Date( task.course_start + task.available_after).toLocaleString()}}</td>
-                                        <td class="font-weight-medium success--text" v-if="task.responses">
+                                        <td class="text-center">{{ new Date( task.course_start + task.available_after).toLocaleString()}}</td>
+                                        <td class="text-center font-weight-medium success--text" v-if="task.responses">
                                             ENTREGADO
                                         </td>
-                                        <td class="font-weight-medium primary--text" v-else>
+                                        <td class="text-center font-weight-medium primary--text" v-else>
                                             PENDIENTE
                                         </td>
-                                        <td></td>
+                                        <td class="text-center">
+                                            <v-icon color="success" v-if="task.feedback">mdi-check-bold</v-icon>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </template>
@@ -72,8 +74,8 @@
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <v-card-text class="mb-8">
-                    <v-container v-if="selected != null && responses != {}">
+                <v-card-text>
+                    <v-container v-if="selected != null && responses != {}" class="mb-8">
                         <v-row v-for="(question, index) in selected.questions" :key="index">
                             <v-col cols="12">
                                 <v-card flat>
@@ -94,11 +96,31 @@
                                 </v-card>
                             </v-col>
                         </v-row>
+                        <v-row v-if="selected.feedback">
+                            <v-col cols="12" class="mb-16">
+                                <v-card flat>
+                                    <v-card-text>
+                                        <p class="ma-0 primary--text text-caption font-weight-bold">
+                                            Retroalimentación
+                                        </p>
+                                        <v-textarea
+                                            :value="selected.feedback"
+                                            required
+                                            auto-grow
+                                            outlined
+                                            hide-details
+                                            rows="1"
+                                            readonly
+                                        ></v-textarea>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
                     </v-container>
                 </v-card-text>
-                <v-card-actions class="save-toolbar mt-6">
+                <v-card-actions class="save-toolbar mt-6" v-if="selected != null">
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="save">Save</v-btn>
+                    <v-btn color="primary" @click="save" :disabled="selected.responses != undefined">Save</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -121,6 +143,7 @@ export default {
     data() {
         return {
             dialog: null,
+            dialogFeedback: null,
             selected: null,
             responses: {}
         }

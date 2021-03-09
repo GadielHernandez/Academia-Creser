@@ -83,9 +83,15 @@ const actions = {
             db.collection(`courses/${state.course_selected}/tasks`).where('available_after', '<', now - state.group.starts ).get()
             .then( tasks => {
                 commit( 'UPDATE_TASKS', tasks.docs.map( t => ({ id: t.id, ...t.data(), course_start: state.group.starts }) ) )
+                console.log(rootState.user.courses)
                 if(rootState.user.courses[0].tasks){
                     rootState.user.courses[0].tasks.forEach( task => {
                         commit('UPDATE_TASK_RESPONSE', task)
+                    })
+                }
+                if(rootState.user.courses[0].feedback){
+                    rootState.user.courses[0].feedback.forEach( feedback => {
+                        commit('UPDATE_TASK_FEEDBACK', feedback)
                     })
                 }
             })
@@ -173,6 +179,10 @@ const mutations = {
     UPDATE_TASK_RESPONSE(state, payload){
         let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
         state.tasks[taskIndex].responses = payload.responses
+    },
+    UPDATE_TASK_FEEDBACK(state, payload){
+        let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
+        state.tasks[taskIndex].feedback = payload.feedback
     },
     SET_LESSONS_SEEN(state, payload){
         state.lessons_seen = payload
