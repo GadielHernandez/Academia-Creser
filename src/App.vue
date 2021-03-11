@@ -49,4 +49,7 @@ html, body {
 .v-footer{
     bottom: 0 !important;
 }
+.h-100{
+    height: 100%;
+}
 </style>
