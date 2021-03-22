@@ -16,8 +16,9 @@ const state = {
         teacher: null
     },
     lessons: null,
+    lessons_seen: [],
     tasks: null,
-    lessons_seen: []
+    exams: null
 }
 
 const getters = {}
@@ -83,7 +84,7 @@ const actions = {
             db.collection(`courses/${state.course_selected}/tasks`).where('available_after', '<', now - state.group.starts ).get()
             .then( tasks => {
                 commit( 'UPDATE_TASKS', tasks.docs.map( t => ({ id: t.id, ...t.data(), course_start: state.group.starts }) ) )
-                console.log(rootState.user.courses)
+
                 if(rootState.user.courses[0].tasks){
                     rootState.user.courses[0].tasks.forEach( task => {
                         commit('UPDATE_TASK_RESPONSE', task)
@@ -102,7 +103,10 @@ const actions = {
         return new Promise((resolve, reject) => {
             const criteria = criteria_payload.criteria
             const id = criteria_payload.id
-            const addvalue = FieldValue.arrayUnion({ user: auth.currentUser.uid })
+            const value = criteria_payload.options 
+                ? { user: auth.currentUser.uid, ...criteria_payload.options }
+                : { user: auth.currentUser.uid }
+            const addvalue = FieldValue.arrayUnion(value)
 
             const update = {}
             update[`progress.${criteria}.${id}`] = addvalue
@@ -110,7 +114,7 @@ const actions = {
             db.doc(`courses/${state.course_selected}/groups/${state.group.id}`)
             .update(update)
             .then( () => {
-                commit('UPDATE_CRITERIA_COMPLETE', { criteria, id })
+                commit('UPDATE_CRITERIA_COMPLETE', { criteria, id, value })
                 resolve()
             })
             .catch( (e) => {
@@ -146,7 +150,30 @@ const actions = {
                 reject()
             } )
         })
-    }
+    },
+    fetchExams({ commit }){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.course_selected}/exams`).where('available_after', '<', now - state.group.starts ).get()
+            .then( exams => {
+                commit( 'UPDATE_EXAMS', exams.docs.map( e => {
+                    const id = e.id
+                    const data = e.data()
+                    let hour = parseInt(data.limit_time / (1000 * 60 * 60))
+                    let minutes = parseInt( ( data.limit_time - hour * (1000 * 60 * 60) ) / (1000 * 60) )
+                    let seconds = ( data.limit_time - (hour * (1000 * 60 * 60)) - (minutes * ((1000 * 60))) ) / 1000
+                    
+                    if (hour < 10) hour   = '0' + hour
+                    if (minutes < 10) minutes = '0' + minutes
+                    if (seconds < 10) seconds = '0' + seconds
+
+                    return { id, ...data, time_format: `${hour}:${minutes}:${seconds}`, course_start: state.group.starts }
+                }))
+                resolve()
+            })
+            .catch( e => reject(e) )
+        })
+    },
 }
 
 const mutations = {
@@ -171,9 +198,9 @@ const mutations = {
     UPDATE_CRITERIA_COMPLETE(state, payload){
         const old = state.group.progress
         if(old[payload.criteria] == undefined)
-            old[payload.criteria] = [{ id: payload.id }]
+            old[payload.criteria] = [{ id: payload.id , ...payload.value }]
         else
-            old[payload.criteria].push({ id: payload.id })
+            old[payload.criteria].push({ id: payload.id, ...payload.value })
         state.group.progress = old
     },
     UPDATE_TASK_RESPONSE(state, payload){
@@ -183,6 +210,9 @@ const mutations = {
     UPDATE_TASK_FEEDBACK(state, payload){
         let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
         state.tasks[taskIndex].feedback = payload.feedback
+    },
+    UPDATE_EXAMS(state, payload){
+        state.exams = payload
     },
     SET_LESSONS_SEEN(state, payload){
         state.lessons_seen = payload

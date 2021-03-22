@@ -65,7 +65,7 @@
                 indeterminate
             ></v-progress-circular>
         </v-row>
-        <v-dialog v-model="dialog" fullscreen persistent max-width="600px">
+        <v-dialog v-model="dialog" fullscreen persistent>
             <v-card class="rounded-0">
                 <v-toolbar dark color="primary" v-if="selected != null" flat>
                     <v-toolbar-title>{{ selected.name }}</v-toolbar-title>
