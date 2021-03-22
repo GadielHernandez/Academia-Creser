@@ -29,11 +29,15 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title>{{ cr.name }}</v-list-item-title>
-                                    <v-list-item-subtitle>{{ cr.completed }} obtenidas</v-list-item-subtitle>
+                                    <v-list-item-subtitle>
+                                        <span v-if="cr.name === ATTENDANCE">{{ cr.completed - cr.out_of_time }} obtenidas , {{ cr.out_of_time }} retardos</span>
+                                        <span v-else-if="cr.name === EXAMS">{{ cr.completed }} realizados</span>
+                                        <span v-if="cr.name === TASKS">{{ cr.completed }} realizadas</span>
+                                    </v-list-item-subtitle>
                                 </v-list-item-content>
 
                                 <v-list-item-action>
-                                    <p class="ma-0 font-weight-black primary--text text-h6"> {{ (cr.completed * cr.value / cr.number).toFixed(2) }} pts</p>
+                                    <p class="ma-0 font-weight-black primary--text text-h6"> {{ (cr.points).toFixed(2) }} pts</p>
                                 </v-list-item-action>
                             </v-list-item>
                         </v-col>
@@ -151,13 +155,44 @@ export default {
                     const obj_crt = cr
                     obj_crt.icon = icons[cr.name]
                     
-                    if(progress[cr.name] !== undefined){
-                        obj_crt.completed = progress[cr.name].length
-                        const out_of_time = progress[cr.name].filter( c => c.out_of_time === true)
-                        obj_crt.completed = obj_crt.completed - parseInt(out_of_time.length / 2)
+                    switch (cr.name) {
+                        case ATTENDANCE:
+                            if(progress[cr.name] !== undefined){
+                                obj_crt.completed = progress[cr.name].length
+                                const out_of_time = progress[cr.name].filter( c => c.out_of_time === true)
+                                obj_crt.out_of_time = out_of_time.length
+                                console.log(obj_crt.completed - (out_of_time.length /2))
+                                obj_crt.points = (obj_crt.completed - (out_of_time.length / 2)) * cr.value / cr.number
+                            }
+                            else{
+                                obj_crt.points = 0
+                                obj_crt.completed = 0
+                            }
+                            break;
+                    
+                        case TASKS:
+                            if(progress[cr.name] !== undefined){
+                                obj_crt.completed = progress[cr.name].length
+                                obj_crt.points = obj_crt.completed * cr.value / cr.number
+                            }
+                            else{
+                                obj_crt.points = 0
+                                obj_crt.completed = 0
+                            }
+                            break;
+                        
+                        case EXAMS:
+                            if(progress[cr.name] !== undefined){
+                                obj_crt.completed = progress[cr.name].length
+                                obj_crt.points = progress[cr.name].reduce( (sum, t) => sum + t.grade, 0 ) * cr.value / cr.number
+                            }
+                            else{
+                                obj_crt.points = 0
+                                obj_crt.completed = 0
+                            }
+                            break;
                     }
-                    else
-                        obj_crt.completed = 0
+                    
 
                     result.push(obj_crt)
                 });
@@ -166,9 +201,7 @@ export default {
             },
             total() {
                 let total = 0
-                this.criteria.forEach(cr => 
-                        total += cr.completed * cr.value / cr.number
-                );
+                this.criteria.forEach(cr => total += cr.points );
                 return Math.round(total)
             }
         })
