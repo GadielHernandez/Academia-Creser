@@ -30,6 +30,9 @@
             <v-tab-item class="h-100 main-background">
                 <Tasks/>
             </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Exams/>
+            </v-tab-item>
         </v-tabs-items>
         <div v-else class="no-course d-flex">
             <div class="ma-auto font-weight-bold blue-grey--text text-center">
@@ -46,9 +49,10 @@ import Students from './teacher/students.vue'
 import Lessons from './teacher/lessons.vue'
 import Attendance from './teacher/attendance.vue'
 import Tasks from './teacher/task.vue'
+import Exams from './teacher/exams.vue'
 export default {
     name: 'Academia-user',
-    components: { Students , Lessons, Attendance, Tasks },
+    components: { Students , Lessons, Attendance, Tasks, Exams },
     computed:{
         ...mapState({
             hasCourse: state => state.teacher.hasCourse

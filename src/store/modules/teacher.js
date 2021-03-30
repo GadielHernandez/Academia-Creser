@@ -15,7 +15,8 @@ const state = {
     },
     hasCourse: null,
     lessons: null,
-    tasks: null
+    tasks: null,
+    exams: null
 }
 
 const getters = {}
@@ -126,6 +127,17 @@ const actions = {
             .catch( e => reject(e) )
         })
     },
+    fetchExams({ commit, state }){
+        return new Promise((resolve, reject) => {
+            const now = timeServer().toMillis()
+            db.collection(`courses/${state.id}/exams`).where('available_after', '<', now - state.course.starts ).get()
+            .then( exams => {
+                commit( 'UPDATE_EXAMS', exams.docs.map( e => ({ id: e.id, ...e.data(), course_start: state.course.starts }) ) )
+                resolve()
+            })
+            .catch( e => reject(e) )
+        })
+    },
 }
 
 const mutations = {
@@ -181,6 +193,9 @@ const mutations = {
             state.course.teacher.tasks = {}
             state.course.teacher.tasks[payload.task] = [ payload.student ]
         }
+    },
+    UPDATE_EXAMS(state, payload){
+        state.exams = payload
     }
 }
 
