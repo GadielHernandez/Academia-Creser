@@ -161,7 +161,6 @@ export default {
                                 obj_crt.completed = progress[cr.name].length
                                 const out_of_time = progress[cr.name].filter( c => c.out_of_time === true)
                                 obj_crt.out_of_time = out_of_time.length
-                                console.log(obj_crt.completed - (out_of_time.length /2))
                                 obj_crt.points = (obj_crt.completed - (out_of_time.length / 2)) * cr.value / cr.number
                             }
                             else{

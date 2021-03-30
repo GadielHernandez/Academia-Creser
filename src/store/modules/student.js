@@ -151,7 +151,7 @@ const actions = {
             } )
         })
     },
-    fetchExams({ commit }){
+    fetchExams({ commit, rootState }){
         return new Promise((resolve, reject) => {
             const now = timeServer().toMillis()
             db.collection(`courses/${state.course_selected}/exams`).where('available_after', '<', now - state.group.starts ).get()
@@ -169,9 +169,29 @@ const actions = {
 
                     return { id, ...data, time_format: `${hour}:${minutes}:${seconds}`, course_start: state.group.starts }
                 }))
+                
+                if(rootState.user.courses[0].exams){
+                    rootState.user.courses[0].exams.forEach( exam => {
+                        commit('UPDATE_EXAM_RESPONSE', exam)
+                    })
+                }
                 resolve()
             })
             .catch( e => reject(e) )
+        })
+    },
+    uploadExam({ state, commit }, exam){
+        return new Promise((resolve, reject) => {
+            const addExam = FieldValue.arrayUnion(exam)
+            db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ exams: addExam })
+            .then( () => { 
+                commit('UPDATE_EXAM_RESPONSE', exam)
+                resolve()
+            })
+            .catch( (e) => {
+                console.log(e)
+                reject()
+            } )
         })
     },
 }
@@ -213,6 +233,10 @@ const mutations = {
     },
     UPDATE_EXAMS(state, payload){
         state.exams = payload
+    },
+    UPDATE_EXAM_RESPONSE(state, payload){
+        let examIndex = state.exams.findIndex( e => e.id === payload.id )
+        state.exams[examIndex].responses = payload.responses
     },
     SET_LESSONS_SEEN(state, payload){
         state.lessons_seen = payload
