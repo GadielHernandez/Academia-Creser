@@ -90,7 +90,7 @@ export default {
                 return lessons
             },
             completed(state){
-                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'primary' }))
+                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'blue-grey' }))
                 const progress = state.student.group.progress[ATTENDANCE]
                 if(progress != undefined){
                     completed.forEach(lesson => {

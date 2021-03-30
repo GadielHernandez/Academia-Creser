@@ -31,7 +31,7 @@
                                         <td class="text-center font-weight-medium success--text" v-if="task.responses">
                                             ENTREGADO
                                         </td>
-                                        <td class="text-center font-weight-medium primary--text" v-else>
+                                        <td class="text-center font-weight-medium blue-grey--text" v-else>
                                             PENDIENTE
                                         </td>
                                         <td class="text-center">

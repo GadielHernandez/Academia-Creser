@@ -62,7 +62,7 @@
                             <v-list-item-action 
                                 class="ml-0 mr-6 font-weight-medium" 
                                 :class="{ 
-                                    'primary--text': student.status === 'PENDIENTE',
+                                    'blue-grey--text': student.status === 'PENDIENTE',
                                     'warning--text': student.status === 'ENTREGADA',
                                     'success--text': student.status === 'REVISADA'
                                 }">

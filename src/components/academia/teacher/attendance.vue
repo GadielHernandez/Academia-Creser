@@ -81,7 +81,7 @@
                                         @click="changeState(student.id, NO_ATTENDANCE)" 
                                         :class="{ 'active': attendances_ui.find( s => s.id === student.id ).attendance == NO_ATTENDANCE }" 
                                         :disabled="lessons.find( l => l.id === lesson_selected).type === ONLINE">
-                                       Inasistencia
+                                       Falta
                                     </v-chip>
                                 </v-chip-group>
                             </v-list-item-action>

@@ -28,7 +28,7 @@
                                         </td>
                                         <td class="text-center"> {{ exam.time_format }} </td>
                                         <td class="text-center font-weight-medium success--text" v-if="exam.completed">{{exam.grade * 100}}</td>
-                                        <td class="text-center font-weight-medium primary--text" v-else>PENDIENTE</td>
+                                        <td class="text-center font-weight-medium blue-grey--text" v-else>PENDIENTE</td>
                                     </tr>
                                 </tbody>
                             </template>

@@ -34,7 +34,8 @@
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
                                     <v-list-item-avatar :color="'primary'">
-                                        <v-icon class="white--text">mdi-clipboard-text</v-icon>
+                                        <v-icon class="white--text" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
+                                        <v-icon class="white--text" v-else>mdi-laptop</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-title>{{ lesson.name }}</v-list-item-title>
