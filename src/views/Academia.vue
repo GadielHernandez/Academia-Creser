@@ -22,6 +22,7 @@
         </v-card>
         <userAcademia v-if="profile.level === USER && loaded"/>
         <teacherAcademia v-else-if="profile.level === TEACHER && loaded"/>
+        <adminAcademia v-else-if="profile.level === ADMIN && loaded" />
         <v-progress-circular
             v-else
             :size="60"
@@ -38,13 +39,14 @@ import { USER, TEACHER, ADMIN, atLeastUserIs } from '../plugins/user-types'
 import { mapState, mapActions } from 'vuex'
 import userAcademia from '../components/academia/user_view'
 import teacherAcademia from '../components/academia/teacher_view'
+import adminAcademia from '../components/academia/admin_view'
 export default {
     name:'Academia',
-    components: { userAcademia, teacherAcademia },
+    components: { userAcademia, teacherAcademia, adminAcademia },
     computed:{
         ...mapState({
             profile: state => state.user.profile,
-            loaded: state => state.student.loaded || state.teacher.hasCourse !== null,
+            loaded: state => state.student.loaded || state.teacher.hasCourse !== null || state.admin.info !== null,
             courses: state => state.user.courses
         })
     },
@@ -56,7 +58,8 @@ export default {
     methods: {
         ...mapActions({ 
             fetchStudentCourses: 'student/fetchCourses',
-            fecthTeacherCourse: 'teacher/fetchCourse'
+            fecthTeacherCourse: 'teacher/fetchCourse',
+            fetchAdminCourse: 'admin/fetchCourse'
         }),
         getData(){
             if(this.profile.level === USER){
@@ -65,6 +68,8 @@ export default {
             }
             else if(this.profile.level === TEACHER)
                 this.fecthTeacherCourse()
+            else if(this.profile.level === ADMIN)
+                this.fetchAdminCourse()
         }
     },
     watch:{
