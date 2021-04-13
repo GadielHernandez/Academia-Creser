@@ -62,6 +62,17 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    fetchUser( ctx, email){
+        return new Promise((resolve, reject) => {
+            db.collection('users').where('email' ,'==', email).get()
+            .then( res => {
+                if(res.docs.length === 0) resolve(null)
+                else resolve({ id: res.docs[0].id, ...res.docs[0].data() })
+                return
+            })
+            .catch( () => reject() )
+        })
+    },
     updateLesson({ commit, state }, payload){
         const { id } = payload
         delete payload.id
@@ -74,11 +85,33 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    updateGroup({ commit, state }, payload){
+        const { id } = payload
+        delete payload.id
+        return new Promise((resolve, reject) => {
+            db.doc(`courses/${state.course}/groups/${id}`).update(payload)
+            .then(() => {
+                commit('UPDATE_GROUP', { id: id, data: payload })
+                return resolve()
+            })
+            .then( () => reject() )
+        })
+    },
     addLesson({ commit }, payload){
         return new Promise((resolve, reject) => {
             db.collection(`courses/${state.course}/lessons`).add(payload)
             .then( doc => {
                 commit('ADD_LESSON', { id: doc.id, ...payload })
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
+    addGroup({ commit }, payload){
+        return new Promise((resolve, reject) => {
+            db.collection(`courses/${state.course}/groups`).add(payload)
+            .then( doc => {
+                commit('ADD_GROUP', { id: doc.id, ...payload })
                 return resolve()
             })
             .catch( () => reject() )
@@ -106,12 +139,19 @@ const mutations = {
         const index = state.lessons.findIndex( l => l.id === payload.id )
         state.lessons.splice(index, 1, { id: payload.id, ...payload.data })
     },
+    UPDATE_GROUP(state, payload){
+        const index = state.groups.findIndex( l => l.id === payload.id )
+        state.groups.splice(index, 1, { id: payload.id, ...payload.data })
+    },
     ADD_LESSON(state, payload){
         const index = state.lessons.findIndex( l => l.available_after > payload.available_after )
         if(index == -1)
             state.lessons.push(payload)
         else
             state.lessons.splice(index, 0, payload)
+    },
+    ADD_GROUP(state, payload){
+        state.groups.push(payload)
     }
 }
 

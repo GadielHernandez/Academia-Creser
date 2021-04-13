@@ -5,10 +5,10 @@
                 Informacion
             </v-tab>
             <v-tab>
-                Clases
+                Grupos
             </v-tab>
             <v-tab>
-                Asistencias
+                Clases
             </v-tab>
             <v-tab>
                 Tareas
@@ -22,10 +22,10 @@
                 <info />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
-                <lessons />
+                <groups />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
-                
+                <lessons />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
                 
@@ -46,9 +46,10 @@
 <script>
 import info from './admin/info'
 import lessons from './admin/lessons'
+import groups from './admin/groups'
 export default {
     name: 'Academia-admin',
-    components: { info, lessons },
+    components: { info, lessons, groups },
     data() {
         return {
             tab: null,

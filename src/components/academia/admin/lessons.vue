@@ -1,6 +1,9 @@
 <template>
     <div class="mx-1">
         <v-row>
+            <v-col class="d-flex">
+                <p class="primary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE CLASES</p>
+            </v-col>
             <v-col class="text-right">
                 <v-btn 
                     color="primary"
