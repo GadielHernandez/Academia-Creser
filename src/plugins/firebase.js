@@ -27,5 +27,6 @@ export {
     auth,
     db,
     timeServer,
-    FieldValue
+    FieldValue,
+    firebase
 }

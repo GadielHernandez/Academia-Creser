@@ -1,5 +1,6 @@
 <template>
     <v-bottom-navigation color="primary" absolute app :value="tabs">
+        
         <v-btn @click="go('Home')">
             <span>Inicio</span>
 
@@ -15,12 +16,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { ADMIN } from '../../plugins/user-types'
 export default {
     name: 'navbarApps',
+    computed:{
+        ...mapState({ level: state => state.user.profile.level })
+    },
     data() {
         return {
             tabs: 0,
-            tabs_value: ['Home', 'Academia'],
+            tabs_value: ['Home' ,'Academia'],
+            ADMIN
         }
     },
     methods: {

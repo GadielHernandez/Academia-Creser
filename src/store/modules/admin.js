@@ -1,12 +1,14 @@
-import { db } from '../../plugins/firebase'
+import { db, firebase } from '../../plugins/firebase'
 
 const state = {
     course: 'JgoBlXYdaGKpGF5tV98x',
     info: null,
+    users: null,
     exams: null,
     groups: null,
     lessons: null,
-    tasks: null
+    tasks: null,
+    aux: {}
 }
 
 const getters = {}
@@ -18,6 +20,20 @@ const actions = {
             .then( doc => {
                 commit('UPDATE_INFO', doc.data() )
                 return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
+    fetchListUsers(ctx, lastUser){
+        let query 
+        if(lastUser)
+            query = db.collection(`users`).orderBy('email').startAt(lastUser).limit(20)
+        else
+            query = db.collection(`users`).orderBy('email').limit(20)
+        return new Promise((resolve, reject) => {
+            query.get()
+            .then( resp => {
+                return resolve(resp.docs.map( doc => ({ id: doc.id, ...doc.data() })))
             })
             .catch( () => reject() )
         })
@@ -97,6 +113,15 @@ const actions = {
             .then( () => reject() )
         })
     },
+    updateUser(ctx , payload){
+        const { id } = payload
+        delete payload.id
+        return new Promise((resolve, reject) => {
+            db.doc(`users/${id}`).update(payload)
+            .then(() => resolve())
+            .catch( () => reject() )
+        })
+    },
     addLesson({ commit }, payload){
         return new Promise((resolve, reject) => {
             db.collection(`courses/${state.course}/lessons`).add(payload)
@@ -117,9 +142,33 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    addUser({ state }, user){
+        return new Promise((resolve, reject) => {
+            if(!state.aux.auxApp)
+                state.aux.auxApp = firebase.initializeApp(firebase.app().options, 'auth-worker')
+            if(!state.aux.auxAuth){
+                state.aux.auxAuth = firebase.auth(state.aux.auxApp)
+                state.aux.auxAuth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+            }
+
+            state.aux.auxAuth.createUserWithEmailAndPassword(user.email, user.password)
+            .then(async user_ => {
+                delete user.password
+                await db.doc(`users/${user_.user.uid}`).set(user)
+                return resolve()
+            })
+            .catch( error => {
+                if(error) return reject({ message: error.message })
+                return reject({ message: '' })
+            })
+        })
+    },
 }
 
 const mutations = {
+    UPDATE_USERS(state, payload){
+        state.users = payload
+    },
     UPDATE_INFO(state, payload){
         state.info = payload
     },

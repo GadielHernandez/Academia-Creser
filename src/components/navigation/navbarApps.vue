@@ -8,12 +8,16 @@
                             size="35"
                             class=""
                         >
-                            <v-icon :class="{ 'white--text': tabs === 0 }">
+                            <v-icon :class="{ 'white--text': tabs === 0 }" v-if="level === ADMIN">
+                                mdi-account
+                            </v-icon> 
+                            <v-icon :class="{ 'white--text': tabs === 0 }" v-else>
                                 mdi-home
                             </v-icon> 
 
                         </v-avatar>
-                        <span class="ml-3 ma-auto">Inicio</span>
+                        <span class="ml-3 ma-auto" v-if="level === ADMIN">Personas</span>
+                        <span class="ml-3 ma-auto" v-else>Inicio</span>
                 </v-tab>
                 <v-tab @click="go('Academia')">
                     <div>
@@ -34,12 +38,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { ADMIN } from '../../plugins/user-types'
 export default {
     name: 'navbarApps',
+    computed:{
+        ...mapState({ level: state => state.user.profile.level })
+    },
     data() {
         return {
             tabs: 0,
-            tabs_value: ['Home', 'Academia'],
+            tabs_value: ['Home' ,'Academia'],
+            ADMIN
         }
     },
     methods: {
