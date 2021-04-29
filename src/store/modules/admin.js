@@ -80,7 +80,7 @@ const actions = {
     },
     fetchUser( ctx, email){
         return new Promise((resolve, reject) => {
-            db.collection('users').where('email' ,'==', email).get()
+            db.collection('users').where('email' ,'==', email.replace(/\s/g, '')).get()
             .then( res => {
                 if(res.docs.length === 0) resolve(null)
                 else resolve({ id: res.docs[0].id, ...res.docs[0].data() })
@@ -163,6 +163,22 @@ const actions = {
             })
         })
     },
+    addUserGroup({ commit }, payload){
+        const { group, user } = payload
+        return new Promise((resolve, reject) => {
+            db.doc(`courses/${state.course}/groups/${group}`).update({
+                students: firebase.firestore.FieldValue.arrayUnion(user)
+            })
+            .then( async () => {
+                await db.doc(`users/${user.id}/courses/${state.course}`).set({
+                    group: group
+                })
+                commit('ADD_USER_GROUP', payload)
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
 }
 
 const mutations = {
@@ -201,6 +217,13 @@ const mutations = {
     },
     ADD_GROUP(state, payload){
         state.groups.push(payload)
+    },
+    ADD_USER_GROUP(state, payload){
+        const { group, user } = payload
+        const index = state.groups.findIndex( g => g.id === group)
+        if(!state.groups[index].students)
+            state.groups[index].students = []
+        state.groups[index].students.push(user)
     }
 }
 
