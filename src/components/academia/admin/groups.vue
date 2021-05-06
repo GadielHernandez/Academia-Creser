@@ -20,8 +20,8 @@
                         <v-toolbar dense flat>
                             <p class="font-weight-bold my-auto">{{ group.name }}</p>
                             <v-spacer></v-spacer>
-                            <v-btn icon color="primary" @click="openAddUsers(group.id)">
-                                <v-icon>mdi-account-plus</v-icon>
+                            <v-btn icon color="primary" @click="listUsers(group.id)">
+                                <v-icon>mdi-account-details</v-icon>
                             </v-btn>
                             <v-btn icon color="primary" @click="editGroup(group.id)">
                                 <v-icon>mdi-pencil</v-icon>
@@ -85,19 +85,19 @@
             <formGroup :group="form_group.group" @close="closeForm"/>
         </v-dialog>
 
-        <v-dialog v-model="add_user.open" max-width="600px">
-            <addUserGroup :group="add_user.group" @close="closeAddUser"/>
+        <v-dialog v-model="list_user.open" max-width="600px">
+            <listUsers :group="list_user.group" @close="closeListUsers"/>
         </v-dialog>
     </div>
 </template>
 
 <script>
 import formGroup from './group_form'
-import addUserGroup from './add_user_group'
+import listUsers from './users_groups'
 import { mapActions, mapState } from 'vuex'
 export default {
     name:'groups',
-    components: { formGroup, addUserGroup },
+    components: { formGroup, listUsers },
     computed:{
         ...mapState({
             groups: state => state.admin.groups
@@ -109,7 +109,7 @@ export default {
                 group: null,
                 open: false
             },
-            add_user: {
+            list_user: {
                 group: null,
                 open: false
             }
@@ -123,14 +123,14 @@ export default {
             this.form_group.group = null
             this.form_group.open = true
         },
-        openAddUsers(id){
+        listUsers(id){
             const group = this.groups.find( g => g.id === id )
-            this.add_user.group = group
-            this.add_user.open = true
+            this.list_user.group = group
+            this.list_user.open = true
         },
-        closeAddUser(){
-            this.add_user.group = null
-            this.add_user.open = false
+        closeListUsers(){
+            this.list_user.group = null
+            this.list_user.open = false
         },
         editGroup(id){
             const group = this.groups.find( g => g.id === id )
