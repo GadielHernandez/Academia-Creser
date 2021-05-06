@@ -163,8 +163,10 @@ const actions = {
             })
         })
     },
-    addUserGroup({ commit }, payload){
+    async addUserGroup({ commit }, payload){
         const { group, user } = payload
+        const course = await db.doc(`users/${user.id}/courses/${state.course}`).get()
+        if(course.exists) return
         return new Promise((resolve, reject) => {
             db.doc(`courses/${state.course}/groups/${group}`).update({
                 students: firebase.firestore.FieldValue.arrayUnion(user)
