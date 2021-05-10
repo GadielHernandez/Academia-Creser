@@ -70,7 +70,7 @@ const actions = {
     },
     fetchTasks({ commit, state }){
         return new Promise((resolve, reject) => {
-            db.collection(`courses/${state.course}/tasks`).get()
+            db.collection(`courses/${state.course}/tasks`).orderBy('available_after').get()
             .then( resp =>{
                 commit('UPDATE_TASKS', resp.docs.map( doc => ({ id: doc.id, ...doc.data() })) )
                 return resolve()
@@ -96,6 +96,18 @@ const actions = {
             db.doc(`courses/${state.course}/lessons/${id}`).update(payload)
             .then(() => {
                 commit('UPDATE_LESSON', { id: id, data: payload })
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
+    updateTask({ commit, state }, payload){
+        const { id } = payload
+        delete payload.id
+        return new Promise((resolve, reject) => {
+            db.doc(`courses/${state.course}/tasks/${id}`).update(payload)
+            .then(() => {
+                commit('UPDATE_TASK', { id: id, data: payload })
                 return resolve()
             })
             .catch( () => reject() )
@@ -205,6 +217,10 @@ const mutations = {
     UPDATE_LESSON(state, payload){
         const index = state.lessons.findIndex( l => l.id === payload.id )
         state.lessons.splice(index, 1, { id: payload.id, ...payload.data })
+    },
+    UPDATE_TASK(state, payload){
+        const index = state.tasks.findIndex( l => l.id === payload.id )
+        state.tasks.splice(index, 1, { id: payload.id, ...payload.data })
     },
     UPDATE_GROUP(state, payload){
         const index = state.groups.findIndex( l => l.id === payload.id )

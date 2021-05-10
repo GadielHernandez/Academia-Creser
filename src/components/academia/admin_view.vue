@@ -28,7 +28,7 @@
                 <lessons />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
-                
+                <tasks />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
                 
@@ -47,9 +47,10 @@
 import info from './admin/info'
 import lessons from './admin/lessons'
 import groups from './admin/groups'
+import tasks from './admin/tasks'
 export default {
     name: 'Academia-admin',
-    components: { info, lessons, groups },
+    components: { info, lessons, groups, tasks },
     data() {
         return {
             tab: null,

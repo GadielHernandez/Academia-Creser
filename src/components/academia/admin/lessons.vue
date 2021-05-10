@@ -30,7 +30,7 @@
                                         </v-list-item-content>
                                         <v-list-item-content>
                                             <p class="ma-auto text-caption">
-                                                <v-chip small label color="primary" class="mr-1">{{ l.available_after / (( 1000 * 60 * 60 * 24 )) }} dias</v-chip>
+                                                <v-chip small label color="primary" class="mr-1">{{ Number.isInteger(l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? l.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
                                                 <v-chip small label v-if="l.video_id" color="primary">Video</v-chip>
                                                 <v-chip small label v-else color="primary" outlined>Sin video</v-chip>
                                             </p>

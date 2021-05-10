@@ -80,7 +80,7 @@
                         outlined
                         flat
                         hide-details
-                        suffix="dias"
+                        suffix="semanas"
                     />
                 </v-col>
             </v-row>
@@ -180,7 +180,8 @@ export default {
                 valid: false,
                 id: ''
             },
-            FACETOFACE, ONLINE
+            FACETOFACE, ONLINE,
+            AVAILABLE_TIME: 1000 * 60 * 60 * 24 * 7
         }
     },
     methods: {
@@ -195,7 +196,7 @@ export default {
                     name: this.name,
                     description: this.description,
                     type: this.type,
-                    available_after: this.available_after * ( 1000 * 60 * 60 * 24 ),
+                    available_after: this.available_after * this.AVAILABLE_TIME,
                     video_id: this.video_id
                 })
             else
@@ -203,7 +204,7 @@ export default {
                     name: this.name,
                     description: this.description,
                     type: this.type,
-                    available_after: this.available_after * ( 1000 * 60 * 60 * 24 ),
+                    available_after: this.available_after * this.AVAILABLE_TIME,
                     video_id: this.video_id
                 })
             this.close()
@@ -212,7 +213,7 @@ export default {
             this.name = this.lesson.name
             this.description = this.lesson.description
             this.type = this.lesson.type
-            this.available_after = this.lesson.available_after / ( 1000 * 60 * 60 * 24 )
+            this.available_after = this.lesson.available_after / this.AVAILABLE_TIME
             if(this.lesson.video_id){
                 this.video_id = this.lesson.video_id
                 this.video.url = `https://www.youtube.com/watch?v=${this.lesson.video_id}`
