@@ -33,6 +33,125 @@
                                 <v-list-item-content class="primary--text text-caption font-weight-bold">
                                     LISTA DE CLASES 
                                 </v-list-item-content>
+                                <div class="text-right d-flex">
+                                    <v-menu
+                                        v-model="menu_information"
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                                icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            >
+                                                <v-icon>mdi-information</v-icon>
+                                            </v-btn>
+                                        </template>
+
+                                        <v-card class="rounded">
+                                            <v-card-text>
+                                                <v-row>
+                                                    <v-col class="pb-0">
+                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Iconos</p>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-list-item dense>
+                                                            <v-list-item-avatar color="primary">
+                                                                <v-icon class="white--text">mdi-laptop</v-icon>
+                                                            </v-list-item-avatar>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title>Clase virtual</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-list-item dense>
+                                                            <v-list-item-avatar color="primary">
+                                                                <v-icon class="white--text">mdi-account-group</v-icon>
+                                                            </v-list-item-avatar>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title>Clase Prescencial</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col class="pb-0">
+                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Vista de videos</p>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-list-item dense>
+                                                            <v-list-item-avatar color="blue-grey">
+                                                                <v-icon class="white--text">mdi-laptop</v-icon>
+                                                            </v-list-item-avatar>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title>Clase no vista</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-list-item dense>
+                                                            <v-list-item-avatar color="success">
+                                                                <v-icon class="white--text">mdi-laptop</v-icon>
+                                                            </v-list-item-avatar>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title>Clase vista</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Asistencias</p>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col class="py-1">
+                                                        <v-list-item dense>
+                                                            <v-icon color="blue-grey">mdi-checkbox-blank</v-icon>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title class="ml-6">Sin valor</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col class="py-1">
+                                                        <v-list-item dense>
+                                                            <v-icon color="red">mdi-checkbox-blank</v-icon>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title class="ml-6">Falta</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col class="py-1">
+                                                        <v-list-item dense>
+                                                            <v-icon color="warning">mdi-checkbox-blank</v-icon>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title class="ml-6">Retardo</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col class="py-1">
+                                                        <v-list-item dense>
+                                                            <v-icon color="success">mdi-checkbox-blank</v-icon>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title class="ml-6">Asistencia</v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-menu>
+                                </div>
                             </v-list-item>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
@@ -78,7 +197,7 @@ export default {
         ...mapState({ 
             lessons: state => state.student.lessons,
             seens(state){
-                const lessons = state.student.lessons.map( lesson => ({ id: lesson.id, seens: 'primary' }))
+                const lessons = state.student.lessons.map( lesson => ({ id: lesson.id, seens: 'blue-grey' }))
                 const seens = state.student.lessons_seen
                 if(seens != undefined){
                     lessons.forEach(lesson => {
@@ -111,6 +230,7 @@ export default {
             selected: null,
             actual_video: null,
             show_complete: false,
+            menu_information: false,
             ONLINE, FACETOFACE
         }
     },
