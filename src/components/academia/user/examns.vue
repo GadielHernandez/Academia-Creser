@@ -13,6 +13,7 @@
                                         <th class="text-center">Fecha de liberación</th>
                                         <th class="text-center">Tiempo limite</th>
                                         <th class="text-center">Calificación</th>
+                                        <th class="text-center">Retroalimentación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,6 +30,9 @@
                                         <td class="text-center"> {{ exam.time_format }} </td>
                                         <td class="text-center font-weight-medium success--text" v-if="exam.completed">{{exam.grade * 100}}</td>
                                         <td class="text-center font-weight-medium blue-grey--text" v-else>PENDIENTE</td>
+                                        <td class="text-center">
+                                            <v-icon color="success" v-if="exam.feedback">mdi-check-bold</v-icon>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </template>
@@ -107,6 +111,12 @@
                                     </v-toolbar>
                                 </v-card-text>
                                 <v-card-text v-else class="text-center">
+                                    <v-card outlined class="mb-6 text-left" v-if="selected.feedback">
+                                        <v-card-text>
+                                            <p class="mb-1 font-weight-bold">Retroalimentación: </p>
+                                            <p class="ma-0">{{ selected.feedback }}</p>
+                                        </v-card-text>
+                                    </v-card>
                                     <v-progress-circular
                                         :size="150"
                                         :width="13"
@@ -114,7 +124,7 @@
                                         color="secondary"
                                         class="mb-6"
                                     >
-                                    <span class="text-h4">{{ selected.grade * 100 }}</span>
+                                        <span class="text-h4">{{ selected.grade * 100 }}</span>
                                     </v-progress-circular>
                                     <v-row>
                                         <v-col class="pa-0">

@@ -50,7 +50,7 @@
                 </v-card>
                 <v-card v-for="student in students" :key="student.id">
                     <v-card-text class="pa-2 mb-2">
-                        <v-list-item dense>
+                        <v-list-item dense @click="openDialog(student.id)">
                             <v-list-item-avatar>
                                 <v-icon>mdi-account-circle</v-icon>
                             </v-list-item-avatar>
@@ -74,6 +74,73 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-dialog v-model="dialog" fullscreen persistent>
+
+            <v-card class="rounded-0" v-if="student_selected" color="primary">
+                <v-toolbar dark color="primary" flat dense>
+                    <v-spacer />
+                    <v-btn icon dark @click="closeDialog">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <v-card-text class="pt-0 px-0 px-md-6">
+                    <v-container style="min-height: 90vh">
+                        <v-row v-if="exam_selected">
+                            <v-col>
+                                <v-card outlined>
+                                    <v-card-text>
+                                        <p class="ma-1"> <span class="font-weight-black">Examen:</span> {{ exams.find( e => e.id === exam_selected ).name }}</p>
+                                        <p class="ma-1"> <span class="font-weight-black">Alumno:</span> {{ student_selected.name }}</p>
+                                        <p class="ma-1"> <span class="font-weight-black">Retroalimentación:</span></p>
+                                        <p class="ma-1" v-if="feedback"> {{ feedback }}</p>
+                                        <v-row v-else>
+                                            <v-col cols="10">
+                                                <v-text-field
+                                                    v-model="feedback_model" 
+                                                    solo
+                                                    outlined
+                                                    flat
+                                                    hide-details
+                                                    dense
+                                                />
+                                            </v-col>
+                                            <v-col>
+                                                <v-btn 
+                                                    @click="saveFeedback()"
+                                                    color="primary">
+                                                    Guardar
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" md="6" v-for="(question, index) in actual_questions" :key="index">
+                                <v-card>
+                                    <v-card-text>
+                                        <p class="ma-0 py-3">
+                                            {{ question.question }}
+                                        </p>
+                                        <v-list nav disabled>
+                                            <v-list-item-group :color="actual_answers[index] === question.correct ? 'success': 'error'" v-model="actual_answers[index]">
+                                                <v-list-item v-for="(answer, index) in question.answers" :key="index" dense class="answer">
+                                                    <v-list-item-content>
+                                                        <v-list-item-title> {{answer}} </v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-list-item-group>
+                                        </v-list>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+
+        </v-dialog>
     </div>
 </template>
 
@@ -113,13 +180,47 @@ export default {
         return {
             dialog: null,
             exam_selected: null,
-            student_selected: null
+            student_selected: null,
+            actual_questions: [],
+            actual_answers: [],
+            feedback: null,
+            feedback_model: null
         }
     },
     methods: {
         ...mapActions({ 
-            getExams: 'teacher/fetchExams'
-        })
+            getExams: 'teacher/fetchExams',
+            fetchAnswersFeedback: 'teacher/fetchAnswersFeedbackExams',
+            setFeedback: 'teacher/setFeedbackExam'
+        }),
+        async openDialog(id){
+            this.student_selected = this.students.find( s => s.id === id)
+            if(this.student_selected.grade === null) return
+            const answers = await this.fetchAnswersFeedback({ student: id, exam: this.exam_selected })
+            const this_exam = this.exams.find( e => e.id === this.exam_selected )
+            this.actual_questions = this_exam.questions
+            this.actual_answers = answers.responses
+            
+            this.feedback = answers.feedback
+            this.dialog = true
+        },
+        async saveFeedback(){
+            await this.setFeedback({
+                exam: this.exam_selected,
+                student: this.student_selected.id,
+                feedback: this.feedback_model
+            })
+
+            this.feedback = this.feedback_model
+        },
+        closeDialog(){
+            this.student_selected = null
+            this.actual_questions = []
+            this.actual_answers = []
+            this.feedback = null
+            this.feedback_model = null
+            this.dialog = false
+        }
     },
     async mounted() {
         if(this.exams === null)
@@ -127,3 +228,9 @@ export default {
     },
 }
 </script>
+
+<style>
+.v-list-item.answer{
+    border: 1px solid var(--v-background-darken1) !important;
+}
+</style>

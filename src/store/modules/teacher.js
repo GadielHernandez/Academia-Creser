@@ -88,6 +88,25 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    setFeedbackExam({ commit, state }, payload){
+        return new Promise((resolve, reject) => {
+            const { exam, student, feedback } = payload
+            const addvalue = FieldValue.arrayUnion(student)
+
+            const update = {}
+            update[`exams.${exam}`] = addvalue
+
+            db.doc(`users/${auth.currentUser.uid}/groups/${state.course.id}`)
+            .update(update)
+            .then( async () => {
+                await db.doc(`users/${student}/courses/${state.id}`).update({ feedback_exams: FieldValue.arrayUnion({ id: exam, feedback: feedback }) })
+                commit('SET_FEEDBACK_EXAM', payload)
+                commit('UPDATE_USER_FEEDBACKS_EXAM', { student, feedbacks: [{ id: exam, feedback }] })
+                resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
     fetchTasks({ commit, state }){
         return new Promise((resolve, reject) => {
             const now = timeServer().toMillis()
@@ -138,6 +157,34 @@ const actions = {
             .catch( e => reject(e) )
         })
     },
+    fetchAnswersFeedbackExams({ state, commit }, payload){
+        if(state.course.students != null){
+            const user_state = state.course.students.find( s => s.id === payload.student )
+            if(user_state.exams)
+                if(user_state.exams.find(e => e.id == payload.exam))
+                    return user_state.exams.find(e => e.id == payload.exam)
+        }
+        return new Promise((resolve, reject) => {
+            db.doc(`users/${payload.student}/courses/${state.id}`).get()
+            .then( student => {
+                const user_data = student.data()
+                let response = { id: payload.exam }
+                if(user_data.tasks){
+                    commit('UPDATE_USER_ANSWERS_EXAM', { student: payload.student , answ: user_data.exams})
+                    response.responses = user_data.exams.find( e => e.id == payload.exam ).responses
+                }
+
+                if(user_data.feedback_exams){
+                    commit('UPDATE_USER_FEEDBACKS_EXAM', { student: payload.student, feedbacks: user_data.feedback_exams })
+                    let examfeedback = user_data.feedback_exams.find( e => e.id == payload.exam )
+                    if(examfeedback) response.feedback = examfeedback.feedback
+                }
+                
+                resolve(response)    
+            })
+            .catch( e => reject(e) )
+        })
+    },
 }
 
 const mutations = {
@@ -172,11 +219,22 @@ const mutations = {
         const user_index = state.course.students.findIndex( s => s.id === payload.student )
         state.course.students[user_index].tasks = payload.answ
     },
+    UPDATE_USER_ANSWERS_EXAM(state, payload){
+        const user_index = state.course.students.findIndex( s => s.id === payload.student )
+        state.course.students[user_index].exams = payload.answ
+    },
     UPDATE_USER_FEEDBACKS(state, payload){
         const user_index = state.course.students.findIndex( s => s.id === payload.student )
         payload.feedbacks.forEach(feedback => {
             const task_index = state.course.students[user_index].tasks.findIndex( t => t.id === feedback.id )
             state.course.students[user_index].tasks[task_index].feedback = feedback.feedback
+        });
+    },
+    UPDATE_USER_FEEDBACKS_EXAM(state, payload){
+        const user_index = state.course.students.findIndex( s => s.id === payload.student )
+        payload.feedbacks.forEach(feedback => {
+            const task_index = state.course.students[user_index].exams.findIndex( e => e.id === feedback.id )
+            state.course.students[user_index].exams[task_index].feedback = feedback.feedback
         });
     },
     UPDATE_FEEDBACKS(state, payload){
@@ -192,6 +250,18 @@ const mutations = {
         else{
             state.course.teacher.tasks = {}
             state.course.teacher.tasks[payload.task] = [ payload.student ]
+        }
+    },
+    SET_FEEDBACK_EXAM(state, payload){
+        if(state.course.teacher.exams){
+            if(state.course.teacher.exams[payload.exam])
+                state.course.teacher.exams[payload.exam].push(payload.student)
+            else
+            state.course.teacher.exams[payload.exam] = [ payload.student ]
+        } 
+        else{
+            state.course.teacher.exams = {}
+            state.course.teacher.exams[payload.exam] = [ payload.student ]
         }
     },
     UPDATE_EXAMS(state, payload){

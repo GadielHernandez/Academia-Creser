@@ -175,6 +175,12 @@ const actions = {
                         commit('UPDATE_EXAM_RESPONSE', exam)
                     })
                 }
+
+                if(rootState.user.courses[0].feedback_exams){
+                    rootState.user.courses[0].feedback_exams.forEach( feedback => {
+                        commit('UPDATE_EXAM_FEEDBACK', feedback)
+                    })
+                }
                 resolve()
             })
             .catch( e => reject(e) )
@@ -237,6 +243,10 @@ const mutations = {
     UPDATE_EXAM_RESPONSE(state, payload){
         let examIndex = state.exams.findIndex( e => e.id === payload.id )
         state.exams[examIndex].responses = payload.responses
+    },
+    UPDATE_EXAM_FEEDBACK(state, payload){
+        let taskIndex = state.exams.findIndex( e => e.id === payload.id )
+        state.exams[taskIndex].feedback = payload.feedback
     },
     SET_LESSONS_SEEN(state, payload){
         state.lessons_seen = payload
