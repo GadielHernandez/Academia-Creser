@@ -7,13 +7,12 @@
         app
         dense
     >
-        <v-avatar size="40">
-            <v-img
-                src="@/assets/logo.png"
-            ></v-img>
-        </v-avatar>
-    
-        <v-toolbar-title class="ml-3 primary--text font-weight-medium">FDV</v-toolbar-title>
+        
+        <v-img
+            max-width="100"
+            contain
+            src="@/assets/logo-official.png"
+        ></v-img>
         
         <v-spacer></v-spacer>
 

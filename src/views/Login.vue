@@ -2,10 +2,10 @@
     <div class="d-flex login ma-0">
         <v-card width="350px" class="ma-auto rounded-lg">
             <v-img 
-                src="@/assets/logo.png" 
-                height="100px"
+                src="@/assets/logo-circle.png" 
+                height="80px"
                 contain
-                class="mt-6"
+                class="logo"
             ></v-img>
             <v-card-text class="px-9 py-6">
                 <v-text-field
@@ -75,5 +75,9 @@ export default {
     width: 100%;
     background: rgb(5,188,205);
     background: linear-gradient(151deg, rgba(5,188,205,1) 27%, rgba(62,118,218,1) 94%);
+}
+.logo{
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 </style>
