@@ -144,6 +144,16 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    addTask({ commit }, payload){
+        return new Promise((resolve, reject) => {
+            db.collection(`courses/${state.course}/tasks`).add(payload)
+            .then( doc => {
+                commit('ADD_TASK', { id: doc.id, ...payload })
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
     addGroup({ commit }, payload){
         return new Promise((resolve, reject) => {
             db.collection(`courses/${state.course}/groups`).add(payload)
@@ -232,6 +242,13 @@ const mutations = {
             state.lessons.push(payload)
         else
             state.lessons.splice(index, 0, payload)
+    },
+    ADD_TASK(state, payload){
+        const index = state.tasks.findIndex( t => t.available_after > payload.available_after )
+        if(index == -1)
+            state.tasks.push(payload)
+        else
+            state.tasks.splice(index, 0, payload)
     },
     ADD_GROUP(state, payload){
         state.groups.push(payload)

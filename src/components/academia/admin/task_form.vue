@@ -119,7 +119,8 @@ export default {
     },
     methods: {
         ...mapActions({ 
-            update: 'admin/updateTask'
+            update: 'admin/updateTask',
+            add: 'admin/addTask'
         }),
         addQuestion(){
             this.questions.push({
@@ -131,7 +132,7 @@ export default {
             this.questions.splice(index, 1)
         },
         async saveChanges(){
-            if(this.task){
+            if(this.task)
                 await this.update({
                     id: this.task.id,
                     name: this.name,
@@ -139,7 +140,13 @@ export default {
                     available_after: this.available_after * this.AVAILABLE_TIME,
                     questions: this.questions
                 })
-            }
+            else
+                await this.add({
+                    name: this.name,
+                    description: this.description,
+                    available_after: this.available_after * this.AVAILABLE_TIME,
+                    questions: this.questions
+                })
             this.close()
         },
         setTask(){
@@ -168,7 +175,8 @@ export default {
         },
     },
     mounted() {
-        this.setTask()
+        if(this.task)
+            this.setTask()
     },
 }
 </script>

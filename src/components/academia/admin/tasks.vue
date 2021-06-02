@@ -7,7 +7,7 @@
             <v-col class="text-right">
                 <v-btn 
                     color="primary"
-                     @click.stop="">
+                     @click.stop="addNew">
                     Añadir
                 </v-btn>
             </v-col>

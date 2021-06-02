@@ -264,7 +264,8 @@ export default {
         },
     },
     mounted() {
-        this.setLesson()
+        if(this.lesson)
+            this.setLesson()
     },
 }
 </script>
