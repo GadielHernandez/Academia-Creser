@@ -87,7 +87,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn color="primary" block @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1">
+                    <v-btn color="primary" block @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null">
                         Guardar
                     </v-btn>
                 </v-col>

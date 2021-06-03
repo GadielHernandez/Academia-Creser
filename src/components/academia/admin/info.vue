@@ -83,7 +83,7 @@ export default {
     name: 'info',
     computed:{
         ...mapState({
-            name: state => state.admin.info.name,
+            name: state => state.admin.info ? state.admin.info.name : null,
             criteria: state => state.admin.info.criteria
         })
     },
