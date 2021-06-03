@@ -21,8 +21,9 @@
                                         v-for="exam in exams"
                                         :key="exam.id"
                                         @click="openDialog(exam.id)"
+                                        :class="{ 'font-weight-bold': exam.final }"
                                     >
-                                        <td>{{ exam.name }}</td>
+                                        <td :class="{ 'border-table': exam.final }">{{ exam.name }}</td>
                                         <td>{{ exam.description }}</td>
                                         <td class="text-center">
                                             {{ new Date( exam.course_start + exam.available_after).toLocaleString() }}
@@ -195,15 +196,19 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { EXAMS } from '../../../plugins/criteria-types'
+import { EXAMS, FINAL } from '../../../plugins/criteria-types'
 export default {
     name: 'examns',
     computed:{
         ...mapState({ 
             exams(state) {
                 this.dialog
+                const final_exam = state.student.info.criteria.find( c => c.name === FINAL )
                 const exams = state.student.exams
-                    ? state.student.exams.map( e => ({ ...e, completed: false, grade: 0 }))
+                    ? state.student.exams.map( e => e.id === final_exam.id
+                        ? ({ ...e, completed: false, grade: 0, final: true })
+                        : ({ ...e, completed: false, grade: 0, final: false })
+                    )
                     : []
                 const progress = state.student.group.progress[EXAMS]
                 if(progress)
@@ -355,5 +360,8 @@ export default {
     position: absolute;
     bottom: 10px;
     right: 10px;
+}
+.border-table{
+    border-left: 3px solid var(--v-primary-base);
 }
 </style>

@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="py-3 pb-md-6 pt-md-3" cols="12" md="6" order-md="last">
                 <v-card :class="{ 'h-100': $vuetify.breakpoint.md || $vuetify.breakpoint.lg || $vuetify.breakpoint.xl }">
-                    <div class="d-flex" style="height: 50%">
+                    <div class="d-flex" style="height: 48%">
                         <v-progress-circular
                             :rotate="-90"
                             :size="135"
@@ -15,7 +15,7 @@
                             <p class="ma-0 text-h4" >{{ total }}</p>
                         </v-progress-circular>
                     </div>
-                    <v-row style="height: 50%">
+                    <v-row style="height: 52%">
                         <v-col cols="12" class="py-0">
                             <p class="ml-5 my-0 primary--text text-caption font-weight-bold">
                                 PUNTOS ACUMULADOS
@@ -33,6 +33,7 @@
                                         <span v-if="cr.name === ATTENDANCE">{{ cr.completed - cr.out_of_time }} obtenidas , {{ cr.out_of_time }} retardos</span>
                                         <span v-else-if="cr.name === EXAMS">{{ cr.completed }} realizados</span>
                                         <span v-if="cr.name === TASKS">{{ cr.completed }} realizadas</span>
+                                        <span v-if="cr.name === FINAL">{{ cr.completed > 0 ? 'Contestado': 'No contestado' }}</span>
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
 
@@ -135,7 +136,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { ATTENDANCE, EXAMS, TASKS } from '../../../plugins/criteria-types'
+import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../../plugins/criteria-types'
 export default {
     name: 'Progress',
     computed:{
@@ -147,10 +148,12 @@ export default {
                 icons[ATTENDANCE] = 'mdi-checkbox-marked-outline'
                 icons[TASKS] = 'mdi-lead-pencil'
                 icons[EXAMS] = 'mdi-clipboard-text'
+                icons[FINAL] = 'mdi-clipboard-text'
 
                 const result = []
                 const progress = state.student.group.progress
                 const criteria = state.student.info.criteria
+                const final_id = criteria.find( c => c.name === FINAL ).id
                 criteria.forEach(cr => {
                     const obj_crt = cr
                     obj_crt.icon = icons[cr.name]
@@ -182,8 +185,21 @@ export default {
                         
                         case EXAMS:
                             if(progress[cr.name] !== undefined){
-                                obj_crt.completed = progress[cr.name].length
-                                obj_crt.points = progress[cr.name].reduce( (sum, t) => sum + t.grade, 0 ) * cr.value / cr.number
+                                const has_final = progress[cr.name].find( p => p.id === final_id )
+                                obj_crt.completed = has_final ? progress[cr.name].length - 1 : progress[cr.name].length
+                                obj_crt.points = progress[cr.name].reduce( (sum, e) => e.id === has_final.id ? sum : sum + e.grade, 0 ) * cr.value / cr.number
+                            }
+                            else{
+                                obj_crt.points = 0
+                                obj_crt.completed = 0
+                            }
+                            break;
+                        
+                        case FINAL:
+                            if(progress[EXAMS] !== undefined){
+                                const has_final = progress[EXAMS].find( p => p.id === final_id )
+                                obj_crt.completed = has_final ? 1 : 0
+                                obj_crt.points = has_final ? has_final.grade * cr.value / cr.number : 0
                             }
                             else{
                                 obj_crt.points = 0
@@ -207,7 +223,7 @@ export default {
     },
     data() {
         return {
-            ATTENDANCE, EXAMS, TASKS
+            ATTENDANCE, EXAMS, TASKS, FINAL
         }
     },
 }
