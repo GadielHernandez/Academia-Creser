@@ -31,7 +31,7 @@
                 <tasks />
             </v-tab-item>
             <v-tab-item class="h-100 main-background">
-                
+                <exams />
             </v-tab-item>
         </v-tabs-items>
         <div v-else class="no-course d-flex">
@@ -48,9 +48,10 @@ import info from './admin/info'
 import lessons from './admin/lessons'
 import groups from './admin/groups'
 import tasks from './admin/tasks'
+import exams from './admin/exams'
 export default {
     name: 'Academia-admin',
-    components: { info, lessons, groups, tasks },
+    components: { info, lessons, groups, tasks, exams },
     data() {
         return {
             tab: null,

@@ -50,7 +50,7 @@ const actions = {
     },
     fetchExams({ commit, state }){
         return new Promise((resolve, reject) => {
-            db.collection(`courses/${state.course}/exams`).get()
+            db.collection(`courses/${state.course}/exams`).orderBy('available_after').get()
             .then( resp =>{
                 commit('UPDATE_EXAMS', resp.docs.map( doc => ({ id: doc.id, ...doc.data() })) )
                 return resolve()
@@ -113,6 +113,18 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    updateExam({ commit, state }, payload){
+        const { id } = payload
+        delete payload.id
+        return new Promise((resolve, reject) => {
+            db.doc(`courses/${state.course}/exams/${id}`).update(payload)
+            .then(() => {
+                commit('UPDATE_EXAM', { id: id, data: payload })
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
     updateGroup({ commit, state }, payload){
         const { id } = payload
         delete payload.id
@@ -149,6 +161,16 @@ const actions = {
             db.collection(`courses/${state.course}/tasks`).add(payload)
             .then( doc => {
                 commit('ADD_TASK', { id: doc.id, ...payload })
+                return resolve()
+            })
+            .catch( () => reject() )
+        })
+    },
+    addExam({ commit }, payload){
+        return new Promise((resolve, reject) => {
+            db.collection(`courses/${state.course}/exams`).add(payload)
+            .then( doc => {
+                commit('ADD_EXAM', { id: doc.id, ...payload })
                 return resolve()
             })
             .catch( () => reject() )
@@ -232,6 +254,10 @@ const mutations = {
         const index = state.tasks.findIndex( l => l.id === payload.id )
         state.tasks.splice(index, 1, { id: payload.id, ...payload.data })
     },
+    UPDATE_EXAM(state, payload){
+        const index = state.exams.findIndex( e => e.id === payload.id )
+        state.exams.splice(index, 1, { id: payload.id, ...payload.data })
+    },
     UPDATE_GROUP(state, payload){
         const index = state.groups.findIndex( l => l.id === payload.id )
         state.groups.splice(index, 1, { id: payload.id, ...payload.data })
@@ -249,6 +275,13 @@ const mutations = {
             state.tasks.push(payload)
         else
             state.tasks.splice(index, 0, payload)
+    },
+    ADD_EXAM(state, payload){
+        const index = state.exams.findIndex( t => t.available_after > payload.available_after )
+        if(index == -1)
+            state.exams.push(payload)
+        else
+            state.exams.splice(index, 0, payload)
     },
     ADD_GROUP(state, payload){
         state.groups.push(payload)
