@@ -1,40 +1,42 @@
 <template>
     <div class="d-flex login ma-0">
-        <v-card width="350px" class="ma-auto rounded-lg">
+        <div class="ma-auto" :class="{ 'center': $vuetify.breakpoint.mdAndUp }">
             <v-img 
-                src="@/assets/logo-circle.png" 
-                height="80px"
+                src="@/assets/logo.png" 
+                width="100%"
+                max-width="90vw"
                 contain
-                class="logo"
             ></v-img>
-            <v-card-text class="px-9 py-6">
-                <v-text-field
-                    v-model="email"
-                    label="Email"
-                    type="email"
-                    hide-details
-                    outlined
-                    flat
-                    solo
-                ></v-text-field>
-                <v-text-field
-                    v-model="password"
-                    label="Contraseña"
-                    type="password"
-                    class="mt-3"
-                    hide-details
-                    outlined
-                    flat
-                    solo
-                ></v-text-field>
-                <v-alert dense type="error" v-if="error" class="mt-3">
-                    {{error}}
-                </v-alert>
-                <v-btn block class="mt-12" color="primary" @click="login">
-                    Login
-                </v-btn>
-            </v-card-text>
-        </v-card>
+            <v-card width="100%" class="ma-auto rounded-lg">
+                <v-card-text class="px-9 py-6">
+                    <v-text-field
+                        v-model="email"
+                        label="Email"
+                        type="email"
+                        hide-details
+                        outlined
+                        flat
+                        solo
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="password"
+                        label="Contraseña"
+                        type="password"
+                        class="mt-3"
+                        hide-details
+                        outlined
+                        flat
+                        solo
+                    ></v-text-field>
+                    <v-alert dense type="error" v-if="error" class="mt-3">
+                        {{error}}
+                    </v-alert>
+                    <v-btn block class="mt-12" color="primary" @click="login">
+                        Login
+                    </v-btn>
+                </v-card-text>
+            </v-card>
+        </div>
     </div>
 </template>
 
@@ -69,15 +71,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .login{
     height: 100%;
     width: 100%;
-    background: rgb(5,188,205);
-    background: linear-gradient(151deg, rgba(5,188,205,1) 27%, rgba(62,118,218,1) 94%);
+    background-image: url('~@/assets/background-login.png');
+    background-color: var(--v-secondary-base);
 }
-.logo{
-    margin-top: 30px;
-    margin-bottom: 10px;
+.center{
+    width: 350px;
 }
 </style>

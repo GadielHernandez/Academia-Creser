@@ -11,7 +11,7 @@
         <v-img
             max-width="100"
             contain
-            src="@/assets/logo-official.png"
+            src="@/assets/logo.png"
         ></v-img>
         
         <v-spacer></v-spacer>
@@ -24,14 +24,14 @@
             <template v-slot:activator="{ on, attrs }">
                 <v-btn v-bind="attrs" v-on="on" icon>
                     <v-avatar>
-                        <v-icon>mdi-account-circle</v-icon>
+                        <v-icon color="secondary">mdi-account-circle</v-icon>
                     </v-avatar>
                 </v-btn>
             </template>
 
             <v-card>
                 <v-card-text class="text-center">
-                    <v-icon x-large class="py-3">mdi-account-circle</v-icon>
+                    <v-icon x-large class="py-3" color="secondary">mdi-account-circle</v-icon>
                     <p class="my-1 font-weight-bold">{{ profile.name }}</p>
                     <p class="my-1">{{ profile.email }}</p>
                 </v-card-text>

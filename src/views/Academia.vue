@@ -3,7 +3,6 @@
         <v-card dark v-if="loaded" color="primary">
             <!-- eslint-disable -->
             <v-img
-              src="@/assets/banner_blue.png"
               max-height="130px"
             >
                 <div class="pa-3">
