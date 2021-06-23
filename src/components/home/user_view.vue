@@ -1,8 +1,8 @@
 <!-- eslint-disable -->
 <template>
     <div class="home px-4">
-        <v-card light flat outlined>
-            <div class="pa-5">
+        <v-card light>
+            <div class="pa-5 secondary--text">
                 <v-row>
                     <v-col cols="4" md="2" class="font-weight-bold text-center text-h2 d-flex">
                         <span class="ma-auto">&#128075</span>
@@ -41,7 +41,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card color="secondary" dark>
+                <v-card color="primary darken-4" dark>
                     <v-card-text>
                         <v-list-item two-line>
                             <v-list-item-avatar>
@@ -61,7 +61,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card color="tertiary" dark>
+                <v-card color="secondary" dark>
                     <v-card-text>
                         <v-list-item two-line>
                             <v-list-item-avatar>

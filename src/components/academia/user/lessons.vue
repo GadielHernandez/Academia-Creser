@@ -1,7 +1,7 @@
 <template>
     <div class="main-background mx-1">
         <v-row>
-            <v-col v-if="lessons != null" cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null}">
+            <v-col v-if="lessons != null" cols="12" md="9"  class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null}">
                 <youtube 
                     ref="video"
                     class="border"

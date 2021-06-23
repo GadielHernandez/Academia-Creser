@@ -17,13 +17,13 @@
                     </div>
                     <v-row style="height: 52%">
                         <v-col cols="12" class="py-0">
-                            <p class="ml-5 my-0 primary--text text-caption font-weight-bold">
+                            <p class="ml-5 my-0 secondary--text text-caption font-weight-bold">
                                 PUNTOS ACUMULADOS
                             </p>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item dense v-for="cr in criteria" :key="cr.name">
-                                <v-list-item-avatar class="primary">
+                                <v-list-item-avatar class="accent">
                                     <v-icon dark>{{ cr.icon }}</v-icon>
                                 </v-list-item-avatar>
 
@@ -38,7 +38,7 @@
                                 </v-list-item-content>
 
                                 <v-list-item-action>
-                                    <p class="ma-0 font-weight-black primary--text text-h6"> {{ (cr.points).toFixed(2) }} pts</p>
+                                    <p class="ma-0 font-weight-black accent--text text-h6"> {{ (cr.points).toFixed(2) }} pts</p>
                                 </v-list-item-action>
                             </v-list-item>
                         </v-col>
@@ -48,7 +48,7 @@
             <v-col cols="12" md="6" class="pb-16 pb-md-3">
                 <v-row >
                     <v-col class="pa-0">
-                        <p class="ml-3 my-0 primary--text text-caption font-weight-bold">
+                        <p class="ml-3 my-0 secondary--text text-caption font-weight-bold">
                             INFORMACIÓN
                         </p>
                     </v-col>
@@ -57,8 +57,8 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="primary lighten-5" class="rounded">
-                                        <v-icon color="primary"> mdi-chart-donut </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-chart-donut </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption">Grupo:</v-list-item-subtitle>
@@ -70,8 +70,8 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="tertiary lighten-5" class="rounded">
-                                        <v-icon color="tertiary"> mdi-teach </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-teach </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption ">Maestro:</v-list-item-subtitle>
@@ -83,8 +83,8 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="secondary lighten-4" class="rounded">
-                                        <v-icon color="secondary darken-1"> mdi-calendar-range </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption ">Duracion</v-list-item-subtitle>
@@ -96,7 +96,7 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <p class="ml-3 primary--text text-caption font-weight-bold">
+                        <p class="ml-3 secondary--text text-caption font-weight-bold">
                             CRITERIOS DE EVALUACIÓN
                         </p>
                         <v-card>
