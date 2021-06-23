@@ -32,7 +32,7 @@
                                 <v-list-item-subtitle>Revisa tu avance</v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
-                                    <v-btn icon>
+                                    <v-btn icon @click="goToAcademia">
                                         <v-icon>mdi-chevron-right</v-icon>
                                     </v-btn>
                             </v-list-item-action>
@@ -52,7 +52,7 @@
                                 <v-list-item-subtitle>No olvides completar tus tareas</v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn icon>
+                                <v-btn icon @click="goToAcademia">
                                     <v-icon>mdi-chevron-right</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -72,7 +72,7 @@
                                 <v-list-item-subtitle>Recuerda ver todas tus clases</v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn icon>
+                                <v-btn icon @click="goToAcademia">
                                     <v-icon>mdi-chevron-right</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -92,7 +92,12 @@ export default {
     name: 'userHome',
     computed:{
         ...mapState({ profile: state => state.user.profile })
-    }
+    },
+    methods: {
+        goToAcademia(){
+            this.$router.push({ name: 'Academia' })
+        }
+    },
 }
 </script>
 

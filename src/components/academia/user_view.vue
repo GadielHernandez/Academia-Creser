@@ -1,53 +1,46 @@
 <template>
     <div class="academia-user">
-        <v-row>
-            <v-col cols="12" md="2" class="d-flex">
-                <v-tabs vertical v-model="tab" background-color="background" v-if="active">
-                    <v-tab >
-                        Progreso
-                    </v-tab>
-                    <v-tab>
-                        Clases
-                    </v-tab>
-                    <v-tab>
-                        Tareas
-                    </v-tab>
-                    <v-tab>
-                        Examenes
-                    </v-tab>
-                </v-tabs>
-            </v-col>
-            <v-col cols="12" md="10">
-                <p class="font-weight-bold text-h4">Academia</p>
-                <v-tabs-items v-model="tab" v-if="active">
-                    <v-tab-item class="h-100 main-background">
-                        <Progress/>
-                    </v-tab-item>
-                    <v-tab-item class="h-100 main-background">
-                        <Lessons/>
-                    </v-tab-item>
-                    <v-tab-item class="h-100 main-background">
-                        <Tasks/>
-                    </v-tab-item>
-                    <v-tab-item class="h-100 main-background">
-                        <Examns/>
-                    </v-tab-item>
-                </v-tabs-items>
-                <div v-else-if="starts !== null && ends !== null" class="inactive d-flex">
-                    <div class="ma-auto font-weight-bold blue-grey--text text-center">
-                        <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
-                        <p class="mb-1">Aun no inicia el curso</p>
-                        <p>{{ new Date(starts).toLocaleDateString() }} - {{ new Date(ends).toLocaleDateString() }}</p>
-                    </div>
-                </div>
-                <div v-else class="inactive d-flex">
-                    <div class="ma-auto font-weight-bold blue-grey--text text-center">
-                        <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
-                        <p class="mb-1">No tiene un curso asignado</p>
-                    </div>
-                </div>
-            </v-col>
-        </v-row>
+        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="active">
+            <v-tab >
+                Progreso
+            </v-tab>
+            <v-tab>
+                Clases
+            </v-tab>
+            <v-tab>
+                Tareas
+            </v-tab>
+            <v-tab>
+                Examenes
+            </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tab" v-if="active">
+            <v-tab-item class="h-100 main-background">
+                <Progress/>
+            </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Lessons/>
+            </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Tasks/>
+            </v-tab-item>
+            <v-tab-item class="h-100 main-background">
+                <Examns/>
+            </v-tab-item>
+        </v-tabs-items>
+        <div v-else-if="starts !== null && ends !== null" class="inactive d-flex">
+            <div class="ma-auto font-weight-bold blue-grey--text text-center">
+                <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
+                <p class="mb-1">Aun no inicia el curso</p>
+                <p>{{ new Date(starts).toLocaleDateString() }} - {{ new Date(ends).toLocaleDateString() }}</p>
+            </div>
+        </div>
+        <div v-else class="inactive d-flex">
+            <div class="ma-auto font-weight-bold blue-grey--text text-center">
+                <v-icon x-large class="font-weight-bold blue-grey--text mb-1">mdi-calendar-range</v-icon>
+                <p class="mb-1">No tiene un curso asignado</p>
+            </div>
+        </div>
     </div>
 </template>
 
