@@ -1,25 +1,25 @@
 <template>
     <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
-        <!-- <v-card v-if="loaded" flat color="background"> -->
+        <v-card v-if="loaded && profile.level !== USER" flat color="background">
             <!-- eslint-disable -->
-            <!-- <v-img
+            <v-img
               max-height="130px"
 
             >
                 <div class="pa-3">
                     <v-row>
                         <v-col cols="12 text-center">
-                            <p class="text-h3 ma-0">&#127891</p>
-                            <p class="text-h4 mb-0 font-weight-bold">
+                            <p class="text-h3 text-center ma-0">&#127891</p>
+                            <p class="text-h4 text-center mb-0 font-weight-bold">
                                 Academia
-                            </p> -->
+                            </p>
                             <!-- <p class="mt-3 mb-0">Bienvenido nuevamente a la plataforma de fuente de vida, es un gusto tener de nuevo por acá</p> -->
-                        <!-- </v-col>
+                        </v-col>
                     </v-row>
                 </div>
-            </v-img> -->
+            </v-img>
             <!-- eslint-enable -->
-        <!-- </v-card> -->
+        </v-card>
         <userAcademia v-if="profile.level === USER && loaded"/>
         <teacherAcademia v-else-if="profile.level === TEACHER && loaded"/>
         <adminAcademia v-else-if="profile.level === ADMIN && loaded" />

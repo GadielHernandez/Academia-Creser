@@ -13,7 +13,7 @@
         </v-row>
         <v-row v-else>
             <v-col>
-                <p class="primary--text text-caption font-weight-bold">SELECCIONA UNA TAREA</p>
+                <p class="secondary--text text-caption font-weight-bold">SELECCIONA UNA TAREA</p>
                 <v-card>
                     <v-card-text>
                         <v-toolbar dense flat>
@@ -35,7 +35,7 @@
         </v-row>
         <v-row v-if="students.length > 0 && tasks_selected">
             <v-col>
-                <p class="primary--text text-caption font-weight-bold">ALUMNOS</p>
+                <p class="secondary--text text-caption font-weight-bold">ALUMNOS</p>
                 <v-card flat color="background">
                     <v-card-text class="px-2 py-0">
                         <v-list-item dense>
@@ -118,7 +118,7 @@
                             <v-col cols="12" class="mb-16">
                                 <v-card flat>
                                     <v-card-text class="pa-0">
-                                        <p class="ma-0 primary--text text-caption font-weight-bold">
+                                        <p class="ma-0 secondary--text text-caption font-weight-bold">
                                             Retroalimentación
                                         </p>
                                         <v-textarea
