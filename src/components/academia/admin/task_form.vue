@@ -20,6 +20,7 @@
                 <v-col>
                     <v-text-field
                         v-model="name"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -36,6 +37,7 @@
                 <v-col>
                     <v-text-field
                         v-model="description"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -52,6 +54,7 @@
                 <v-col>
                     <v-text-field
                         v-model="available_after"
+                        color="academia-primary"
                         type="number"
                         solo
                         outlined
@@ -66,7 +69,7 @@
                     <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
                 </v-col>
                 <v-col class="text-right">
-                    <v-btn icon @click="addQuestion">
+                    <v-btn icon @click="addQuestion" color="academia-primary">
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </v-col>
@@ -75,6 +78,7 @@
                 <v-col>
                     <v-textarea 
                         v-for="(question, index) in questions" 
+                        color="academia-primary"
                         v-model="question.question"
                         :key="index" 
                         rows="2"
@@ -87,7 +91,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn color="primary" block @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null">
+                    <v-btn color="academia-primary" block @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null">
                         Guardar
                     </v-btn>
                 </v-col>

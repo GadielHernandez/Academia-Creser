@@ -4,7 +4,7 @@
                 <v-progress-circular
                     :size="60"
                     :width="7"
-                    color="primary"
+                    color="academia-primary"
                     class="ma-auto"
                     indeterminate
                 ></v-progress-circular>
@@ -17,6 +17,7 @@
                         <v-toolbar dense flat>
                             <v-select
                                 v-model="lesson_selected"
+                                color="academia-primary"
                                 :items="lessons"
                                 item-text="name"
                                 item-value="id"
@@ -27,8 +28,8 @@
                                 label="Clase"
                             ></v-select>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" v-if="lesson_selected" :disabled="lessons.find( l => l.id === lesson_selected).type === ONLINE" @click="save">Guardar</v-btn>
-                            <v-btn color="primary" disabled v-else >Guardar</v-btn>
+                            <v-btn color="academia-primary" dark v-if="lesson_selected" :disabled="lessons.find( l => l.id === lesson_selected).type === ONLINE" @click="save">Guardar</v-btn>
+                            <v-btn color="academia-primary" disabled v-else >Guardar</v-btn>
                         </v-toolbar>
                     </v-card-text>
                 </v-card>

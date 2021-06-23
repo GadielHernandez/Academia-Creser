@@ -5,7 +5,7 @@
                 <v-progress-circular
                     :size="60"
                     :width="7"
-                    color="primary"
+                    color="academia-primary"
                     class="ma-auto"
                     indeterminate
                 ></v-progress-circular>
@@ -19,6 +19,7 @@
                         <v-toolbar dense flat>
                             <v-select
                                 v-model="tasks_selected"
+                                color="academia-primary"
                                 :items="tasks"
                                 item-text="name"
                                 item-value="id"

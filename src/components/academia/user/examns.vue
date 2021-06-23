@@ -29,7 +29,7 @@
                                             {{ new Date( exam.course_start + exam.available_after).toLocaleString() }}
                                         </td>
                                         <td class="text-center"> {{ exam.time_format }} </td>
-                                        <td class="text-center font-weight-medium success--text" v-if="exam.completed">{{exam.grade * 100}}</td>
+                                        <td class="text-center font-weight-medium success--text" v-if="exam.completed">{{ (exam.grade * 100).toFixed(2) }}</td>
                                         <td class="text-center font-weight-medium blue-grey--text" v-else>PENDIENTE</td>
                                         <td class="text-center">
                                             <v-icon color="success" v-if="exam.feedback">mdi-check-bold</v-icon>
@@ -64,10 +64,10 @@
         </v-row>
         <v-dialog v-model="dialog" fullscreen persistent>
 
-            <v-card class="rounded-0" v-if="selected !== null" color="primary">
-                <v-toolbar dark color="primary" flat dense>
+            <v-card class="rounded-0" v-if="selected !== null" color="academia-primary">
+                <v-toolbar dark color="academia-primary" flat dense>
                     <v-spacer />
-                        <v-chip color="primary" label v-if="exam_countdown.interval !== null && !selected.completed">
+                        <v-chip color="academia-primary" label v-if="exam_countdown.interval !== null && !selected.completed">
                             <v-icon left>mdi-alarm</v-icon>
                             {{ exam_countdown.string }}
                         </v-chip>
@@ -122,10 +122,10 @@
                                         :size="150"
                                         :width="13"
                                         :value="selected.grade * 100"
-                                        color="secondary"
+                                        color="primary"
                                         class="mb-6"
                                     >
-                                        <span class="text-h4">{{ selected.grade * 100 }}</span>
+                                        <span class="text-h4">{{ (selected.grade * 100).toFixed(2) }}</span>
                                     </v-progress-circular>
                                     <v-row>
                                         <v-col class="pa-0">
@@ -161,7 +161,7 @@
                                             <p class="subtitle-1 font-weight-bold">Pregunta {{ exam.index }}</p>
                                             <p class="text-body-1">{{ exam.questions[exam.index - 1].question }}</p>
                                             <v-list nav :disabled="selected.completed">
-                                                <v-list-item-group :color="!selected.completed ? 'primary' : isCorrect() " v-model="exam.actual_answer" @change="setAnswer">
+                                                <v-list-item-group :color="!selected.completed ? 'academia-primary' : isCorrect() " v-model="exam.actual_answer" @change="setAnswer">
                                                     <v-list-item v-for="(answer, index) in exam.questions[exam.index - 1].answers" :key="index">
                                                         <v-list-item-content>
                                                             <v-list-item-title> {{answer}} </v-list-item-title>
@@ -294,8 +294,10 @@ export default {
             }, 0)
             result = result / this.selected.questions.length
             
-            await this.setCompleted({ id: this.selected.id, criteria: EXAMS, options: { grade: result } })
-            await this.uploadResponse({ id: this.selected.id, responses: this.exam.answers })
+            const id = this.selected.id
+            const responses = this.exam.answers
+            await this.setCompleted({ id, criteria: EXAMS, options: { grade: result } })
+            await this.uploadResponse({ id, responses })
             this.exam_active = false
             this.closeDialog()
         },
@@ -362,6 +364,6 @@ export default {
     right: 10px;
 }
 .border-table{
-    border-left: 3px solid var(--v-primary-base);
+    border-left: 3px solid var(--v-academia-primary-base);
 }
 </style>

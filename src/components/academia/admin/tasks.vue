@@ -5,8 +5,9 @@
                 <p class="secondary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE TAREAS</p>
             </v-col>
             <v-col class="text-right">
-                <v-btn 
-                    color="primary"
+                <v-btn
+                    dark 
+                    color="academia-primary"
                      @click.stop="addNew">
                     Añadir
                 </v-btn>
@@ -21,7 +22,7 @@
                                 <tr v-for="t in tasks" :key="t.id">
                                     <v-list-item>
                                         <v-list-item-icon>
-                                            <v-icon color="primary">mdi-file-document-outline</v-icon>
+                                            <v-icon color="academia-primary">mdi-file-document-outline</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ t.name }}</v-list-item-title>
@@ -29,8 +30,8 @@
                                         </v-list-item-content>
                                         <v-list-item-content>
                                             <p class="ma-auto text-caption">
-                                                <v-chip small label class="mr-1">{{ Number.isInteger(t.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? t.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (t.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
-                                                <v-chip small label >{{ t.questions.length }} preguntas</v-chip>
+                                                <v-chip color="academia-primary" dark small label class="mr-1">{{ Number.isInteger(t.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? t.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (t.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
+                                                <v-chip color="academia-primary" dark small label >{{ t.questions.length }} preguntas</v-chip>
                                             </p>
                                         </v-list-item-content>
                                         <v-list-item-action>

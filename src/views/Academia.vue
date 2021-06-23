@@ -1,15 +1,15 @@
 <template>
     <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
-        <v-card v-if="loaded" flat color="background">
+        <v-card v-if="loaded" flat color="academia-primary" dark>
             <!-- eslint-disable -->
             <v-img
-              max-height="130px"
-
+                max-height="130px"
+                src="@/assets/banner_academia.png"
             >
                 <div class="pa-3">
                     <v-row>
                         <v-col cols="12 text-center">
-                            <!-- <p class="text-h3 text-center ma-0">&#127891</p> -->
+                            <p class="text-h3 text-center ma-0">&#127891</p>
                             <p class="text-h4 text-center mb-0 font-weight-bold">
                                 Academia
                             </p>

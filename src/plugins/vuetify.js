@@ -11,7 +11,11 @@ export default new Vuetify({
                 secondary: '#262c33',
                 tertiary: '#ffffff',
                 accent: '#997650',
-                background: '#fafaf8'
+                background: '#fafaf8',
+                'academia-primary': '#176cb0',
+                'academia-secondary': '#11b9c9',
+                'academia-tertiary': '#3f51b5',
+                'academia-accent': '#f12b53',
             },
         },
         options: {

@@ -20,6 +20,7 @@
                 <v-col>
                     <v-text-field
                         v-model="name"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -36,6 +37,7 @@
                 <v-col>
                     <v-text-field
                         v-model="description"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -52,6 +54,7 @@
                 <v-col>
                     <v-text-field
                         v-model="limit_time"
+                        color="academia-primary"
                         type="number"
                         solo
                         outlined
@@ -70,6 +73,7 @@
                 <v-col>
                     <v-text-field
                         v-model="available_after"
+                        color="academia-primary"
                         type="number"
                         solo
                         outlined
@@ -84,7 +88,7 @@
                     <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
                 </v-col>
                 <v-col class="text-right">
-                    <v-btn icon @click="addQuestion">
+                    <v-btn icon @click="addQuestion" color="academia-primary">
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </v-col>
@@ -102,6 +106,7 @@
                             <v-text-field
                                 v-for="(answer, index) in question.answers"
                                 :key="index"
+                                color="academia-primary"
                                 solo
                                 outlined
                                 flat
@@ -121,7 +126,7 @@
             <v-btn text @click="close">
                 Cancelar
             </v-btn>
-            <v-btn color="primary" @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null || limit_time === null">
+            <v-btn color="academia-primary" @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null || limit_time === null">
                 Guardar
             </v-btn>
         </v-card-actions>
@@ -142,6 +147,7 @@
                             <v-select
                                 :items="question_form.answers.map( (ans, index) => index + 1 )"
                                 v-model="question_form.correct"
+                                color="academia-primary"
                                 solo
                                 outlined
                                 flat
@@ -165,6 +171,7 @@
                             <v-text-field
                                 v-for="(answer, index) in question_form.answers"
                                 :key="index"
+                                color="academia-primary"
                                 solo
                                 outlined
                                 flat
@@ -181,7 +188,7 @@
                     <v-btn text @click="closeAddQuestion">
                         Cancelar
                     </v-btn>
-                    <v-btn color="primary" @click="saveQuestion" :disabled="question_form.answers.length < 2 || question_form.correct === null">
+                    <v-btn color="academia-primary" @click="saveQuestion" :disabled="question_form.answers.length < 2 || question_form.correct === null">
                         Guardar
                     </v-btn>
                 </v-card-actions>

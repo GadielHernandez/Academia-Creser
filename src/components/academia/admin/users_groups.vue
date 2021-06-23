@@ -4,7 +4,7 @@
             <v-toolbar flat>
                 <p class="text-h6 ma-0">Lista de alumnos</p>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="openAdd" color="primary">
+                <v-btn icon @click="openAdd" color="academia-primary">
                     <v-icon>mdi-account-plus</v-icon>
                 </v-btn>
                 <v-btn icon @click="$emit('close')">

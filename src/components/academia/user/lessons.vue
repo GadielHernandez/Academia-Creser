@@ -30,7 +30,7 @@
                     <v-card-text class="pa-1 menu-lessons">
                         <v-list nav>
                             <v-list-item dense>
-                                <v-list-item-content class="primary--text text-caption font-weight-bold">
+                                <v-list-item-content class="academia-primary--text text-caption font-weight-bold">
                                     LISTA DE CLASES 
                                 </v-list-item-content>
                                 <div class="text-right d-flex">
@@ -51,13 +51,13 @@
                                             <v-card-text>
                                                 <v-row>
                                                     <v-col class="pb-0">
-                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Iconos</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Iconos</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
                                                     <v-col>
                                                         <v-list-item dense>
-                                                            <v-list-item-avatar color="primary">
+                                                            <v-list-item-avatar color="academia-primary">
                                                                 <v-icon class="white--text">mdi-laptop</v-icon>
                                                             </v-list-item-avatar>
                                                             <v-list-item-content>
@@ -67,7 +67,7 @@
                                                     </v-col>
                                                     <v-col>
                                                         <v-list-item dense>
-                                                            <v-list-item-avatar color="primary">
+                                                            <v-list-item-avatar color="academia-primary">
                                                                 <v-icon class="white--text">mdi-account-group</v-icon>
                                                             </v-list-item-avatar>
                                                             <v-list-item-content>
@@ -78,7 +78,7 @@
                                                 </v-row>
                                                 <v-row>
                                                     <v-col class="pb-0">
-                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Vista de videos</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Vista de videos</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
@@ -105,7 +105,7 @@
                                                 </v-row>
                                                 <v-row>
                                                     <v-col>
-                                                        <p class="primary--text ma-0 text-caption font-weight-bold">Asistencias</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Asistencias</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
@@ -295,7 +295,7 @@ export default {
     display: none;
 }
 .lesson-selected{
-    background-color: var(--v-primary-base);
+    background-color: var(--v-academia-primary-base) !important;
     color: white !important;
 }
 .lesson-selected > div > div {

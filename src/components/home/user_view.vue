@@ -21,7 +21,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card color="primary" dark>
+                <v-card>
                     <v-card-text>
                         <v-list-item two-line>
                             <v-list-item-avatar>
@@ -41,7 +41,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card color="primary darken-4" dark>
+                <v-card>
                     <v-card-text>
                         <v-list-item two-line>
                             <v-list-item-avatar>
@@ -61,7 +61,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card color="secondary" dark>
+                <v-card>
                     <v-card-text>
                         <v-list-item two-line>
                             <v-list-item-avatar>

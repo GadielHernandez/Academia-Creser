@@ -84,7 +84,7 @@ export default {
     computed:{
         ...mapState({
             name: state => state.admin.info ? state.admin.info.name : null,
-            criteria: state => state.admin.info.criteria
+            criteria: state => state.admin.info ? state.admin.info.criteria : []
         })
     },
     data() {

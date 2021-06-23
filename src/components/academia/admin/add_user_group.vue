@@ -10,10 +10,11 @@
                             placeholder="email"
                             hide-details
                             solo
+                            class="academia-primary"
                         />
                     </v-col>
                     <v-col cols="3" md="2">
-                        <v-btn block color="primary" style="height: 100%" @click="findUser">
+                        <v-btn dark block color="academia-primary" style="height: 100%" @click="findUser">
                             <v-icon>mdi-magnify</v-icon>
                         </v-btn>
                     </v-col>
@@ -43,7 +44,7 @@
             <v-card-actions class="px-4">
                 <v-spacer></v-spacer>
                 <v-btn @click="close">Cancelar</v-btn>
-                <v-btn color="primary" :disabled="!user" :loading="saving" @click="save">Guardar</v-btn>
+                <v-btn color="academia-primary" :disabled="!user" :loading="saving" @click="save">Guardar</v-btn>
             </v-card-actions>
         </v-card>
     </div>

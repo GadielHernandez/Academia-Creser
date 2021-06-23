@@ -27,15 +27,15 @@
                     <v-card-text class="pa-1 menu-lessons">
                         <v-list nav>
                             <v-list-item dense>
-                                <v-list-item-content class="secondary--text text-caption font-weight-bold">
+                                <v-list-item-content class="academia-primary--text text-caption font-weight-bold">
                                     LISTA DE CLASES 
                                 </v-list-item-content>
                             </v-list-item>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
-                                <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar :color="'accent'">
-                                        <v-icon class="white--text" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
-                                        <v-icon class="white--text" v-else>mdi-laptop</v-icon>
+                                <v-list-item v-for="(lesson, index) in lessons" :key="lesson.name">
+                                    <v-list-item-avatar :color="selected === index ? 'white' : 'academia-primary'">
+                                        <v-icon :class="{ 'academia-primary--text': selected === index, 'white--text': selected !== index }" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
+                                        <v-icon :class="{ 'academia-primary--text': selected === index, 'white--text': selected !== index }" v-else>mdi-laptop</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-title>{{ lesson.name }}</v-list-item-title>
@@ -134,7 +134,7 @@ export default {
     display: none;
 }
 .lesson-selected{
-    background-color: var(--v-primary-base);
+    background-color: var(--v-academia-primary-base);
     color: white !important;
 }
 .lesson-selected > div > div {

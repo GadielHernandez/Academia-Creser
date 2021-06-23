@@ -20,6 +20,7 @@
                 <v-col>
                     <v-text-field
                         v-model="name"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -36,6 +37,7 @@
                 <v-col>
                     <v-text-field
                         v-model="description"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -59,6 +61,7 @@
                             text: 'Presencial',
                             value: FACETOFACE
                         }]"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -75,6 +78,7 @@
                 <v-col>
                     <v-text-field
                         v-model="available_after"
+                        color="academia-primary"
                         type="number"
                         solo
                         outlined
@@ -107,7 +111,7 @@
                                 </v-row>
                                 <v-row>
                                     <v-col>
-                                        <v-btn @click="editVideo" color="secondary" class="mx-3">Cambiar</v-btn>
+                                        <v-btn @click="editVideo" color="academia-secondary" class="mx-3">Cambiar</v-btn>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -127,7 +131,7 @@
                                 </v-row>
                                 <v-row>
                                     <v-col class="text-rigth">
-                                        <v-btn v-if="!video.valid" @click="checkUrl" color="secondary" class="mx-3">Verificar</v-btn>
+                                        <v-btn v-if="!video.valid" @click="checkUrl" color="academia-secondary" class="mx-3">Verificar</v-btn>
                                         <v-btn v-else @click="closeEditVideo(true)" color="success"  class="mx-3">Guardar</v-btn>
                                         <v-btn @click="closeEditVideo(false)" class="mx-3">Cancelar</v-btn>
                                     </v-col>
@@ -139,7 +143,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn @click="saveChanges" color="primary" block>
+                    <v-btn @click="saveChanges" color="academia-primary" block>
                         Guardar
                     </v-btn>
                 </v-col>

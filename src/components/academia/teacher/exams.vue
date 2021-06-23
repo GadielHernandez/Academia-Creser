@@ -5,7 +5,7 @@
                 <v-progress-circular
                     :size="60"
                     :width="7"
-                    color="primary"
+                    color="academia-primary"
                     class="ma-auto"
                     indeterminate
                 ></v-progress-circular>
@@ -19,6 +19,7 @@
                         <v-toolbar dense flat>
                             <v-select
                                 v-model="exam_selected"
+                                color="academia-primary"
                                 :items="exams"
                                 item-text="name"
                                 item-value="id"
@@ -67,7 +68,7 @@
                                     'warning--text': student.grade !== null && student.grade < 60
                                 }">
                                 <span v-if="student.grade === null">PENDIENTE</span>
-                                <span v-else>{{ student.grade }}</span>
+                                <span v-else>{{ (student.grade).toFixed(2) }}</span>
                             </v-list-item-action>
                         </v-list-item>
                     </v-card-text>
@@ -76,8 +77,8 @@
         </v-row>
         <v-dialog v-model="dialog" fullscreen persistent>
 
-            <v-card class="rounded-0" v-if="student_selected" color="primary">
-                <v-toolbar dark color="primary" flat dense>
+            <v-card class="rounded-0" v-if="student_selected" color="academia-primary">
+                <v-toolbar dark color="academia-primary" flat dense>
                     <v-spacer />
                     <v-btn icon dark @click="closeDialog">
                         <v-icon>mdi-close</v-icon>
@@ -97,6 +98,7 @@
                                             <v-col cols="10">
                                                 <v-text-field
                                                     v-model="feedback_model" 
+                                                    color="academia-primary"
                                                     solo
                                                     outlined
                                                     flat
@@ -107,7 +109,7 @@
                                             <v-col>
                                                 <v-btn 
                                                     @click="saveFeedback()"
-                                                    color="primary">
+                                                    color="academia-primary">
                                                     Guardar
                                                 </v-btn>
                                             </v-col>
@@ -169,7 +171,8 @@ export default {
                 
                 answereds.forEach(answered => {
                     const index = result.findIndex( std => std.id == answered.user )
-                    result[index].grade = answered.grade * 100
+                    if(index > -1)
+                        result[index].grade = answered.grade * 100
                 });
 
                 return result

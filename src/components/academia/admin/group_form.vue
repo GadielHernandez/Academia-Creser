@@ -24,6 +24,7 @@
                 <v-col>
                     <v-text-field
                         v-model="name"
+                        color="academia-primary"
                         solo
                         outlined
                         flat
@@ -53,6 +54,7 @@
                             <v-text-field
                                 v-model="starts.value"
                                 append-icon="mdi-calendar-blank"
+                                color="academia-primary"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -64,10 +66,10 @@
                         </template>
                         <v-date-picker v-model="starts.value" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="starts.menu = false">Cancel</v-btn>
+                            <v-btn text color="academia-primary" @click="starts.menu = false">Cancel</v-btn>
                             <v-btn
                                 text
-                                color="primary"
+                                color="academia-primary"
                                 @click="$refs.start.save(starts.value)"
                             >
                                 OK
@@ -98,6 +100,7 @@
                             <v-text-field
                                 v-model="ends.value"
                                 append-icon="mdi-calendar-blank"
+                                color="academia-primary"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -109,10 +112,10 @@
                         </template>
                         <v-date-picker v-model="ends.value" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="ends.menu = false">Cancel</v-btn>
+                            <v-btn text color="academia-primary" @click="ends.menu = false">Cancel</v-btn>
                             <v-btn
                                 text
-                                color="primary"
+                                color="academia-primary"
                                 @click="$refs.ends.save(ends.value)"
                             >
                                 OK
@@ -140,6 +143,7 @@
                             <v-text-field
                                 v-model="emailTeacher"
                                 placeholder="Buscar por email"
+                                color="academia-primary"
                                 solo
                                 outlined
                                 flat
@@ -154,7 +158,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn @click="saveChanges" color="primary" block :disabled="name === '' || starts.value == null || ends.value == null || teacher == null">
+                    <v-btn @click="saveChanges" color="academia-primary" block :disabled="name === '' || starts.value == null || ends.value == null || teacher == null">
                         Guardar
                     </v-btn>
                 </v-col>

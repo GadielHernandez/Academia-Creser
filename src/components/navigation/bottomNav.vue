@@ -1,5 +1,5 @@
 <template>
-    <v-bottom-navigation color="primary" absolute app :value="tabs">
+    <v-bottom-navigation :color="colorActive" absolute app v-model="tabs">
         
         <v-btn @click="go('Home')">
             <span>Inicio</span>
@@ -21,7 +21,11 @@ import { ADMIN } from '../../plugins/user-types'
 export default {
     name: 'navbarApps',
     computed:{
-        ...mapState({ level: state => state.user.profile.level })
+        ...mapState({ level: state => state.user.profile.level }),
+        colorActive(){
+            const colors = ['primary', 'academia-primary']
+            return colors[this.tabs]
+        }
     },
     data() {
         return {

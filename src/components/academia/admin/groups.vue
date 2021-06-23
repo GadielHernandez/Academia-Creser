@@ -6,7 +6,8 @@
             </v-col>
             <v-col class="text-right">
                 <v-btn 
-                    color="primary"
+                    dark
+                    color="academia-primary"
                     @click="addNew"
                     >
                     Añadir
@@ -30,7 +31,7 @@
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -41,7 +42,7 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -54,7 +55,7 @@
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-teach </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -66,7 +67,7 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-account-supervisor-outline </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>

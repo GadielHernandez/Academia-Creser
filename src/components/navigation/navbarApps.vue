@@ -1,17 +1,17 @@
 <template>
     <div>
         <v-toolbar class="px-md-16" flat>
-            <v-tabs v-model="tabs" class="mx-md-1" >
+            <v-tabs v-model="tabs" class="mx-md-1" :color="colorActive">
                 <v-tab @click="go('Home')">
                         <v-avatar
-                            :color="tabs === 0 ? 'primary' : 'white'"
+                            :color="'primary'"
                             size="35"
                             class=""
                         >
-                            <v-icon :class="{ 'white--text': tabs === 0 }" v-if="level === ADMIN">
+                            <v-icon class="white--text" v-if="level === ADMIN">
                                 mdi-account
                             </v-icon> 
-                            <v-icon :class="{ 'white--text': tabs === 0 }" v-else>
+                            <v-icon class="white--text" v-else>
                                 mdi-home
                             </v-icon> 
 
@@ -22,10 +22,10 @@
                 <v-tab @click="go('Academia')">
                     <div>
                         <v-avatar
-                            :color="tabs === 1 ? 'primary' : 'white'"
+                            color="academia-primary"
                             size="35"
                         >
-                            <v-icon :class="{ 'white--text': tabs === 1 }" >
+                            <v-icon class="white--text" >
                                 mdi-school
                             </v-icon>
                         </v-avatar>
@@ -43,7 +43,11 @@ import { ADMIN } from '../../plugins/user-types'
 export default {
     name: 'navbarApps',
     computed:{
-        ...mapState({ level: state => state.user.profile.level })
+        ...mapState({ level: state => state.user.profile.level }),
+        colorActive(){
+            const colors = ['primary', 'academia-primary']
+            return colors[this.tabs]
+        }
     },
     data() {
         return {

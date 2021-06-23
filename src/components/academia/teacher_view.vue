@@ -1,6 +1,6 @@
 <template>
     <div class="academia-user">
-        <v-tabs fixed-tabs v-model="tab" v-if="hasCourse" background-color="background">
+        <v-tabs fixed-tabs v-model="tab" v-if="hasCourse" background-color="background" color="academia-primary">
             <v-tab>
                 Alumnos
             </v-tab>

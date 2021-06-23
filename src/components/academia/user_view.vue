@@ -1,6 +1,6 @@
 <template>
     <div class="academia-user">
-        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="active">
+        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="active" color="academia-primary">
             <v-tab >
                 Progreso
             </v-tab>

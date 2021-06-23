@@ -17,13 +17,13 @@
                     </div>
                     <v-row style="height: 52%">
                         <v-col cols="12" class="py-0">
-                            <p class="ml-5 my-0 secondary--text text-caption font-weight-bold">
+                            <p class="ml-5 my-0 academia-primary--text text-caption font-weight-bold">
                                 PUNTOS ACUMULADOS
                             </p>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item dense v-for="cr in criteria" :key="cr.name">
-                                <v-list-item-avatar class="accent">
+                                <v-list-item-avatar class="academia-primary">
                                     <v-icon dark>{{ cr.icon }}</v-icon>
                                 </v-list-item-avatar>
 
@@ -38,7 +38,7 @@
                                 </v-list-item-content>
 
                                 <v-list-item-action>
-                                    <p class="ma-0 font-weight-black accent--text text-h6"> {{ (cr.points).toFixed(2) }} pts</p>
+                                    <p class="ma-0 font-weight-black academia-primary--text text-h6"> {{ (cr.points).toFixed(2) }} pts</p>
                                 </v-list-item-action>
                             </v-list-item>
                         </v-col>
@@ -48,7 +48,7 @@
             <v-col cols="12" md="6" class="pb-16 pb-md-3">
                 <v-row >
                     <v-col class="pa-0">
-                        <p class="ml-3 my-0 secondary--text text-caption font-weight-bold">
+                        <p class="ml-3 my-0 academia-primary--text text-caption font-weight-bold">
                             INFORMACIÓN
                         </p>
                     </v-col>
@@ -57,7 +57,7 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-chart-donut </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -70,7 +70,7 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-teach </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -83,7 +83,7 @@
                     <v-col>
                         <v-card class="py-2">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
                                         <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -96,7 +96,7 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <p class="ml-3 secondary--text text-caption font-weight-bold">
+                        <p class="ml-3 academia-primary--text text-caption font-weight-bold">
                             CRITERIOS DE EVALUACIÓN
                         </p>
                         <v-card>
@@ -187,7 +187,7 @@ export default {
                             if(progress[cr.name] !== undefined){
                                 const has_final = progress[cr.name].find( p => p.id === final_id )
                                 obj_crt.completed = has_final ? progress[cr.name].length - 1 : progress[cr.name].length
-                                obj_crt.points = progress[cr.name].reduce( (sum, e) => e.id === has_final.id ? sum : sum + e.grade, 0 ) * cr.value / cr.number
+                                obj_crt.points = progress[cr.name].reduce( (sum, e) => has_final ? e.id === has_final.id ? sum : sum + e.grade : sum + e.grade , 0 ) * cr.value / cr.number
                             }
                             else{
                                 obj_crt.points = 0

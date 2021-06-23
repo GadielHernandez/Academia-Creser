@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-tabs fixed-tabs v-model="tab" background-color="background">
+        <v-tabs fixed-tabs v-model="tab" background-color="background" color="academia-primary">
             <v-tab>
                 Informacion
             </v-tab>

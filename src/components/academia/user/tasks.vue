@@ -67,7 +67,7 @@
         </v-row>
         <v-dialog v-model="dialog" fullscreen persistent>
             <v-card class="rounded-0">
-                <v-toolbar dark color="primary" v-if="selected != null" flat>
+                <v-toolbar dark color="academia-primary" v-if="selected != null" flat>
                     <v-toolbar-title>{{ selected.name }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon dark @click="closeDialog">
@@ -85,6 +85,7 @@
                                         </p>
                                         <v-textarea
                                             v-model="responses[index]"
+                                            color="academia-primary"
                                             required
                                             auto-grow
                                             outlined
@@ -100,11 +101,12 @@
                             <v-col cols="12" class="mb-16">
                                 <v-card flat>
                                     <v-card-text>
-                                        <p class="ma-0 primary--text text-caption font-weight-bold">
+                                        <p class="ma-0 academia-primary--text text-caption font-weight-bold">
                                             Retroalimentación
                                         </p>
                                         <v-textarea
                                             :value="selected.feedback"
+                                            color="academia-primary"
                                             required
                                             auto-grow
                                             outlined
@@ -120,7 +122,7 @@
                 </v-card-text>
                 <v-card-actions class="save-toolbar mt-6" v-if="selected != null">
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="save" :disabled="selected.responses != undefined">Save</v-btn>
+                    <v-btn color="academia-primary white--text" class="mx-6" @click="save" :disabled="selected.responses != undefined">Guardar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
