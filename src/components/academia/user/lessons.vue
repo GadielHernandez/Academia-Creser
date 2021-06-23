@@ -1,21 +1,21 @@
 <template>
     <div class="main-background mx-1">
         <v-row>
-            <v-col v-if="lessons != null" cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') }">
+            <v-col v-if="lessons != null" cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null}">
                 <youtube 
                     ref="video"
                     class="border"
                     @paused="videoPaused"
                     @ended="videoEnded" 
                     :player-vars="{ modestbranding: 1, rel: 0, iv_load_policy: 3, showinfo: 0}" 
-                    :width="actual_video == null || !actual_video.hasOwnProperty('video_id') ? '0%' : '100%'"
-                    :height="actual_video == null  || !actual_video.hasOwnProperty('video_id') ? '0%' : '100%'"
+                    :width="actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
+                    :height="actual_video == null  || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
                 ></youtube>
                 <div v-if="actual_video == null" class="ma-auto font-weight-bold blue-grey--text text-center">
                     <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-format-list-checks</v-icon>
                     <p>Selecciona una clase</p>
                 </div>
-                <div v-else-if="!actual_video.hasOwnProperty('video_id')" class="ma-auto font-weight-bold blue-grey--text text-center">
+                <div v-else-if="actual_video.video_id == null" class="ma-auto font-weight-bold blue-grey--text text-center">
                     <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-crop-landscape</v-icon>
                     <p>No existe video asignado</p>
                 </div>
@@ -164,7 +164,7 @@
                                         <v-list-item-subtitle>{{ lesson.description }}</v-list-item-subtitle>
                                     </v-list-item-content>
                                     <v-list-item-action>
-                                        <v-btn icon>
+                                        <v-btn icon v-if="lesson.type === FACETOFACE">
                                             <v-icon :color="completed.find( l => l.id == lesson.id ).completed">mdi-checkbox-blank</v-icon>
                                         </v-btn>
                                     </v-list-item-action>
@@ -249,14 +249,7 @@ export default {
             if( duration - played < 30 ) this.setEnd()
         },
         async setEnd(){
-            const status = this.completed.find( c => c.id === this.actual_video.id )
             console.log('END')
-            if(this.actual_video.type === ONLINE && status.completed !== 'success'){
-                await this.setCompleted({
-                    id: this.actual_video.id,
-                    criteria: ATTENDANCE
-                })
-            }
             const is_seen = this.seens.find( l => l.id === this.actual_video.id )
             if(is_seen.seens !== 'success') {
                 await this.setSeen(this.actual_video.id)

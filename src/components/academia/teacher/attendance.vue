@@ -117,7 +117,7 @@ export default {
     name: 'Students',
     computed: {
         ...mapState({
-            lessons: state => state.teacher.lessons,
+            lessons: state => state.teacher.lessons.filter( lesson => lesson.type !== ONLINE ),
             students: (state) =>
                 state.teacher.course.students
                     ? state.teacher.course.students
