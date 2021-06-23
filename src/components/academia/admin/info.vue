@@ -2,7 +2,7 @@
     <div class="mx-1">
         <v-row>
             <v-col>
-                <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
             </v-col>
         </v-row>
         <v-row>
@@ -39,7 +39,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">CRITERIOS</p>
+                <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">CRITERIOS</p>
             </v-col>
         </v-row>
         <v-row>

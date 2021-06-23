@@ -14,7 +14,7 @@
             <v-row>
                 <v-col class="pb-0">
                     <p
-                        class="primary--text rounded-md ma-0 text-caption font-weight-bold"
+                        class="secondary--text rounded-md ma-0 text-caption font-weight-bold"
                     >
                         NOMBRE
                     </p>
@@ -34,7 +34,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         NOMBRE CORTO
                     </p>
                 </v-col>
@@ -53,7 +53,7 @@
             </v-row>
             <v-row v-if="!user">
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         EMAIL
                     </p>
                 </v-col>
@@ -73,7 +73,7 @@
             </v-row>
             <v-row v-if="!user">
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         CONTRASEÑA
                     </p>
                 </v-col>
@@ -94,7 +94,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         SEXO
                     </p>
                 </v-col>

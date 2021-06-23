@@ -13,7 +13,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -29,7 +29,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -45,7 +45,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO LIMITE</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO LIMITE</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -63,7 +63,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -81,7 +81,7 @@
             </v-row>
             <v-row>
                 <v-col class="d-flex">
-                    <p class="primary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
+                    <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
                 </v-col>
                 <v-col class="text-right">
                     <v-btn icon @click="addQuestion">
@@ -128,7 +128,7 @@
         <v-dialog v-model="question_form.open" max-width="600px">
             <v-card style="height: 100%">
                 <v-card-text>
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold pt-6">PREGUNTA</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold pt-6">PREGUNTA</p>
                     <v-text-field
                         v-model="question_form.question"
                         solo
@@ -138,7 +138,7 @@
                     />
                     <v-row>
                         <v-col>
-                            <p class="primary--text mb-3 rounded-md my-auto text-caption font-weight-bold">RESPUESTA CORRECTA</p>
+                            <p class="secondary--text mb-3 rounded-md my-auto text-caption font-weight-bold">RESPUESTA CORRECTA</p>
                             <v-select
                                 :items="question_form.answers.map( (ans, index) => index + 1 )"
                                 v-model="question_form.correct"
@@ -152,7 +152,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="d-flex">
-                            <p class="primary--text rounded-md my-auto text-caption font-weight-bold">RESPUESTAS</p>
+                            <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">RESPUESTAS</p>
                         </v-col>
                         <v-col class="text-right">
                             <v-btn icon @click="addAnswer">

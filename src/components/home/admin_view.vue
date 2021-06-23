@@ -17,7 +17,7 @@
         <div v-if="users" class="mt-3">
             <v-row>
                 <v-col>
-                    <p class="primary--text text-caption font-weight-bold my-auto mb-0">LISTA DE ALUMNOS</p>
+                    <p class="secondary--text text-caption font-weight-bold my-auto mb-0">LISTA DE ALUMNOS</p>
                 </v-col>
                 <v-col class="text-right">
                     <v-btn color="primary" @click="openForm">
@@ -41,10 +41,10 @@
                     <tbody>
                         <tr v-for="user in users" :key="user.id">
                             <td>
-                                <v-avatar color="tertiary" size="37" v-if="user.gender === WOMAN">
+                                <v-avatar color="accent" size="37" v-if="user.gender === WOMAN">
                                     <v-icon dark>mdi-face-woman</v-icon>
                                 </v-avatar>
-                                <v-avatar color="tertiary" size="37" v-else>
+                                <v-avatar color="accent" size="37" v-else>
                                     <v-icon dark>mdi-face</v-icon>
                                 </v-avatar>
                             </td>
@@ -52,10 +52,10 @@
                             <td>{{ user.nickname }}</td>
                             <td>{{ user.email }}</td>
                             <td v-if="user.level === ADMIN" class="text-center"> 
-                                <span class="primary--text text-caption">Admin</span> 
+                                <span class="secondary--texttext-caption">Admin</span> 
                             </td>
                             <td v-if="user.level === TEACHER" class="text-center">
-                                <span class="primary--text text-caption">Maestro</span> 
+                                <span class="secondary--texttext-caption">Maestro</span> 
                             </td>
                             <td v-if="user.level === USER"></td>
                             <td>

@@ -13,7 +13,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -29,7 +29,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -45,7 +45,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -63,7 +63,7 @@
             </v-row>
             <v-row>
                 <v-col class="d-flex">
-                    <p class="primary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
+                    <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
                 </v-col>
                 <v-col class="text-right">
                     <v-btn icon @click="addQuestion">

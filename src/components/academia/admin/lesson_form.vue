@@ -13,7 +13,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -29,7 +29,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -45,7 +45,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">TIPO</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIPO</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -68,7 +68,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -86,7 +86,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">VIDEO</p>
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">VIDEO</p>
                 </v-col>
             </v-row>
             <v-row>
@@ -96,7 +96,7 @@
                             <v-col>
                                 <v-row>
                                     <v-col>
-                                        <p class="mx-3 primary--text rounded-md ma-0 text-caption font-weight-bold">URL</p>
+                                        <p class="mx-3 secondary--text rounded-md ma-0 text-caption font-weight-bold">URL</p>
                                     </v-col>
                                 </v-row>
                                 <v-row>

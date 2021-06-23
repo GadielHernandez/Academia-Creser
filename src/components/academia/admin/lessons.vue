@@ -2,7 +2,7 @@
     <div class="mx-1">
         <v-row>
             <v-col class="d-flex">
-                <p class="primary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE CLASES</p>
+                <p class="secondary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE CLASES</p>
             </v-col>
             <v-col class="text-right">
                 <v-btn 
@@ -30,14 +30,14 @@
                                         </v-list-item-content>
                                         <v-list-item-content>
                                             <p class="ma-auto text-caption">
-                                                <v-chip small label color="primary" class="mr-1">{{ Number.isInteger(l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? l.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
-                                                <v-chip small label v-if="l.video_id" color="primary">Video</v-chip>
-                                                <v-chip small label v-else color="primary" outlined>Sin video</v-chip>
+                                                <v-chip small label class="mr-1">{{ Number.isInteger(l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? l.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
+                                                <v-chip small label v-if="l.video_id" >Video</v-chip>
+                                                <v-chip small label v-else outlined>Sin video</v-chip>
                                             </p>
                                         </v-list-item-content>
                                         <v-list-item-action>
                                             <v-btn icon @click="edit(l.id)">
-                                                <v-icon color="primary">mdi-pencil</v-icon>
+                                                <v-icon>mdi-pencil</v-icon>
                                             </v-btn>
                                         </v-list-item-action>
                                     </v-list-item>

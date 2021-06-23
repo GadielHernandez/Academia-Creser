@@ -2,7 +2,7 @@
     <div>
         <v-card>
             <div class="py-4 px-4">
-                <p class="primary--text text-caption font-weight-bold">BUSCAR ALUMNOS POR EMAIL</p>
+                <p class="secondary--text text-caption font-weight-bold">BUSCAR ALUMNOS POR EMAIL</p>
                 <v-row>
                     <v-col cols="9" md="10">
                         <v-text-field

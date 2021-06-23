@@ -14,7 +14,7 @@
             <v-row>
                 <v-col class="pb-0">
                     <p
-                        class="primary--text rounded-md ma-0 text-caption font-weight-bold"
+                        class="secondary--text rounded-md ma-0 text-caption font-weight-bold"
                     >
                         NOMBRE
                     </p>
@@ -33,7 +33,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         FECHA DE INICIO
                     </p>
                 </v-col>
@@ -78,7 +78,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         FECHA DE FIN
                     </p>
                 </v-col>
@@ -123,7 +123,7 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="primary--text rounded-md ma-0 text-caption font-weight-bold">
+                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
                         MAESTRO
                     </p>
                 </v-col>
@@ -134,7 +134,7 @@
                         <v-card-text class="pb-0">
                             <v-toolbar v-if="teacher" outlined flat class="mb-3">
                                 <p class="ma-0">
-                                    <span class="primary--text font-weight-bold">NOMBRE: </span> {{teacher.name}}
+                                    <span class="secondary--text font-weight-bold">NOMBRE: </span> {{teacher.name}}
                                 </p>
                             </v-toolbar>
                             <v-text-field

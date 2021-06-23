@@ -2,7 +2,7 @@
     <div class="mx-1">
         <v-row>
             <v-col class="d-flex">
-                <p class="primary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE GRUPOS</p>
+                <p class="secondary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE GRUPOS</p>
             </v-col>
             <v-col class="text-right">
                 <v-btn 
@@ -20,18 +20,18 @@
                         <v-toolbar dense flat>
                             <p class="font-weight-bold my-auto">{{ group.name }}</p>
                             <v-spacer></v-spacer>
-                            <v-btn icon color="primary" @click="listUsers(group.id)">
+                            <v-btn icon @click="listUsers(group.id)">
                                 <v-icon>mdi-account-details</v-icon>
                             </v-btn>
-                            <v-btn icon color="primary" @click="editGroup(group.id)">
+                            <v-btn icon @click="editGroup(group.id)">
                                 <v-icon>mdi-pencil</v-icon>
                             </v-btn>
                         </v-toolbar>
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="primary lighten-5" class="rounded">
-                                        <v-icon color="primary"> mdi-calendar-range </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption">Inicio del curso</v-list-item-subtitle>
@@ -41,8 +41,8 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="primary lighten-5" class="rounded">
-                                        <v-icon color="primary"> mdi-calendar-range </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption">Fin del curso</v-list-item-subtitle>
@@ -54,8 +54,8 @@
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="primary lighten-5" class="rounded">
-                                        <v-icon color="primary"> mdi-teach </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-teach </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption">Maestro</v-list-item-subtitle>
@@ -66,8 +66,8 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="primary lighten-5" class="rounded">
-                                        <v-icon color="primary"> mdi-account-supervisor-outline </v-icon>
+                                    <v-list-item-avatar tile color="accent" class="rounded">
+                                        <v-icon color="white"> mdi-account-supervisor-outline </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-subtitle class="text-caption">Numero de alumnos</v-list-item-subtitle>
