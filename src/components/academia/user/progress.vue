@@ -30,7 +30,7 @@
                                 <v-list-item-content>
                                     <v-list-item-title>{{ cr.name }}</v-list-item-title>
                                     <v-list-item-subtitle>
-                                        <span v-if="cr.name === ATTENDANCE">{{ cr.completed - cr.out_of_time }} obtenidas , {{ cr.out_of_time }} retardos</span>
+                                        <span v-if="cr.name === ATTENDANCE">{{ cr.completed - cr.out_of_time }} obtenidas , {{ cr.out_of_time }} retardos, {{ cr.not_attendance }} faltas</span>
                                         <span v-else-if="cr.name === EXAMS">{{ cr.completed }} realizados</span>
                                         <span v-if="cr.name === TASKS">{{ cr.completed }} realizadas</span>
                                         <span v-if="cr.name === FINAL">{{ cr.completed > 0 ? 'Contestado': 'No contestado' }}</span>
@@ -161,9 +161,13 @@ export default {
                     switch (cr.name) {
                         case ATTENDANCE:
                             if(progress[cr.name] !== undefined){
-                                obj_crt.completed = progress[cr.name].length
+                                const total  = progress[cr.name].length
                                 const out_of_time = progress[cr.name].filter( c => c.out_of_time === true)
+                                const not_attendance = progress[cr.name].filter( c => c.no_attendance === true )
+                                
+                                obj_crt.completed = total - out_of_time.length - not_attendance.length
                                 obj_crt.out_of_time = out_of_time.length
+                                obj_crt.not_attendance = not_attendance.length
                                 obj_crt.points = (obj_crt.completed - (out_of_time.length / 2)) * cr.value / cr.number
                             }
                             else{

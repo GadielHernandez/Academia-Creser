@@ -16,7 +16,7 @@
                             </v-icon> 
 
                         </v-avatar>
-                        <span class="ml-3 ma-auto" v-if="level === ADMIN">Personas</span>
+                        <span class="ml-3 ma-auto" v-if="level === ADMIN">Usuarios</span>
                         <span class="ml-3 ma-auto" v-else>Inicio</span>
                 </v-tab>
                 <v-tab @click="go('Academia')">
