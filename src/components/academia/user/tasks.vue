@@ -208,7 +208,8 @@ export default {
         }
     },
     async mounted() {
-        await this.getTasks()
+        if(this.tasks === null)
+            await this.getTasks()
     },
 }
 </script>

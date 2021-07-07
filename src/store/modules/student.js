@@ -231,7 +231,7 @@ const mutations = {
     },
     UPDATE_TASK_RESPONSE(state, payload){
         let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
-        state.tasks[taskIndex].responses = payload.responses
+        state.tasks.splice(taskIndex, 1, { ...state.tasks[taskIndex], responses: payload.responses });
     },
     UPDATE_TASK_FEEDBACK(state, payload){
         let taskIndex = state.tasks.findIndex( t => t.id === payload.id )
