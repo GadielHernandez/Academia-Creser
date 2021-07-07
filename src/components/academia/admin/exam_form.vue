@@ -242,7 +242,7 @@ export default {
             this.question_form.edit = index
             this.question_form.question = question.question
             this.question_form.answers = question.answers.map( q => ({ ans: q }) )
-            this.question_form.correct = question.correct
+            this.question_form.correct = question.correct + 1
             this.question_form.open = true
         },
         saveQuestion(){
