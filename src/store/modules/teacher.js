@@ -37,7 +37,10 @@ const actions = {
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
 
                 if(group.data().tasks)
-                    commit('UPDATE_FEEDBACKS', group.data().tasks)
+                    commit('UPDATE_FEEDBACKS', {
+                        tasks: group.data().tasks,
+                        exams: group.data().exams
+                    })
                 
                 commit('UPDATE_STATUS', true)
                 return resolve()
@@ -238,7 +241,8 @@ const mutations = {
         });
     },
     UPDATE_FEEDBACKS(state, payload){
-        state.course.teacher.tasks = payload
+        state.course.teacher.tasks = payload.tasks
+        state.course.teacher.exams = payload.exams
     },
     SET_FEEDBACK(state, payload){
         if(state.course.teacher.tasks){

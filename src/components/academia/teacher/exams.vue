@@ -68,7 +68,11 @@
                                     'warning--text': student.grade !== null && student.grade < 60
                                 }">
                                 <span v-if="student.grade === null">PENDIENTE</span>
-                                <span v-else>{{ (student.grade).toFixed(2) }}</span>
+                                <span v-else>
+                                    {{ (student.grade).toFixed(2) }}
+                                    <v-icon class="ml-3" v-if="student.feedback" color="success">mdi-text-box-check-outline</v-icon> 
+                                    <v-icon class="ml-3" v-else>mdi-checkbox-blank-outline</v-icon>
+                                </span>
                             </v-list-item-action>
                         </v-list-item>
                     </v-card-text>
@@ -164,6 +168,10 @@ export default {
                 
                 const exam_id = this.exam_selected
                 const progress = state.teacher.course.progress[EXAMS]
+                const feedbacks = state.teacher.course.teacher.exams
+                const exam_feedback = feedbacks 
+                    ? state.teacher.course.teacher.exams[exam_id]
+                    : undefined
 
                 if(progress[exam_id] == undefined) return result
 
@@ -174,6 +182,12 @@ export default {
                     if(index > -1)
                         result[index].grade = answered.grade * 100
                 });
+
+                if(exam_feedback)
+                    exam_feedback.forEach(student => {
+                        const index = result.findIndex( std => std.id == student )
+                        result[index].feedback = true
+                    })
 
                 return result
             }
