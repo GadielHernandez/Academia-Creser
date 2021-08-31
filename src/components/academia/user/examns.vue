@@ -164,7 +164,7 @@
                                                 <v-list-item-group :color="!selected.completed ? 'academia-primary' : isCorrect() " v-model="exam.actual_answer" @change="setAnswer">
                                                     <v-list-item v-for="(answer, index) in exam.questions[exam.index - 1].answers" :key="index">
                                                         <v-list-item-content>
-                                                            <v-list-item-title> {{answer}} </v-list-item-title>
+                                                            <v-list-item-title> <p class="ma-0 answer"> {{answer}} </p> </v-list-item-title>
                                                         </v-list-item-content>
                                                     </v-list-item>
                                                 </v-list-item-group>
@@ -357,6 +357,9 @@ export default {
 }
 .v-list-item{
     border: 1px solid var(--v-background-darken1);
+}
+.answer{
+    white-space: normal;
 }
 .save-toolbar{
     position: absolute;
