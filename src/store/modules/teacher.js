@@ -33,8 +33,9 @@ const actions = {
 
                 let group = resp.docs[0]
                 let group_data = await db.doc(`courses/${group.data().course}/groups/${group.id}`).get()
+                let course_data = await db.doc(`courses/${group.data().course}`).get()
                 commit('UPDATE_ID', group.data().course)
-                commit('UPDATE_COURSE', { id: group.id, ...group_data.data() })
+                commit('UPDATE_COURSE', { id: group.id, ...group_data.data(), ...course_data.data() })
 
                 if(group.data().tasks)
                     commit('UPDATE_FEEDBACKS', {
