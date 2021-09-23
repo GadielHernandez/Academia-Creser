@@ -22,7 +22,7 @@
                             </p>
                         </v-col>
                         <v-col cols="12">
-                            <v-list-item dense v-for="cr in criteria" :key="cr.name">
+                            <v-list-item dense v-for="cr in criteria" :key="cr.name" @click="showMoreInfo(cr.name)">
                                 <v-list-item-avatar class="academia-primary">
                                     <v-icon dark>{{ cr.icon }}</v-icon>
                                 </v-list-item-avatar>
@@ -30,7 +30,7 @@
                                 <v-list-item-content>
                                     <v-list-item-title>{{ cr.name }}</v-list-item-title>
                                     <v-list-item-subtitle>
-                                        <span v-if="cr.name === ATTENDANCE">{{ cr.completed - cr.out_of_time }} obtenidas , {{ cr.out_of_time }} retardos, {{ cr.not_attendance }} faltas</span>
+                                        <span v-if="cr.name === ATTENDANCE">{{ cr.completed }} obtenidas , {{ cr.out_of_time }} retardos, {{ cr.not_attendance }} faltas</span>
                                         <span v-else-if="cr.name === EXAMS">{{ cr.completed }} realizados</span>
                                         <span v-if="cr.name === TASKS">{{ cr.completed }} realizadas</span>
                                         <span v-if="cr.name === FINAL">{{ cr.completed > 0 ? 'Contestado': 'No contestado' }}</span>
@@ -131,16 +131,131 @@
                 </v-row>
             </v-col>
         </v-row>
+        <v-dialog v-model="moreInfo.show" max-width="600" scrollable>
+            <v-card>
+                <v-card-title class="text-h6">
+                    {{ moreInfo.title }}
+                </v-card-title>
+                <v-card-text style="height: 400px;">
+                    
+                    <div v-if="moreInfo.criteria === ATTENDANCE">
+                        <v-tabs color="academia-primary">
+                            <v-tab>Asistencias</v-tab>
+                            <v-tab>Retardos</v-tab>
+                            <v-tab>Faltas</v-tab>
+
+                            <v-tab-item >
+                                <v-list-item v-for="attendance in moreInfo.data[ATTENDANCE].attendances" :key="attendance.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="success">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ attendance.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                            <v-tab-item >
+                                <v-list-item v-for="attendance in moreInfo.data[ATTENDANCE].out_of_time" :key="attendance.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="warning">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ attendance.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                            <v-tab-item >
+                                <v-list-item v-for="attendance in moreInfo.data[ATTENDANCE].not_attendances" :key="attendance.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="red">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ attendance.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                        </v-tabs>
+                    </div>
+
+                    <div v-if="moreInfo.criteria === TASKS">
+                        <v-tabs color="academia-primary">
+                            <v-tab>Contestadas</v-tab>
+                            <v-tab>No contestadas</v-tab>
+
+                            <v-tab-item >
+                                <v-list-item v-for="task in moreInfo.data[TASKS].answered" :key="task.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="success">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ task.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                            <v-tab-item >
+                                <v-list-item v-for="task in moreInfo.data[TASKS].not_answered" :key="task.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="warning">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ task.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                        </v-tabs>
+                    </div>
+
+                    <div v-if="moreInfo.criteria === EXAMS">
+                        <v-tabs color="academia-primary">
+                            <v-tab>ContestadOs</v-tab>
+                            <v-tab>No contestadOs</v-tab>
+
+                            <v-tab-item >
+                                <v-list-item v-for="exam in moreInfo.data[EXAMS].answered" :key="exam.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="success">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ exam.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                            <v-tab-item >
+                                <v-list-item v-for="exam in moreInfo.data[EXAMS].not_answered" :key="exam.id">
+                                    <v-list-item-icon>
+                                        <v-icon color="warning">mdi-checkbox-blank</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ exam.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-tab-item>
+                        </v-tabs>
+                    </div>
+
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                        <v-btn text @click="closeMoreInfo">
+                            Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../../plugins/criteria-types'
+import { FACETOFACE } from '../../../plugins/lessons-types'
 export default {
     name: 'Progress',
     computed:{
         ...mapState({ 
+            lessons: state => state.student.lessons,
+            tasks: state => state.student.tasks,
+            exams: state => state.student.exams,
             course_name: state => state.student.info.name,
             group: state => state.student.group,
             criteria: state => {
@@ -227,8 +342,72 @@ export default {
     },
     data() {
         return {
-            ATTENDANCE, EXAMS, TASKS, FINAL
+            ATTENDANCE, EXAMS, TASKS, FINAL, FACETOFACE,
+            moreInfo: {
+                show: false,
+                loaded: false,
+                criteria: null,
+                title: '',
+                data: {} 
+            }
         }
+    },
+    methods: {
+        ...mapActions({
+            getLessons: 'student/fetchLessons',
+            getTasks: 'student/fetchTasks',
+            getExams: 'student/fetchExams'
+        }),
+        async showMoreInfo(criteria){
+            await this.loadMoreInfo(criteria)
+            this.moreInfo.criteria = criteria
+            this.moreInfo.title = criteria
+            this.moreInfo.show = true
+        },
+        closeMoreInfo(){
+            this.moreInfo.show = false
+            this.moreInfo.criteria = null
+            this.moreInfo.title = ''
+        },
+        async loadMoreInfo(criteria){
+            if(criteria === this.ATTENDANCE){
+                if(!this.lessons)
+                    await this.getLessons()
+                if(!this.moreInfo.data[this.ATTENDANCE]){
+                    this.moreInfo.data[this.ATTENDANCE] = {}
+                    this.moreInfo.data[this.ATTENDANCE].attendances = this.group.progress[this.ATTENDANCE].filter( a => !a.out_of_time && !a.no_attendance )
+                    this.moreInfo.data[this.ATTENDANCE].not_attendances = this.group.progress[this.ATTENDANCE].filter( a => a.no_attendance )
+                    this.moreInfo.data[this.ATTENDANCE].out_of_time = this.group.progress[this.ATTENDANCE].filter( a => a.out_of_time )
+                    
+                    this.moreInfo.data[this.ATTENDANCE].attendances = this.moreInfo.data[this.ATTENDANCE].attendances.map( a => ({ ...a, ...this.lessons.find( l => l.id === a.id) }) )
+                    this.moreInfo.data[this.ATTENDANCE].not_attendances = this.moreInfo.data[this.ATTENDANCE].not_attendances.map( a => ({ ...a, ...this.lessons.find( l => l.id === a.id) }) )
+                    this.moreInfo.data[this.ATTENDANCE].out_of_time = this.moreInfo.data[this.ATTENDANCE].out_of_time.map( a => ({ ...a, ...this.lessons.find( l => l.id === a.id) }) )
+                }
+            }
+            if(criteria === this.TASKS){
+                if(!this.tasks)
+                    await this.getTasks()
+                if(!this.moreInfo.data[this.TASKS]){
+                    this.moreInfo.data[this.TASKS] = {}
+                    this.moreInfo.data[this.TASKS].answered = this.group.progress[this.TASKS]
+                    this.moreInfo.data[this.TASKS].answered = this.moreInfo.data[this.TASKS].answered.map( a => ({ ...a, ...this.tasks.find( t => t.id === a.id) }) )
+
+                    this.moreInfo.data[this.TASKS].not_answered = this.tasks.filter( t => !this.moreInfo.data[this.TASKS].answered.find( a => a.id === t.id ) )
+                }
+            }
+            if(criteria === this.EXAMS){
+                if(!this.exams)
+                    await this.getExams()
+                if(!this.moreInfo.data[this.EXAMS]){
+                    this.moreInfo.data[this.EXAMS] = {}
+                    this.moreInfo.data[this.EXAMS].answered = this.group.progress[this.EXAMS]
+                    this.moreInfo.data[this.EXAMS].answered = this.moreInfo.data[this.EXAMS].answered.map( a => ({ ...a, ...this.exams.find( e => e.id === a.id) }) )
+
+                    this.moreInfo.data[this.EXAMS].not_answered = this.exams.filter( e => !this.moreInfo.data[this.EXAMS].answered.find( a => a.id === e.id ) )
+                }
+            }
+        }
+
     },
 }
 </script>
