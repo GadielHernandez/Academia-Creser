@@ -286,7 +286,8 @@ export default {
 
             clearInterval(this.exam_countdown.interval)
             this.exam_countdown.interval = null
-
+            
+            const responses = this.exam.answers
             let result = this.exam.answers.reduce((sum, answer, currentIndex) => {
                 if(this.selected.questions[currentIndex].correct === answer)
                     sum += 1
@@ -295,7 +296,6 @@ export default {
             result = result / this.selected.questions.length
             
             const id = this.selected.id
-            const responses = this.exam.answers
             await this.setCompleted({ id, criteria: EXAMS, options: { grade: result } })
             await this.uploadResponse({ id, responses })
             this.exam_active = false

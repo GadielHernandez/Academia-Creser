@@ -283,7 +283,8 @@ export default {
                                 obj_crt.completed = total - out_of_time.length - not_attendance.length
                                 obj_crt.out_of_time = out_of_time.length
                                 obj_crt.not_attendance = not_attendance.length
-                                obj_crt.points = (obj_crt.completed - (out_of_time.length / 2)) * cr.value / cr.number
+                                
+                                obj_crt.points =  obj_crt.completed * cr.value / cr.number 
                             }
                             else{
                                 obj_crt.points = 0

@@ -72,8 +72,9 @@ export default {
                         if(exam === final_id) return
                         exams[exam].forEach( user => {
                             if(!exams_obj[user.user]) 
-                                exams_obj[user.user] = { answered: 0, calification: 0 }
+                                exams_obj[user.user] = { answered: 0, grades: [] }
                             exams_obj[user.user].answered += 1
+                            exams_obj[user.user].grades.push(user.grade)
                         })
                     })
                 }
@@ -82,7 +83,7 @@ export default {
                     Object.keys(tasks).forEach( task => {
                         tasks[task].forEach( user => {
                             if(!tasks_obj[user.user]) 
-                                tasks_obj[user.user] = { completed: 0, calification: 0 }
+                                tasks_obj[user.user] = { completed: 0 }
                             tasks_obj[user.user].completed += 1
                         })
                     })
@@ -106,6 +107,7 @@ export default {
                 ]
 
                 const items = students.map( student => ({
+                    id: student.id,
                     name: student.name,
                     attendances: attendaces_obj[student.id] ? attendaces_obj[student.id].attendances : 0,
                     out_of_time: attendaces_obj[student.id] ? attendaces_obj[student.id].out_of_time : 0,
@@ -117,16 +119,21 @@ export default {
                 }))
 
                 items.forEach( student => {
-                    student.grade = 
-                        student.attendances * attendance_values.value / attendance_values.number
-                        + student.out_of_time * ((attendance_values.value / attendance_values.number) / 2)
-                        + student.exams * exams_values.value / exams_values.number
-                        + student.tasks * tasks_values.value / tasks_values.number
+                    let attendaces_grade =  student.attendances * attendance_values.value / attendance_values.number
+                        
+                    let exams_grade = 0
+                    if(exams_obj[student.id])
+                        exams_obj[student.id].grades.forEach( g =>
+                            exams_grade += g * exams_values.value / exams_values.number
+                        )
                     
+                    let tasks_grade = student.tasks * tasks_values.value / tasks_values.number
+                    
+                    let final_grade = 0
                     if(student.final) 
-                        student.grade += student.final.grade * final_values.value
-
-                    student.grade = student.grade.toFixed(2)
+                        final_grade = student.final.grade * final_values.value
+                    
+                    student.grade = (attendaces_grade + exams_grade + tasks_grade + final_grade).toFixed(2)
                 })
                 return {
                     headers,
