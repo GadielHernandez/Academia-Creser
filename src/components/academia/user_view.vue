@@ -1,6 +1,6 @@
 <template>
     <div class="academia-user">
-        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="active" color="academia-primary">
+        <v-tabs fixed-tabs v-model="tab" background-color="background" v-if="started" color="academia-primary">
             <v-tab >
                 Progreso
             </v-tab>
@@ -14,7 +14,7 @@
                 Examenes
             </v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab" v-if="active">
+        <v-tabs-items v-model="tab" v-if="started">
             <v-tab-item class="h-100 main-background">
                 <Progress/>
             </v-tab-item>
@@ -54,7 +54,7 @@ export default {
     name: 'Academia-user',
     computed: { 
         ...mapState({ 
-            active: state => state.student.group.active,
+            started: state => state.student.group.started,
             starts: state => state.student.group.starts, 
             ends: state => state.student.group.ends 
         }) 

@@ -6,7 +6,8 @@ const state = {
     course_selected: null,
     info: {},
     group: {
-        active: false,
+        started: false,
+        ended: false,
         ends: null,
         id: null,
         name: null,
@@ -39,8 +40,9 @@ const actions = {
 
                     const group = await db.doc(`courses/${state.course_selected}/groups/${rootState.user.courses[0].group}`).get()
                     const now = timeServer().toMillis()
-                    const active = group.data().starts < now && group.data().ends > now
-                    const my_group = { id: group.id, ...group.data(), active }
+                    const started = group.data().starts < now
+                    const ended = group.data().ends < now
+                    const my_group = { id: group.id, ...group.data(), started, ended }
                     const my_progress = {}
                     my_progress[ATTENDANCE] = []
                     my_progress[EXAMS] = []
@@ -101,6 +103,7 @@ const actions = {
     },
     setCriteriaCompleted({ state, commit }, criteria_payload){
         return new Promise((resolve, reject) => {
+            if(state.group.ended) return reject({ error: 'course-ended'})
             const criteria = criteria_payload.criteria
             const id = criteria_payload.id
             const value = criteria_payload.options 
@@ -119,7 +122,7 @@ const actions = {
             })
             .catch( (e) => {
                 console.log(e)
-                reject()
+                reject({ error: 'fb-error'})
             } )
         })
     },
@@ -139,6 +142,7 @@ const actions = {
     },
     uploadTask({ state, commit }, task){
         return new Promise((resolve, reject) => {
+            if(state.group.ended) return reject({ error: 'course-ended'})
             const addTask = FieldValue.arrayUnion(task)
             db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ tasks: addTask })
             .then( () => { 
@@ -147,7 +151,7 @@ const actions = {
             })
             .catch( (e) => {
                 console.log(e)
-                reject()
+                reject({ error: 'fb-error'})
             } )
         })
     },
@@ -188,6 +192,7 @@ const actions = {
     },
     uploadExam({ state, commit }, exam){
         return new Promise((resolve, reject) => {
+            if(state.group.ended) return reject({ error: 'course-ended'})
             const addExam = FieldValue.arrayUnion(exam)
             db.doc(`users/${auth.currentUser.uid}/courses/${state.course_selected}`).update({ exams: addExam })
             .then( () => { 
@@ -196,7 +201,7 @@ const actions = {
             })
             .catch( (e) => {
                 console.log(e)
-                reject()
+                reject({ error: 'fb-error'})
             } )
         })
     },

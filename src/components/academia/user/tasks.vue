@@ -122,7 +122,7 @@
                 </v-card-text>
                 <v-card-actions class="save-toolbar mt-6" v-if="selected != null">
                     <v-spacer></v-spacer>
-                    <v-btn color="academia-primary white--text" class="mx-6" @click="save" :disabled="selected.responses != undefined">Entregar</v-btn>
+                    <v-btn color="academia-primary white--text" class="mx-6" @click="save" :disabled="selected.responses != undefined  || ended">Entregar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -136,6 +136,7 @@ export default {
     name: 'tasks',
     computed: {
         ...mapState({
+            ended: state => state.student.group.ended,
             tasks(state){
                 this.selected
                 return state.student.tasks

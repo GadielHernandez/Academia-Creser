@@ -181,7 +181,7 @@
                                     </v-btn>
                                 </div>
                             </div>
-                            <v-btn class="mt-6 px-6" v-if="!exam_active" @click="initExam">
+                            <v-btn class="mt-6 px-6" v-if="!exam_active" @click="initExam" :disabled="ended && !selected.completed">
                                 <span v-if="selected.completed">Revisar examen</span>
                                 <span v-else>Iniciar examen</span>
                             </v-btn>
@@ -201,6 +201,7 @@ export default {
     name: 'examns',
     computed:{
         ...mapState({ 
+            ended: state => state.student.group.ended,
             exams(state) {
                 this.dialog
                 const final_exam = state.student.info.criteria.find( c => c.name === FINAL )
