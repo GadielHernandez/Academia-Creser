@@ -118,7 +118,8 @@ export default {
     name: 'Students',
     computed: {
         ...mapState({
-            lessons: state => state.teacher.lessons.filter( lesson => lesson.type !== ONLINE ),
+            lessons_ready: state => state.teacher.lessons !== null,
+            lessons: state => state.teacher.lessons ? state.teacher.lessons.filter( lesson => lesson.type !== ONLINE ): [],
             students: (state) =>
                 state.teacher.course.students
                     ? state.teacher.course.students
@@ -191,7 +192,7 @@ export default {
         }
     },
     async mounted() {
-        if(this.lessons === null)
+        if(!this.lessons_ready)
             await this.getLessons()
     },
 }
