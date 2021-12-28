@@ -114,7 +114,7 @@
                                                 <v-btn 
                                                     @click="saveFeedback()"
                                                     color="academia-primary">
-                                                    Guardar
+                                                    Finalizar
                                                 </v-btn>
                                             </v-col>
                                         </v-row>

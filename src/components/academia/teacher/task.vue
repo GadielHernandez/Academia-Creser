@@ -139,7 +139,7 @@
                 </v-card-text>
                 <v-card-actions class="save-toolbar mt-6">
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="save" :disabled="students.find( s => s.id === student_selected ).status === 'REVISADA'">Save</v-btn>
+                    <v-btn color="primary" @click="save" :disabled="students.find( s => s.id === student_selected ).status === 'REVISADA'">Finalizar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
