@@ -51,13 +51,13 @@
                                             <v-card-text>
                                                 <v-row>
                                                     <v-col class="pb-0">
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Iconos</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Tipos de clases</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
                                                     <v-col>
                                                         <v-list-item dense>
-                                                            <v-list-item-avatar color="academia-primary">
+                                                            <v-list-item-avatar color="blue-grey">
                                                                 <v-icon class="white--text">mdi-laptop</v-icon>
                                                             </v-list-item-avatar>
                                                             <v-list-item-content>
@@ -78,7 +78,7 @@
                                                 </v-row>
                                                 <v-row>
                                                     <v-col class="pb-0">
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Vista de videos</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Clases virtual</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
@@ -105,7 +105,7 @@
                                                 </v-row>
                                                 <v-row>
                                                     <v-col>
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Asistencias</p>
+                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Clases prenscenciales</p>
                                                     </v-col>
                                                 </v-row>
                                                 <v-row>
@@ -155,7 +155,7 @@
                             </v-list-item>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar :color="seens.find( l => l.id == lesson.id ).seens">
+                                    <v-list-item-avatar :color="lesson.type === FACETOFACE ? 'academia-primary' : seens.find( l => l.id == lesson.id ).seens">
                                         <v-icon class="white--text" v-if="lesson.type === ONLINE">mdi-laptop</v-icon>
                                         <v-icon class="white--text" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
                                     </v-list-item-avatar>
