@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { USER } from '../../../plugins/user-types'
+import { USER } from '../../plugins/user-types'
 import { mapActions } from 'vuex'
 export default {
     name: 'addUserGroup',

@@ -26,7 +26,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../../plugins/criteria-types'
+import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../plugins/criteria-types'
 
 export default {
     name: 'Students',

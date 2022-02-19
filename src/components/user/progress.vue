@@ -247,8 +247,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../../plugins/criteria-types'
-import { FACETOFACE } from '../../../plugins/lessons-types'
+import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../plugins/criteria-types'
+import { FACETOFACE } from '../../plugins/lessons-types'
 export default {
     name: 'Progress',
     computed:{

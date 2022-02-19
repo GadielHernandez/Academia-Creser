@@ -12,6 +12,9 @@ Vue.config.productionTip = false
 let app
 
 auth.onAuthStateChanged(async () => {
+    if(auth.currentUser)
+        await store.dispatch('user/fetchProfile')
+
     if (!app) {
         app = new Vue({
             vuetify,
@@ -20,7 +23,5 @@ auth.onAuthStateChanged(async () => {
             render: (h) => h(App)
         }).$mount('#app')
     }
-
-    if(auth.currentUser)
-        await store.dispatch('user/fetchProfile')
+    
 })

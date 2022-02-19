@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import Academia from '../views/Academia'
+import UserHome from '../views/user/Home'
 
 import { auth } from '../plugins/firebase'
 
@@ -10,17 +9,9 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/',
-        name: 'Home',
-        component: Home,
-        meta: {
-            requiresAuth: true,
-        },
-    },
-    {
-        path: '/academia',
-        name: 'Academia',
-        component: Academia,
+        path: '/student/',
+        name: 'studentHome',
+        component: UserHome,
         meta: {
             requiresAuth: true,
         },

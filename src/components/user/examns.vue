@@ -196,7 +196,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { EXAMS, FINAL } from '../../../plugins/criteria-types'
+import { EXAMS, FINAL } from '../../plugins/criteria-types'
 export default {
     name: 'examns',
     computed:{

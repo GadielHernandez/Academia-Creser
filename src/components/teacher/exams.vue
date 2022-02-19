@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import { EXAMS } from '../../../plugins/criteria-types'
+import { EXAMS } from '../../plugins/criteria-types'
 import { mapActions, mapState } from 'vuex'
 export default {
     name: 'Tasks',

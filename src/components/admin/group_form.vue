@@ -175,7 +175,7 @@
 </template>
 
 <script>
-import { TEACHER } from '../../../plugins/user-types'
+import { TEACHER } from '../../plugins/user-types'
 import { mapActions } from 'vuex'
 export default {
     name: 'GroupForm',

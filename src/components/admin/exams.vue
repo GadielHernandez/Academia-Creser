@@ -56,7 +56,7 @@
 <script>
 import formExam from './exam_form'
 import { mapState, mapActions } from 'vuex'
-import { FINAL } from '../../../plugins/criteria-types'
+import { FINAL } from '../../plugins/criteria-types'
 export default {
     name: 'Tasks',
     components: { formExam },

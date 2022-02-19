@@ -57,7 +57,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { FACETOFACE, ONLINE } from '../../../plugins/lessons-types'
+import { FACETOFACE, ONLINE } from '../../plugins/lessons-types'
 import formLesson from './lesson_form'
 export default {
     name: 'lessons',

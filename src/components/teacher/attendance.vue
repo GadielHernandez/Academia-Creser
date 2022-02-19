@@ -111,8 +111,8 @@
 </template>
 
 <script>
-import { ATTENDANCE } from '../../../plugins/criteria-types'
-import { ONLINE } from '../../../plugins/lessons-types'
+import { ATTENDANCE } from '../../plugins/criteria-types'
+import { ONLINE } from '../../plugins/lessons-types'
 import { mapState, mapActions } from 'vuex'
 export default {
     name: 'Students',

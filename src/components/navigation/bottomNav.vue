@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { ADMIN } from '../../plugins/user-types'
 export default {
     name: 'navbarApps',
@@ -31,12 +31,19 @@ export default {
         return {
             tabs: 0,
             tabs_value: ['Home' ,'Academia'],
+            courses_id: {
+                Academia: 'JgoBlXYdaGKpGF5tV98x'
+            },
             ADMIN
         }
     },
     methods: {
-        go(name) {
+        ...mapActions({
+            changeCourse: 'user/selectCourse'
+        }),
+        async go(name) {
             if (this.$route.name === name) return
+            if (this.courses_id[name]) await this.changeCourse(this.courses_id[name])
             this.$router.push({ name: name })
         },
     },

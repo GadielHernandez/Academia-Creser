@@ -131,7 +131,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { TASKS } from '../../../plugins/criteria-types'
+import { TASKS } from '../../plugins/criteria-types'
 export default {
     name: 'tasks',
     computed: {

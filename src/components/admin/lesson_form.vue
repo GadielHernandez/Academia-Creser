@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { FACETOFACE, ONLINE } from '../../../plugins/lessons-types'
+import { FACETOFACE, ONLINE } from '../../plugins/lessons-types'
 import { mapActions, mapState } from 'vuex'
 export default {
     name: 'LessonForm',

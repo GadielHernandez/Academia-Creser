@@ -189,8 +189,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { ATTENDANCE } from '../../../plugins/criteria-types'
-import { ONLINE, FACETOFACE } from '../../../plugins/lessons-types'
+import { ATTENDANCE } from '../../plugins/criteria-types'
+import { ONLINE, FACETOFACE } from '../../plugins/lessons-types'
 export default {
     name: 'Lessons',
     computed:{

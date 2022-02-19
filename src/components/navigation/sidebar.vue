@@ -1,55 +1,58 @@
 <template>
-    <div style="height: 100%">
-        <v-list-item class="px-2 py-3 logo">
+    <v-navigation-drawer
+        permanent
+        mini-variant
+        mini-variant-width="100"
+        expand-on-hover
+        app
+      >
+        <v-list-item class="logo mx-3">
             <v-list-item-avatar>
-                <v-img
-                    src="@/assets/logo.png"
-                ></v-img>
+                <span class="logo-icon">&#127891;</span>
             </v-list-item-avatar>
 
-            <v-list-item-title>FUENTE DE VIDA</v-list-item-title>
+            <v-list-item-title class="text-h6 mt-1">Academia</v-list-item-title>
         </v-list-item>
 
-        <v-list nav class="menu">
-            <v-list-item-group mandatory class="group" active-class="selected">
-                <v-list-item class="" dense @click="$router.push({ name: 'Home' })">
-                    <v-list-item-icon>
-                        <v-icon>mdi-home</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                        <v-list-item-title>Inicio</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item class="" dense @click="$router.push({ name: 'Academia' })">
-                    <v-list-item-icon>
-                        <v-icon>mdi-school</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                        <v-list-item-title>Academia</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list-item-group>
-        </v-list>
-    </div>
+        <v-divider></v-divider>
+        
+        <sidebar-user v-if="profile.level === USER" class="menu"/>
+    </v-navigation-drawer>
 </template>
+<script>
+import { USER, TEACHER, ADMIN, atLeastUserIs } from '../../plugins/user-types'
+import userContent from './user/sidebar-content.vue'
+import { mapState } from 'vuex'
+export default {
+    name:'sidebar',
+    components: { 
+        'sidebar-user': userContent
+    },
+    computed:{
+        ...mapState({
+            profile: state => state.user.profile,
+            loaded: state => state.student.loaded 
+        })
+    },
+    data() {
+        return {
+            USER, TEACHER, ADMIN, atLeastUserIs
+        }
+    },
+    methods: {
+    }
+}
+</script>
 
 <style scoped>
 .logo{
     height: 10%;
 }
-
+.logo-icon{
+    font-size: 40px;
+}
 .menu{
     height: 80%;
     display: flex;
-}
-.group{
-    width: 100%;
-    margin: auto;
-}
-
-.selected{
-    color: var(--v-primary-base)
 }
 </style>

@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { TASKS } from '../../../plugins/criteria-types'
+import { TASKS } from '../../plugins/criteria-types'
 import { mapActions, mapState } from 'vuex'
 export default {
     name: 'Tasks',

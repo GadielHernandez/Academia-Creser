@@ -37,17 +37,16 @@
 <script>
 import { USER, TEACHER, ADMIN, atLeastUserIs } from '../plugins/user-types'
 import { mapState, mapActions } from 'vuex'
-import userAcademia from '../components/academia/user_view'
-import teacherAcademia from '../components/academia/teacher_view'
-import adminAcademia from '../components/academia/admin_view'
+import userAcademia from '../components/user_view'
+import teacherAcademia from '../components/teacher_view'
+import adminAcademia from '../components/admin_view'
 export default {
     name:'Academia',
     components: { userAcademia, teacherAcademia, adminAcademia },
     computed:{
         ...mapState({
             profile: state => state.user.profile,
-            loaded: state => state.student.loaded || state.teacher.hasCourse !== null || state.admin.info !== null,
-            courses: state => state.user.courses
+            loaded: state => state.student.loaded || state.teacher.hasCourse !== null || state.admin.info !== null
         })
     },
     data() {
@@ -57,14 +56,19 @@ export default {
     },
     methods: {
         ...mapActions({ 
-            fetchStudentCourses: 'student/fetchCourses',
+            fetchUserCourseData: 'user/fetchUserCourseData',
+            fetchStudentCourse: 'student/fetchCourse',
             fecthTeacherCourse: 'teacher/fetchCourse',
             fetchAdminCourse: 'admin/fetchCourse'
         }),
-        getData(){
+        async getData(){
             if(this.profile.level === USER){
-                if(this.courses !== null) 
-                    this.fetchStudentCourses()
+                console.log(1)
+                if(this.courses !== null){
+                    console.log(2)
+                    await this.fetchUserCourseData()
+                    await this.fetchStudentCourse()
+                }
             }
             else if(this.profile.level === TEACHER)
                 this.fecthTeacherCourse()
@@ -78,6 +82,7 @@ export default {
         }
     },
     mounted() {
+        console.log('dsd')
         this.getData()
     },
 }
