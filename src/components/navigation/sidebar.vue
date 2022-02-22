@@ -16,7 +16,7 @@
 
         <v-divider></v-divider>
         
-        <sidebar-user v-if="profile.level === USER" class="menu"/>
+        <sidebar-user v-if="view === USER" class="menu"/>
     </v-navigation-drawer>
 </template>
 <script>
@@ -30,7 +30,7 @@ export default {
     },
     computed:{
         ...mapState({
-            profile: state => state.user.profile,
+            view: state => state.view.actual,
             loaded: state => state.student.loaded 
         })
     },

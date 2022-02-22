@@ -1,8 +1,7 @@
 import { auth, db } from '../../plugins/firebase'
 
 const state = {
-    profile: null,
-    view_state: 'USER'
+    profile: null
 }
 
 const getters = {}
@@ -36,7 +35,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             db.doc(`users/${auth.currentUser.uid}`).get()
             .then( async doc => {
-                commit( 'UPDATE_PROFILE', doc.data() )
+                const profile = doc.data()
+                commit( 'UPDATE_PROFILE', profile )
                 return resolve()
             })
             .catch( () => reject() )

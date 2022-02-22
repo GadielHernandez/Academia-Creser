@@ -7,15 +7,15 @@ export default new Vuetify({
     theme: {
         themes: {
             light: {
-                primary: '#2bb20f',
-                secondary: '#262c33',
-                tertiary: '#ffffff',
-                accent: '#997650',
+                primary: '#176cb0',
+                secondary: '#11b9c9',
+                tertiary: '#3f51b5',
+                accent: '#f12b53',
                 background: '#fafaf8',
-                'academia-primary': '#176cb0',
-                'academia-secondary': '#11b9c9',
-                'academia-tertiary': '#3f51b5',
-                'academia-accent': '#f12b53',
+                // 'academia-primary': '#176cb0',
+                // 'academia-secondary': '#11b9c9',
+                // 'academia-tertiary': '#3f51b5',
+                // 'academia-accent': '#f12b53',
             },
         },
         options: {

@@ -1,9 +1,17 @@
 <template>
     <v-app>
-        
+        <div v-if="view === null" class="loading_view">
+            <v-progress-circular
+                :size="70"
+                :width="7"
+                color="primary"
+                indeterminate
+            ></v-progress-circular>
+
+        </div>
         <!-- <Navbar v-if="auth.currentUser"/> -->
-        <sidebar />
-        <v-main class="main-background">
+        <sidebar v-if="view !== null"/>
+        <v-main class="main-background" v-if="view !== null">
             <!-- <navbarApps v-if="auth.currentUser" class="d-none d-md-block mb-3"/>  -->
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
@@ -19,11 +27,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import sidebar from './components/navigation/sidebar.vue'
 import { auth } from './plugins/firebase'
 export default {
     name: 'app',
     components: { sidebar },
+    computed: {
+        ...mapState({
+            view: (state) => state.view.actual
+        })
+    },
     data() {
         return {
             mini: true,
@@ -49,5 +63,13 @@ html, body {
 }
 .h-100{
     height: 100%;
+}
+.loading_view{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 </style>
