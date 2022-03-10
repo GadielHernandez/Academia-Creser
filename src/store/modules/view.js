@@ -1,7 +1,11 @@
 import { goTo, INITAL_ROUTES } from '../../plugins/router-helpers'
 
 const state = {
-    actual: null
+    actual: null,
+    navbar: {
+        title: null,
+        subtitle: null
+    }
 }
 
 const getters = {}

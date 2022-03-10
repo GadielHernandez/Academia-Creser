@@ -1,5 +1,15 @@
 <template>
     <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
+        <Navbar :height="'100px'">
+            <template v-slot:title>
+                <div>
+                    <h2>Hola, {{profile.nickname}} &#x1F44B;</h2>
+                    <p class="my-0 text--secondary text-caption">
+                        Es un gusto verte de nuevo
+                    </p>
+                </div>
+            </template>
+        </Navbar>
         <progressPage v-if="loaded"/>
         <v-progress-circular
             v-else
@@ -13,12 +23,13 @@
 </template>
 
 <script>
+import Navbar from '../../components/navigation/navbar.vue'
 import { USER, atLeastUserIs } from '../../plugins/user-types'
 import { mapState, mapActions } from 'vuex'
 import progressPage from '../../components/user/progress.vue'
 export default {
     name:'Academia',
-    components: { progressPage },
+    components: { progressPage, Navbar },
     computed:{
         ...mapState({
             profile: state => state.user.profile,

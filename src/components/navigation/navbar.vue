@@ -1,18 +1,14 @@
 <template>
     <v-app-bar
+        app
+        outlined
         color="white" 
         flat
-        height="50px"
-        class="px-md-16"
-        app
-        dense
+        class="px-md-16 px-4"
+        :height="height || '50px'"
+        hide-on-scroll
     >
-        
-        <v-img
-            max-width="100"
-            contain
-            src="@/assets/logo.png"
-        ></v-img>
+        <slot name="title" />
         
         <v-spacer></v-spacer>
 
@@ -24,7 +20,7 @@
             <template v-slot:activator="{ on, attrs }">
                 <v-btn v-bind="attrs" v-on="on" icon>
                     <v-avatar>
-                        <v-icon color="secondary">mdi-account-circle</v-icon>
+                        <v-icon>mdi-account-circle</v-icon>
                     </v-avatar>
                 </v-btn>
             </template>
@@ -54,6 +50,7 @@
 import { mapActions, mapState } from 'vuex'
 export default {
     name: 'navbar',
+    props: ['height'],
     computed:{
         ...mapState({ profile: state => state.user.profile })
     },

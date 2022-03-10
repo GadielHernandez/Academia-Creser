@@ -9,10 +9,8 @@
             ></v-progress-circular>
 
         </div>
-        <!-- <Navbar v-if="auth.currentUser"/> -->
         <sidebar v-if="view !== null"/>
         <v-main class="main-background" v-if="view !== null">
-            <!-- <navbarApps v-if="auth.currentUser" class="d-none d-md-block mb-3"/>  -->
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
             </v-container>
@@ -53,7 +51,7 @@ html, body {
     width: 100%;
 }
 .main-background{
-    background-color: var(--v-background-base);
+    background-color: white;
 }
 .v-card{
     border-radius: 15px !important;
@@ -69,6 +67,11 @@ html, body {
     width: 100vw;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.center-vertical{
+    display: flex;
     flex-direction: column;
     justify-content: center;
 }
