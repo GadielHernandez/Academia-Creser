@@ -1,173 +1,180 @@
 <template>
     <div class="main-background mx-1">
         <v-row>
-            <v-col v-if="lessons != null" cols="12" md="9" order-md="last" class="video" :class="{ 'd-flex': actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null}">
-                <youtube 
-                    ref="video"
-                    class="border"
-                    @paused="videoPaused"
-                    @ended="videoEnded" 
-                    :player-vars="{ modestbranding: 1, rel: 0, iv_load_policy: 3, showinfo: 0}" 
-                    :width="actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
-                    :height="actual_video == null  || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
-                ></youtube>
-                <div v-if="actual_video == null" class="ma-auto font-weight-bold blue-grey--text text-center">
-                    <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-format-list-checks</v-icon>
-                    <p>Selecciona una clase</p>
+            <v-col v-if="lessons != null" cols="12" md="8" class="video-container">
+                <div class="video" :class="{ 'not-video': actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null}">
+                    <youtube 
+                        ref="video"
+                        class="border"
+                        @paused="videoPaused"
+                        @ended="videoEnded" 
+                        :player-vars="{ modestbranding: 1, rel: 0, iv_load_policy: 3, showinfo: 0}" 
+                        :width="actual_video == null || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
+                        :height="actual_video == null  || !actual_video.hasOwnProperty('video_id') || actual_video.video_id == null ? '0%' : '100%'"
+                    ></youtube>
+                    <div v-if="actual_video == null" class="ma-auto font-weight-bold blue-grey--text text-center">
+                        <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-format-list-checks</v-icon>
+                        <p>Selecciona una clase</p>
+                    </div>
+                    <div v-else-if="actual_video.video_id == null" class="ma-auto font-weight-bold blue-grey--text text-center">
+                        <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-crop-landscape</v-icon>
+                        <p>No existe video asignado</p>
+                    </div>
+                    <transition name="fade">
+                        <v-btn fab dark x-large color="success" class="icon-completed" v-if="show_complete">
+                            <v-icon dark>mdi-check</v-icon>
+                        </v-btn>
+                    </transition>
                 </div>
-                <div v-else-if="actual_video.video_id == null" class="ma-auto font-weight-bold blue-grey--text text-center">
-                    <v-icon x-large class=" font-weight-bold blue-grey--text">mdi-crop-landscape</v-icon>
-                    <p>No existe video asignado</p>
+                <div v-if="actual_video" class="d-flex description">
+                    <v-row class="my-auto">
+                        <v-col cols="12" md="9" sm="6">
+                            <v-list-item class="px-0">
+                                <v-list-item-avatar color="secondary rounded-lg" >
+                                    <v-icon class="white--text" v-if="actual_video.type === ONLINE">mdi-laptop</v-icon>
+                                    <v-icon class="white--text" v-if="actual_video.type === FACETOFACE">mdi-account-group</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-h6">{{ actual_video.name }}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ actual_video.description }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-col>
+                        <v-col class="text-right">
+                            <p class="mb-1">
+                                <v-chip label small color="primary">
+                                    {{ actual_video.type === ONLINE ? 'CLASE ONLINE': 'CLASE PRESCENCIAL' }}
+                                </v-chip>
+                            </p>
+                            <p class="my-0 text-caption">
+                                <v-chip label small color="success" v-if="actual_video.type === FACETOFACE && completed.find( l => l.id == actual_video.id ).completed === 'ATTENDANCE'">ASISTENCIA</v-chip>
+                                <v-chip label small color="warning" v-if="actual_video.type === FACETOFACE && completed.find( l => l.id == actual_video.id ).completed === 'OUT_TIME'">RETARDO</v-chip>
+                                <v-chip label small color="red" v-if="actual_video.type === FACETOFACE && completed.find( l => l.id == actual_video.id ).completed === 'NO_ATTENDANCE'">FALTA</v-chip>
+                                <v-chip label small v-if="actual_video.type === FACETOFACE && completed.find( l => l.id == actual_video.id ).completed === undefined">PENDIENTE</v-chip>
+                                <v-chip label small color="success" v-if="actual_video.type === ONLINE && seens.find( l => l.id == actual_video.id ).seen" > VISTA </v-chip>
+                                <v-chip label small v-if="actual_video.type === ONLINE && !seens.find( l => l.id == actual_video.id ).seen" > NO VISTA </v-chip>
+                            </p>
+                        </v-col>
+                    </v-row>
                 </div>
-                <transition name="fade">
-                    <v-btn fab dark x-large color="success" class="icon-completed" v-if="show_complete">
-                        <v-icon dark>mdi-check</v-icon>
-                    </v-btn>
-                </transition>
             </v-col>
-            <v-col v-if="lessons != null" class="h-100" cols="12" md="3">
+            <v-col v-if="lessons != null" class="h-100" cols="12" md="4">
                 <v-card>
                     <v-card-text class="pa-1 menu-lessons">
-                        <v-list nav>
-                            <v-list-item dense>
-                                <v-list-item-content class="academia-primary--text text-caption font-weight-bold">
-                                    LISTA DE CLASES 
-                                </v-list-item-content>
-                                <div class="text-right d-flex">
-                                    <v-menu
-                                        v-model="menu_information"
-                                    >
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-btn
-                                                icon
-                                                v-bind="attrs"
-                                                v-on="on"
-                                            >
-                                                <v-icon>mdi-information</v-icon>
-                                            </v-btn>
-                                        </template>
+                        <v-app-bar color="white" dense flat absolute class="primary--text font-weight-bold" >
+                            Clases disponibles
+                            <v-spacer></v-spacer>
+                            <v-menu v-model="menu_information">
+                               <template v-slot:activator="{ on, attrs }">
+                                   <v-btn
+                                       icon
+                                       v-bind="attrs"
+                                       v-on="on"
+                                   >
+                                       <v-icon>mdi-information</v-icon>
+                                   </v-btn>
+                               </template>
 
-                                        <v-card class="rounded">
-                                            <v-card-text>
-                                                <v-row>
-                                                    <v-col class="pb-0">
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Tipos de clases</p>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col>
-                                                        <v-list-item dense>
-                                                            <v-list-item-avatar color="blue-grey">
-                                                                <v-icon class="white--text">mdi-laptop</v-icon>
-                                                            </v-list-item-avatar>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title>Clase virtual</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <v-list-item dense>
-                                                            <v-list-item-avatar color="academia-primary">
-                                                                <v-icon class="white--text">mdi-account-group</v-icon>
-                                                            </v-list-item-avatar>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title>Clase Prescencial</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col class="pb-0">
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Clases virtual</p>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col>
-                                                        <v-list-item dense>
-                                                            <v-list-item-avatar color="blue-grey">
-                                                                <v-icon class="white--text">mdi-laptop</v-icon>
-                                                            </v-list-item-avatar>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title>Clase no vista</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <v-list-item dense>
-                                                            <v-list-item-avatar color="success">
-                                                                <v-icon class="white--text">mdi-laptop</v-icon>
-                                                            </v-list-item-avatar>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title>Clase vista</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col>
-                                                        <p class="academia-primary--text ma-0 text-caption font-weight-bold">Clases prenscenciales</p>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col class="py-1">
-                                                        <v-list-item dense>
-                                                            <v-icon color="blue-grey">mdi-checkbox-blank</v-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title class="ml-6">Sin valor</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col class="py-1">
-                                                        <v-list-item dense>
-                                                            <v-icon color="red">mdi-checkbox-blank</v-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title class="ml-6">Falta</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col class="py-1">
-                                                        <v-list-item dense>
-                                                            <v-icon color="warning">mdi-checkbox-blank</v-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title class="ml-6">Retardo</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-row>
-                                                    <v-col class="py-1">
-                                                        <v-list-item dense>
-                                                            <v-icon color="success">mdi-checkbox-blank</v-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title class="ml-6">Asistencia</v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-menu>
-                                </div>
-                            </v-list-item>
+                                <v-card class="rounded">
+                                    <v-card-text>
+                                        <v-row>
+                                            <v-col class="pb-0">
+                                                <p class="primary--text ma-0 text-caption font-weight-bold">CLASES PRESCENCIALES</p>
+                                                <v-divider></v-divider>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="6">
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined">
+                                                        <v-icon class="white--text">mdi-account-group</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Pendiente</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green">
+                                                        <v-icon class="white--text">mdi-account-group</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Asistencia</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-yellow">
+                                                        <v-icon class="white--text">mdi-account-group</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Retardo</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-red">
+                                                        <v-icon class="white--text">mdi-account-group</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Falta</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col class="pb-0">
+                                                <p class="primary--text ma-0 text-caption font-weight-bold">CLASES VIRTUALES</p>
+                                                <v-divider></v-divider>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined">
+                                                        <v-icon class="white--text">mdi-laptop</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Clase no vista</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                            <v-col>
+                                                <v-list-item dense>
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green">
+                                                        <v-icon class="white--text">mdi-laptop</v-icon>
+                                                    </v-list-item-avatar>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Clase vista</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </v-menu>
+                        </v-app-bar>
+                        <v-divider class="mt-10"></v-divider>
+                        <v-list nav>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar :color="lesson.type === FACETOFACE ? 'academia-primary' : seens.find( l => l.id == lesson.id ).seens">
-                                        <v-icon class="white--text" v-if="lesson.type === ONLINE">mdi-laptop</v-icon>
-                                        <v-icon class="white--text" v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
+                                    <v-list-item-avatar color="secondary icon-lesson rounded-lg" tile>
+                                        <v-icon class="white--text icon-lesson-border-undefined" :class="{ 'icon-lesson-border-green': seens.find( l => l.id == lesson.id ).seen }" v-if="lesson.type === ONLINE">mdi-laptop</v-icon>
+                                        <v-icon class="white--text icon-lesson-border-undefined"
+                                         :class="{
+                                             'icon-lesson-border-green': completed.find( l => l.id == lesson.id ).completed === 'ATTENDANCE',
+                                             'icon-lesson-border-yellow': completed.find( l => l.id == lesson.id ).completed === 'OUT_TIME',
+                                             'icon-lesson-border-red': completed.find( l => l.id == lesson.id ).completed === 'NO_ATTENDANCE'
+                                        }"
+                                        v-if="lesson.type === FACETOFACE">mdi-account-group</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-title>{{ lesson.name }}</v-list-item-title>
                                         <v-list-item-subtitle>{{ lesson.description }}</v-list-item-subtitle>
                                     </v-list-item-content>
-                                    <v-list-item-action>
-                                        <v-btn icon v-if="lesson.type === FACETOFACE">
-                                            <v-icon :color="completed.find( l => l.id == lesson.id ).completed">mdi-checkbox-blank</v-icon>
-                                        </v-btn>
-                                    </v-list-item-action>
                                 </v-list-item>
                             </v-list-item-group>
                         </v-list>
@@ -197,27 +204,27 @@ export default {
         ...mapState({ 
             lessons: state => state.student.lessons,
             seens(state){
-                const lessons = state.student.lessons.map( lesson => ({ id: lesson.id, seens: 'blue-grey' }))
+                const lessons = state.student.lessons.map( lesson => ({ id: lesson.id, seen: false }))
                 const seens = state.student.lessons_seen
                 if(seens != undefined){
                     lessons.forEach(lesson => {
                         const index = seens.findIndex( l => l === lesson.id )
                         if(index >= 0) 
-                            lesson.seens = 'success'
+                            lesson.seen = true
                     })
                 }
                 return lessons
             },
             completed(state){
-                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: 'blue-grey' }))
+                const completed = state.student.lessons.map( lesson => ({ id: lesson.id, completed: undefined }))
                 const progress = state.student.group.progress[ATTENDANCE]
                 if(progress != undefined){
                     completed.forEach(lesson => {
                         const index = progress.findIndex( p => p.id === lesson.id )
                         if(index >= 0) {
-                            lesson.completed = 'success'
-                            if(progress[index].out_of_time) lesson.completed = 'warning'
-                            if(progress[index].no_attendance) lesson.completed = 'red'
+                            lesson.completed = 'ATTENDANCE'
+                            if(progress[index].out_of_time) lesson.completed = 'OUT_TIME'
+                            if(progress[index].no_attendance) lesson.completed = 'NO_ATTENDANCE'
                         }
                     });
                 }
@@ -286,7 +293,7 @@ export default {
 
 <style>
 .menu-lessons{
-    height:70vh;
+    height:90vh;
     overflow-y: scroll;
     -ms-overflow-style: none; 
     scrollbar-width: none; 
@@ -295,20 +302,27 @@ export default {
     display: none;
 }
 .lesson-selected{
-    background-color: var(--v-academia-primary-base) !important;
+    background-color: var(--v-primary-base) !important;
     color: white !important;
 }
 .lesson-selected > div > div {
     color: white !important;
 }
+.video-container{
+    min-height: 90vh;
+}
 .video{
     position: relative;
-    min-height: 50vh;
+    height: 75vh;
     border-radius: 10px;
     overflow: hidden;
 }
-.hide-video{
-    visibility: hidden;
+.not-video{
+    display: flex;
+    border: 1px solid rgba(0,0,0,.12);
+}
+.description{
+    min-height: 15vh;
 }
 iframe{
     border-radius: 15px;
@@ -325,5 +339,23 @@ iframe{
     right: 0;
     top: 43%;
     text-align: center;
+}
+.border-icon-leeson{
+    border: 2px red solid;
+}
+.icon-lesson{
+    overflow: visible;
+}
+.icon-lesson-border-undefined{
+    outline: 5px solid #00000087;
+}
+.icon-lesson-border-green{
+    outline: 5px solid #1d9f22 !important;
+}
+.icon-lesson-border-yellow{
+    outline: 5px solid var(--v-warning-base) !important;
+}
+.icon-lesson-border-red{
+    outline: 5px solid var(--v-error-base) !important;
 }
 </style>
