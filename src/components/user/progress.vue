@@ -98,10 +98,10 @@
             <v-col>
                 <v-card outlined flat>
                     <v-row class="px-3">
-                        <v-col cols="12" md="9" class="d-flex">
+                        <v-col cols="12" sm="6" md="9" class="d-flex">
                             <p class="my-auto font-weight-bold ml-md-6 mx-auto mx-md-0">Calificación:</p>
                         </v-col>
-                        <v-col cols="12" md="2">
+                        <v-col cols="12" sm="5" md="2">
                             <p class="ma-0 text-center">
                                 <span
                                     class="font-weight-bold text-h5"
@@ -117,7 +117,7 @@
                                 </span>
                             </p>
                         </v-col>
-                        <v-col cols="12" md="1" class="py-0 text-center d-flex">
+                        <v-col cols="12" sm="1" md="1" class="py-0 text-center d-flex">
                             <v-icon v-if="total <= 50" color="orange" class="ma-auto">
                                 mdi-alert-decagram
                             </v-icon>
@@ -128,14 +128,14 @@
                     </v-row>
                     <v-divider class="d-none d-md-block"></v-divider>
                     <v-card-text class="pa-0">
-                        <v-row class="d-none d-md-flex px-3">
-                            <v-col cols="5" class="py-0 text-center">
+                        <v-row class="d-none d-sm-flex px-3">
+                            <v-col cols="5" sm="4" class="py-0 text-center">
                                 <p class="text-caption my-0">Criterio de evaluación</p>
                             </v-col>
-                            <v-col cols="4" class="py-0 text-center">
+                            <v-col cols="4" sm="4" class="py-0 text-center">
                                 <p class="text-caption my-0">Avance</p>
                             </v-col>
-                            <v-col cols="2" class="py-0 text-center">
+                            <v-col cols="2" sm="2" class="py-0 text-center">
                                 <p class="text-caption my-0">Puntos</p>
                             </v-col>
                         </v-row>
@@ -145,13 +145,13 @@
                             v-for="cr in criteria"
                             :key="cr.name"
                         >
-                            <v-col cols="3" md="1" class="center-vertical">
+                            <v-col cols="3" sm="1" md="1" class="center-vertical">
                                 <v-icon color="primary" class="ml-5">{{ cr.icon }}</v-icon>
                             </v-col>
-                            <v-col cols="9" md="4" class="center-vertical">
+                            <v-col cols="9" sm="3" md="4" class="center-vertical">
                                 <p class="ma-0">{{ cr.name }}</p>
                             </v-col>
-                            <v-col cols="12" md="4" class="center-vertical">
+                            <v-col cols="12" sm="4" md="4" class="center-vertical">
                                 <v-progress-linear
                                     :value="cr.name === ATTENDANCE 
                                         ? (cr.completed + cr.out_of_time + cr.not_attendance) / cr.number * 100
@@ -172,7 +172,7 @@
                                     </template>
                                 </v-progress-linear>
                             </v-col>
-                            <v-col cols="12" md="2" class="center-vertical">
+                            <v-col cols="12" sm="2" md="2" class="center-vertical">
                                 <p class="ma-0 font-weight-bold primary--text text-h6 text-center">
                                     {{ cr.points.toFixed(2) }} 
                                     <span class="text-caption text--secondary"> 
