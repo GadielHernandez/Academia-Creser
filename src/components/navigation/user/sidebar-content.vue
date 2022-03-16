@@ -2,7 +2,7 @@
     <div>
         <v-list nav class="menu mx-3">
             <v-list-item-group mandatory class="group" active-class="selected">
-                <v-list-item class="">
+                <v-list-item @click="goTo('student-home')">
                     <v-list-item-icon>
                         <v-icon>mdi-home</v-icon>
                     </v-list-item-icon>
@@ -11,7 +11,7 @@
                         <v-list-item-title>Progreso</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item class="" >
+                <v-list-item @click="goTo('student-classes')" >
                     <v-list-item-icon>
                         <v-icon>mdi-video</v-icon>
                     </v-list-item-icon>
@@ -43,6 +43,20 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'sidebar-student',
+    methods: {
+        goTo(routeName){
+            if(this.$route.name === routeName)
+                return
+            
+            this.$router.push({ name: routeName })
+        }
+    }
+}
+</script>
+
 <style scoped>
 .menu{
     width: 100%;
@@ -53,6 +67,6 @@
     margin: auto;
 }
 .selected{
-    color: var(--v-academia-primary-base)
+    color: var(--v-primary-base) !important
 }
 </style>
