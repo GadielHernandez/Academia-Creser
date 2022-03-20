@@ -28,7 +28,7 @@
                 </div>
                 <div v-if="actual_video" class="d-flex description">
                     <v-row class="my-auto">
-                        <v-col cols="12" md="9" sm="6">
+                        <v-col cols="12" md="9" sm="8">
                             <v-list-item class="px-0">
                                 <v-list-item-avatar color="secondary rounded-lg" >
                                     <v-icon class="white--text" v-if="actual_video.type === ONLINE">mdi-laptop</v-icon>
@@ -40,7 +40,7 @@
                                 </v-list-item-content>
                             </v-list-item>
                         </v-col>
-                        <v-col class="text-right">
+                        <v-col class="text-left text-sm-right" cols="12" md="3" sm="4">
                             <p class="mb-1">
                                 <v-chip label small color="primary">
                                     {{ actual_video.type === ONLINE ? 'CLASE ONLINE': 'CLASE PRESCENCIAL' }}

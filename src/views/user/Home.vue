@@ -68,12 +68,6 @@ export default {
 .Academia{
     height: 100%;
 }
-.v-tabs{
-    border-bottom: 1px solid var(--v-background-darken1) !important;
-}
-.v-tab{
-    text-transform: none !important;
-}
 .loading{
     height: 85vh;
 }

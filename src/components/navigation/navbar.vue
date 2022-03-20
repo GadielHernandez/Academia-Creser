@@ -1,12 +1,10 @@
 <template>
     <v-app-bar
-        app
         outlined
         color="white" 
         flat
-        class="px-md-16 px-4"
-        :height="height || '50px'"
-        hide-on-scroll
+        class="px-0 py-3 navbar"
+        height="unset"
     >
         <slot name="title" />
         
@@ -67,3 +65,10 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+header.navbar > div{
+    padding-left: 0 !important;
+    padding-right: 0;
+}
+</style>
