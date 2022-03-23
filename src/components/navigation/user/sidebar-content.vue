@@ -20,7 +20,7 @@
                         <v-list-item-title>Clases</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item class="" >
+                <v-list-item @click="goTo('student-tasks')">
                     <v-list-item-icon>
                         <v-icon>mdi-clipboard-list-outline</v-icon>
                     </v-list-item-icon>

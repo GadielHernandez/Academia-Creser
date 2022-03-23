@@ -82,7 +82,6 @@ const actions = {
             db.collection(`courses/${state.course_id}/tasks`).where('available_after', '<', now - state.group.starts ).get()
             .then( tasks => {
                 commit( 'UPDATE_TASKS', tasks.docs.map( t => ({ id: t.id, ...t.data(), course_start: state.group.starts }) ) )
-
                 if(state.initial_user_data.tasks){
                     state.initial_user_data.tasks.forEach( task => {
                         commit('UPDATE_TASK_RESPONSE', task)
@@ -208,7 +207,7 @@ const mutations = {
         state.loaded = payload
     },
     SET_INITAL_USER_DATA(state, payload){
-        state.intial_progress = payload
+        state.initial_user_data = payload
     },
     UPDATE_COURSE(state, payload){
         state.info = payload

@@ -30,7 +30,7 @@
                     <v-row class="my-auto">
                         <v-col cols="12" md="9" sm="8">
                             <v-list-item class="px-0">
-                                <v-list-item-avatar color="secondary rounded-lg" >
+                                <v-list-item-avatar color="primary rounded-lg" >
                                     <v-icon class="white--text" v-if="actual_video.type === ONLINE">mdi-laptop</v-icon>
                                     <v-icon class="white--text" v-if="actual_video.type === FACETOFACE">mdi-account-group</v-icon>
                                 </v-list-item-avatar>
@@ -42,7 +42,7 @@
                         </v-col>
                         <v-col class="text-left text-sm-right" cols="12" md="3" sm="4">
                             <p class="mb-1">
-                                <v-chip label small color="primary">
+                                <v-chip label small color="secondary">
                                     {{ actual_video.type === ONLINE ? 'CLASE ONLINE': 'CLASE PRESCENCIAL' }}
                                 </v-chip>
                             </p>
@@ -86,7 +86,7 @@
                                         <v-row>
                                             <v-col cols="6">
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-account-group</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -96,7 +96,7 @@
                                             </v-col>
                                             <v-col cols="6">
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-account-group</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -106,7 +106,7 @@
                                             </v-col>
                                             <v-col cols="6">
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-yellow">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-yellow icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-account-group</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -116,7 +116,7 @@
                                             </v-col>
                                             <v-col cols="6">
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-red">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-red icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-account-group</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -134,7 +134,7 @@
                                         <v-row>
                                             <v-col>
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-undefined icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-laptop</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -144,7 +144,7 @@
                                             </v-col>
                                             <v-col>
                                                 <v-list-item dense>
-                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green">
+                                                    <v-list-item-avatar color="primary" class="icon-lesson-border-green icon-lesson rounded-lg" tile>
                                                         <v-icon class="white--text">mdi-laptop</v-icon>
                                                     </v-list-item-avatar>
                                                     <v-list-item-content>
@@ -161,7 +161,7 @@
                         <v-list nav>
                             <v-list-item-group v-model="selected" active-class="lesson-selected">
                                 <v-list-item v-for="lesson in lessons" :key="lesson.name">
-                                    <v-list-item-avatar color="secondary icon-lesson rounded-lg" tile>
+                                    <v-list-item-avatar color="primary icon-lesson rounded-lg" tile>
                                         <v-icon class="white--text icon-lesson-border-undefined" :class="{ 'icon-lesson-border-green': seens.find( l => l.id == lesson.id ).seen }" v-if="lesson.type === ONLINE">mdi-laptop</v-icon>
                                         <v-icon class="white--text icon-lesson-border-undefined"
                                          :class="{
@@ -347,7 +347,7 @@ iframe{
     overflow: visible;
 }
 .icon-lesson-border-undefined{
-    outline: 5px solid #00000087;
+    outline: 5px solid #7878787a;
 }
 .icon-lesson-border-green{
     outline: 5px solid #1d9f22 !important;
