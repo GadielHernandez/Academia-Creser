@@ -29,7 +29,7 @@
                         <v-list-item-title>Tareas</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item class="" >
+                <v-list-item @click="goTo('student-exams')">
                     <v-list-item-icon>
                         <v-icon>mdi-clipboard-check</v-icon>
                     </v-list-item-icon>

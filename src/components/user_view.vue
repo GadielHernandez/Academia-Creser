@@ -48,7 +48,7 @@
 import Progress from './user/progress.vue'
 import Lessons from './user/lessons.vue'
 import Tasks from './user/tasks.vue'
-import Examns from './user/examns.vue'
+import Examns from './user/exams.vue'
 import { mapState } from 'vuex'
 export default {
     name: 'Academia-user',

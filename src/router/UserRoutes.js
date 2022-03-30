@@ -3,6 +3,7 @@ import { USER } from '../plugins/user-types'
 import HomeView from '../views/user/Home'
 import ClassesView from '../views/user/Lessons'
 import TasksView from '../views/user/Tasks'
+import ExamsView from '../views/user/Exams'
 
 const Routes = [
     createRoute({
@@ -21,6 +22,12 @@ const Routes = [
         name: 'student-tasks',
         path: '/student/tasks',
         view: TasksView,
+        level: USER
+    }),
+    createRoute({
+        name: 'student-exams',
+        path: '/student/exams',
+        view: ExamsView,
         level: USER
     })
 ]
