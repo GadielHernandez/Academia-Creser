@@ -1,6 +1,7 @@
 <template>
     <div class="mx-1 main-background">
-        <v-row v-if="progress.items.length > 0">
+        {{ progress.items }}
+        <v-row v-if="progress.items && progress.items.length > 0">
             <v-col>
                 <v-card class="py-1">
                     <v-data-table
@@ -144,11 +145,11 @@ export default {
     },
     methods: {
         ...mapActions({ 
-            getExams: 'teacher/fetchExams'
+            getData: 'teacher/fetchCourse'
         })
     },
     async mounted() {
-        this.getExams()
+        this.getData()
     },
 }
 </script>
