@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { authorization } from './middlewares'
+import { authorization, levelValidation } from './middlewares'
 import UserRoutes from './UserRoutes'
+import TeacherRoutes from './TeacherRoutes'
 
 Vue.use(VueRouter)
 
 const routes = [
-    ...UserRoutes
+    ...UserRoutes,
+    ...TeacherRoutes
 ]
 
 const router = new VueRouter({
@@ -18,8 +20,12 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	const auth = authorization(to)
     if(!auth.approve)
-        next(auth.redirect)
+        return next(auth.redirect)
     
+    const validLevel = levelValidation(to)
+    if(!validLevel)
+        return next(validLevel.redirect)
+
     next()
 })
 

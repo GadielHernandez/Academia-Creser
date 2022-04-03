@@ -118,18 +118,18 @@
                             </p>
                         </v-col>
                         <v-col cols="12" sm="1" md="1" class="py-0 text-center d-flex">
-                            <v-icon v-if="total <= 50" color="orange" class="ma-auto">
+                            <!-- <v-icon v-if="total <= 50" color="orange" class="ma-auto">
                                 mdi-alert-decagram
                             </v-icon>
                             <v-icon v-else color="green" class="ma-auto">
                                 mdi-check-decagram
-                            </v-icon>
+                            </v-icon> -->
                         </v-col>
                     </v-row>
                     <v-divider class="d-none d-md-block"></v-divider>
                     <v-card-text class="pa-0">
                         <v-row class="d-none d-sm-flex px-3">
-                            <v-col cols="5" sm="4" class="py-0 text-center">
+                            <v-col cols="5" sm="5" class="py-0 text-center">
                                 <p class="text-caption my-0">Criterio de evaluación</p>
                             </v-col>
                             <v-col cols="4" sm="4" class="py-0 text-center">
@@ -141,7 +141,7 @@
                         </v-row>
                         <v-divider></v-divider>
                         <v-row
-                            class="py-1 px-3"
+                            class="py-2 px-3"
                             v-for="cr in criteria"
                             :key="cr.name"
                         >

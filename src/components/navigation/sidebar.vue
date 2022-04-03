@@ -17,16 +17,19 @@
         <v-divider></v-divider>
         
         <sidebar-user v-if="view === USER" class="menu"/>
+        <sidebar-teacher v-if="view === TEACHER" class="menu"/>
     </v-navigation-drawer>
 </template>
 <script>
 import { USER, TEACHER, ADMIN, atLeastUserIs } from '../../plugins/user-types'
 import userContent from './user/sidebar-content.vue'
+import teacherContent from './teacher/sidebar-content.vue'
 import { mapState } from 'vuex'
 export default {
     name:'sidebar',
     components: { 
-        'sidebar-user': userContent
+        'sidebar-user': userContent,
+        'sidebar-teacher': teacherContent
     },
     computed:{
         ...mapState({

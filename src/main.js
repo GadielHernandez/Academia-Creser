@@ -15,8 +15,8 @@ auth.onAuthStateChanged(async () => {
     if (!app) {
         app = new Vue({
             vuetify,
-            router,
             store,
+            router,
             render: (h) => h(App)
         }).$mount('#app')
     }
