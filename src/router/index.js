@@ -3,12 +3,18 @@ import VueRouter from 'vue-router'
 import { authorization, levelValidation } from './middlewares'
 import UserRoutes from './UserRoutes'
 import TeacherRoutes from './TeacherRoutes'
+import Login from '../views/Login'
 
 Vue.use(VueRouter)
 
 const routes = [
     ...UserRoutes,
-    ...TeacherRoutes
+    ...TeacherRoutes,
+    {
+        name: 'login',
+        path: '/login',
+        component: Login
+    }
 ]
 
 const router = new VueRouter({

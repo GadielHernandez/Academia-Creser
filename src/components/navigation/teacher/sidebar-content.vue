@@ -8,10 +8,10 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                        <v-list-item-title>Progreso</v-list-item-title>
+                        <v-list-item-title>Alumnos</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item >
+                <v-list-item @click="goTo('teacher-lessons')">
                     <v-list-item-icon>
                         <v-icon>mdi-video</v-icon>
                     </v-list-item-icon>
@@ -20,7 +20,16 @@
                         <v-list-item-title>Clases</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item>
+                <v-list-item @click="goTo('teacher-attendance')">
+                    <v-list-item-icon>
+                        <v-icon>mdi-clipboard-list-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Asistencias</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="goTo('teacher-tasks')">
                     <v-list-item-icon>
                         <v-icon>mdi-clipboard-list-outline</v-icon>
                     </v-list-item-icon>
@@ -29,7 +38,7 @@
                         <v-list-item-title>Tareas</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item >
+                <v-list-item @click="goTo('teacher-exams')">
                     <v-list-item-icon>
                         <v-icon>mdi-clipboard-check</v-icon>
                     </v-list-item-icon>
