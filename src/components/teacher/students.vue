@@ -1,19 +1,163 @@
 <template>
     <div class="mx-1 main-background">
-        {{ progress.items }}
+        <v-row>
+            <v-col>
+                <v-card class="py-2" flat color="background">
+                    <v-list-item two-line>
+                        <v-list-item-avatar
+                            tile
+                            color="secondary"
+                            class="rounded"
+                        >
+                            <v-icon color="white"> mdi-calendar-start </v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-subtitle class="text-caption">
+                                Inicio del curso:
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-caption font-weight-medium"
+                            >
+                                {{ new Date(course.starts).toLocaleDateString()  }}
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col>
+                <v-card class="py-2" flat color="background">
+                    <v-list-item two-line>
+                        <v-list-item-avatar
+                            tile
+                            color="secondary"
+                            class="rounded"
+                        >
+                            <v-icon color="white">
+                                mdi-calendar-end
+                            </v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-subtitle class="text-caption">
+                                Fin del curso:
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-caption font-weight-medium"
+                            >
+                                {{ new Date(course.ends).toLocaleDateString() }}
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col>
+                <v-card class="py-2" flat color="background">
+                    <v-list-item two-line>
+                        <v-list-item-avatar
+                            tile
+                            color="secondary"
+                            class="rounded"
+                        >
+                            <v-icon color="white"> mdi-account-group </v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-subtitle class="text-caption">
+                                Alumnos
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-caption font-weight-medium"
+                                v-if="progress.items"
+                                >{{ progress.items.length }}
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="pb-0">
+                <p class="my-1 font-weight-bold ml-3">Alumnos</p>
+            </v-col>
+        </v-row>
         <v-row v-if="progress.items && progress.items.length > 0">
             <v-col>
-                <v-card class="py-1">
-                    <v-data-table
-                        :headers="progress.headers"
-                        :items="progress.items"
-                        :items-per-page="20"
-                    >
-                        <template v-slot:item.final="{ item }">
-                            {{ item.final === null ? 'No' : 'Si' }}
-                        </template>
-                    </v-data-table>
-                </v-card>
+                <v-list>
+                    <v-divider></v-divider>
+                    <template v-for="(student, index) in progress.items" >
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="student.id"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                                <v-icon dark>mdi-account</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ student.name }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Nombre
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-content v-if="$vuetify.breakpoint.mdAndUp">
+                                <v-list-item-title>
+                                    {{ student.email }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Correo
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-list-item-title class="font-weight-bold">
+                                    <span :class="{
+                                        'warning--text': student.grade <= 70,
+                                        'green--text': student.grade > 70
+                                    }">{{ student.grade }}</span>
+                                    <v-menu
+                                        open-on-hover
+                                        top
+                                        offset-y
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-icon 
+                                                small
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                class="ml-1"
+                                            >mdi-information-outline</v-icon>
+                                        </template>
+
+                                        <v-card>
+                                            <v-card-text>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Asistencias: {{ student.attendances }}
+                                                </p>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Retardos: {{ student.out_of_time }}
+                                                </p>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Faltas: {{ student.no_attendance }}
+                                                </p>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Tareas: {{ student.tasks }}
+                                                </p>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Examenes: {{ student.exams }}
+                                                </p>
+                                                <p class="mb-1 text-caption font-weight-bold">
+                                                    Examen final: {{ student.final ?  student.final.grade : 'No'}}
+                                                </p>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-menu>
+                                </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Calificación
+                                </v-list-item-subtitle>
+                            </v-list-item-action>
+                        </v-list-item>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
             </v-col>
         </v-row>
         <div v-else class="no-students d-flex">
@@ -26,13 +170,17 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../plugins/criteria-types'
 
 export default {
     name: 'Students',
     computed: {
         ...mapState({
+            course: state => ({
+                starts: state.teacher.course.starts,
+                ends: state.teacher.course.ends
+            }),
             progress: (state) => {
                 const students = state.teacher.course.students
                 const progress = state.teacher.course.progress
@@ -110,6 +258,7 @@ export default {
                 const items = students.map( student => ({
                     id: student.id,
                     name: student.name,
+                    email: student.email,
                     attendances: attendaces_obj[student.id] ? attendaces_obj[student.id].attendances : 0,
                     out_of_time: attendaces_obj[student.id] ? attendaces_obj[student.id].out_of_time : 0,
                     no_attendance: attendaces_obj[student.id] ? attendaces_obj[student.id].no_attendance : 0,
@@ -142,15 +291,7 @@ export default {
                 }
             }
         }),
-    },
-    methods: {
-        ...mapActions({ 
-            getData: 'teacher/fetchCourse'
-        })
-    },
-    async mounted() {
-        this.getData()
-    },
+    }
 }
 </script>
 
