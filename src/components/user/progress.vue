@@ -96,36 +96,83 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card outlined flat>
-                    <v-row class="px-3">
-                        <v-col cols="12" sm="6" md="9" class="d-flex">
-                            <p class="my-auto font-weight-bold ml-md-6 mx-auto mx-md-0">Calificación:</p>
-                        </v-col>
-                        <v-col cols="12" sm="5" md="2">
-                            <p class="ma-0 text-center">
-                                <span
-                                    class="font-weight-bold text-h5"
-                                    :class="{
-                                        'orange--text': total <= 50,
-                                        'green--text': total > 50,
-                                    }"
+                <v-card outlined style="overflow: hidden">
+                    <v-card class="py-2 rounded-br-0 rounded-bl-0" color="primary" dark>
+                        <v-list-item>
+                            <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                                <v-icon dark>mdi-equal-box</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title class="font-weight-bold">
+                                    Calificación
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action  class="mr-0 mr-md-6">
+                                <v-list-item-title class="font-weight-bold text-h4 mx-auto">
+                                    {{total}} <span class="text-caption">/ 100 </span>
+                                </v-list-item-title>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-card>
+                
+                    <v-card-text class="pa-0 rounded-lg">
+                        <v-list class="rounded-lg">
+                            <template v-for="(cr) in criteria">
+                                <v-list-item
+                                    class="rounded-lg py-2"
+                                    :key="cr.name"
+                                    @click="showMoreInfo(cr)"
                                 >
-                                    {{ total }}
-                                </span>
-                                <span class="text-caption text--secondary">
-                                    /100
-                                </span>
-                            </p>
-                        </v-col>
-                        <v-col cols="12" sm="1" md="1" class="py-0 text-center d-flex">
-                            <!-- <v-icon v-if="total <= 50" color="orange" class="ma-auto">
-                                mdi-alert-decagram
-                            </v-icon>
-                            <v-icon v-else color="green" class="ma-auto">
-                                mdi-check-decagram
-                            </v-icon> -->
-                        </v-col>
-                    </v-row>
+                                    <v-list-item-avatar tile class="rounded-lg">
+                                        <v-icon color="primary">{{ cr.icon }}</v-icon>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content style="max-width: 30%">
+                                        <v-list-item-title>
+                                            {{ cr.name }}
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle class="text-caption">
+                                            Criterio
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                    <v-list-item-content class="text-center" style="max-width: 30%" v-if="$vuetify.breakpoint.mdAndUp">
+                                        <v-list-item-title class="d-flex">
+                                            <v-progress-linear
+                                                :value="cr.name === ATTENDANCE 
+                                                    ? (cr.completed + cr.out_of_time + cr.not_attendance) / cr.number * 100
+                                                    : cr.completed / cr.number * 100"
+                                                rounded
+                                                hide-details
+                                                color="secondary"
+                                                height="20"
+                                            >
+                                            </v-progress-linear>
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle class="text-caption">
+                                            Progreso: {{  
+                                                cr.name === ATTENDANCE 
+                                                    ? cr.completed + cr.out_of_time + cr.not_attendance 
+                                                    : cr.completed
+                                            }} 
+                                            /{{ cr.number }}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                    <v-spacer ></v-spacer>
+                                    <v-list-item-action class="mr-0 mr-md-6">
+                                        <v-list-item-title class="primary--text text-h6 mx-auto">
+                                            {{ cr.points.toFixed(2) }} <span class="text-caption">/ {{ cr.value }}</span>
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle class="text-caption mx-auto">
+                                            puntos
+                                        </v-list-item-subtitle>
+                                    </v-list-item-action>
+                                </v-list-item>
+                            </template>
+                        </v-list>
+                    </v-card-text>
+                    
+                </v-card>
+                <!-- <v-card outlined flat>
+                    
                     <v-divider class="d-none d-md-block"></v-divider>
                     <v-card-text class="pa-0">
                         <v-row class="d-none d-sm-flex px-3">
@@ -181,13 +228,13 @@
                                 </p>
                             </v-col>
                             <v-col class="text-center">
-                                <v-btn @click="showMoreInfo(cr)" color="white" x-small fab depressed class="text-center pa-0">
+                                <v-btn  color="white" x-small fab depressed class="text-center pa-0">
                                     <v-icon small color="primary">mdi-dots-horizontal</v-icon>
                                 </v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>
-                </v-card>
+                </v-card> -->
             </v-col>
         </v-row>
         <v-dialog v-model="moreInfo.show" max-width="600" scrollable>
