@@ -5,7 +5,7 @@
                 <v-progress-circular
                     :size="60"
                     :width="7"
-                    color="academia-primary"
+                    color="primary"
                     class="ma-auto"
                     indeterminate
                 ></v-progress-circular>
@@ -13,13 +13,15 @@
         </v-row>
         <v-row v-else>
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">SELECCIONA UNA TAREA</p>
-                <v-card>
+                <v-card flat outlined>
                     <v-card-text>
                         <v-toolbar dense flat>
+                            <v-icon>
+                                mdi-clipboard-list-outline
+                            </v-icon>
                             <v-select
                                 v-model="tasks_selected"
-                                color="academia-primary"
+                                color="primary"
                                 :items="tasks"
                                 item-text="name"
                                 item-value="id"
@@ -27,7 +29,7 @@
                                 flat
                                 solo
                                 dense
-                                label="Tarea"
+                                label="Selecciona una tarea"
                             ></v-select>
                         </v-toolbar>
                     </v-card-text>
@@ -36,45 +38,46 @@
         </v-row>
         <v-row v-if="students.length > 0 && tasks_selected">
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">ALUMNOS</p>
-                <v-card flat color="background">
-                    <v-card-text class="px-2 py-0">
-                        <v-list-item dense>
-                            <v-list-item-avatar></v-list-item-avatar>
-                            <v-list-item-content
-                                class="text-caption font-weight-bold blue-grey--text"
-                            >
-                                NOMBRE
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card-text>
-                </v-card>
-                <v-card v-for="student in students" :key="student.id">
-                    <v-card-text class="pa-2 mb-2">
-                        <v-list-item dense @click="openDialog(student.id)">
-                            <v-list-item-avatar>
-                                <v-icon>mdi-account-circle</v-icon>
+                <v-toolbar flat class="pl-0">
+                    <p class="my-1 font-weight-bold ml-0">Alumnos</p>
+                </v-toolbar>
+                <v-list>
+                    <v-divider></v-divider>
+                    <template v-for="(student, index) in students">
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="student.id"
+                            @click="openDialog(student.id)"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg">
+                                <v-icon dark>mdi-account-circle</v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title>
                                     {{ student.name }}
                                 </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Nombre
+                                </v-list-item-subtitle>
                             </v-list-item-content>
-                            <v-list-item-action 
-                                class="ml-0 mr-6 font-weight-medium" 
-                                :class="{ 
-                                    'blue-grey--text': student.status === 'PENDIENTE',
-                                    'warning--text': student.status === 'ENTREGADA',
-                                    'success--text': student.status === 'REVISADA'
-                                }">
-                                {{ student.status }}
+                            <v-list-item-action>
+                                <v-chip small label v-if="student.status === 'PENDIENTE'">
+                                    PENDIENTE
+                                </v-chip>
+                                <v-chip small label v-if="student.status === 'ENTREGADA'" color="primary">
+                                    ENTREGADA
+                                </v-chip>
+                                <v-chip small label v-if="student.status === 'REVISADA'" color="success">
+                                    REVISADA
+                                </v-chip>
                             </v-list-item-action>
                         </v-list-item>
-                    </v-card-text>
-                </v-card>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
             </v-col>
         </v-row>
-        <v-dialog v-model="dialog" fullscreen persistent max-width="600px">
+        <v-dialog v-model="dialog" :fullscreen="!$vuetify.breakpoint.smAndUp" persistent max-width="850px" scrollable>
             <v-card class="rounded-0" v-if="student_selected">
                 <v-toolbar dark color="primary" v-if="student_selected != null" flat>
                     <v-toolbar-title>Respuestas</v-toolbar-title>
@@ -87,8 +90,8 @@
                     <v-container v-if="actual_questions">
                         <v-row v-if="tasks_selected">
                             <v-col>
-                                <v-card outlined>
-                                    <v-card-text>
+                                <v-card flat outlined color="secondary" dark>
+                                    <v-card-text class="white--text">
                                         <p class="ma-1"> <span class="font-weight-black">Clase:</span> {{ tasks.find( t => t.id === tasks_selected ).name }}</p>
                                         <p class="ma-1"> <span class="font-weight-black">Alumno:</span> {{ students.find( s => s.id === student_selected ).name }}</p>
                                     </v-card-text>
@@ -116,7 +119,7 @@
                             </v-col>
                         </v-row>
                         <v-row >
-                            <v-col cols="12" class="mb-16">
+                            <v-col cols="12">
                                 <v-card flat>
                                     <v-card-text class="pa-0">
                                         <p class="ma-0 secondary--text text-caption font-weight-bold">
@@ -137,9 +140,12 @@
                         </v-row>
                     </v-container>
                 </v-card-text>
-                <v-card-actions class="save-toolbar mt-6">
+                <v-divider></v-divider>
+                <v-card-actions class="save-toolbar py-3 elevation-4">
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="save" :disabled="students.find( s => s.id === student_selected ).status === 'REVISADA'">Finalizar</v-btn>
+                    <v-btn color="primary" @click="save" :disabled="students.find( s => s.id === student_selected ).status === 'REVISADA'">
+                        Dar Retroalimentación
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -233,7 +239,7 @@ export default {
         }
     },
     mounted() {
-        if(this.tasks === null)
+        if(this.tasks === null || this.tasks.length === 0)
             this.getTasks()
     },
 }
@@ -241,8 +247,6 @@ export default {
 
 <style scoped>
 .save-toolbar{
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+    z-index: 10;
 }
 </style>

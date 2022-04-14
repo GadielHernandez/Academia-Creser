@@ -188,7 +188,7 @@ export default {
         }
     },
     async mounted() {
-        if(!this.lessons_ready)
+        if(this.lessons.length === 0)
             await this.getLessons()
     },
 }
