@@ -34,7 +34,10 @@ const actions = {
         const course = await db.doc(`courses/${state.course_id}`).get()
         commit( 'UPDATE_COURSE', { id: course.id, ...course.data() } )
 
-        if(!user_data.group) return
+        if(!user_data || !user_data.group) {
+            commit( 'UPDATE_STATUS', true )
+            return
+        }
 
         const group = await db.doc(`courses/${state.course_id}/groups/${user_data.group}`).get()
         const now = timeServer().toMillis()

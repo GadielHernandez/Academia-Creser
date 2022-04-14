@@ -10,7 +10,24 @@
                 </div>
             </template>
         </Navbar>
-        <StudentsPage />
+        <StudentsPage v-if="ready"/>
+        <div v-else-if="ready === null" class="loading">
+            <v-progress-circular
+                :size="60"
+                :width="7"
+                color="primary"
+                class="ma-auto"
+                indeterminate
+            ></v-progress-circular>
+        </div>
+        <div class="loading" v-else>
+            <div class="ma-auto font-weight-bold blue-grey--text text-center">
+                <v-icon x-large class="font-weight-bold blue-grey--text"
+                    >mdi-account-group</v-icon
+                >
+                <p>Sin grupo asignado</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -47,5 +64,9 @@ export default {
 <style scoped>
 .Students {
     height: 100%;
+}
+.loading{
+    height: 85vh;
+    display: flex;
 }
 </style>

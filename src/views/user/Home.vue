@@ -1,5 +1,5 @@
 <template>
-    <div class="Academia px-4" :class="{ 'loading': !loaded, 'd-flex': !loaded }">
+    <div class="Academia px-4">
         <Navbar :height="'100px'">
             <template v-slot:title>
                 <div>
@@ -10,15 +10,24 @@
                 </div>
             </template>
         </Navbar>
-        <progressPage v-if="loaded"/>
-        <v-progress-circular
-            v-else
-            :size="60"
-            :width="7"
-            color="primary"
-            class="ma-auto"
-            indeterminate
-        ></v-progress-circular>
+        <progressPage v-if="loaded && group.id"/>
+        <div v-else-if="!loaded" class="loading">
+            <v-progress-circular
+                :size="60"
+                :width="7"
+                color="primary"
+                class="ma-auto"
+                indeterminate
+            ></v-progress-circular>
+        </div>
+        <div class="loading" v-else>
+            <div class="ma-auto font-weight-bold blue-grey--text text-center">
+                <v-icon x-large class="font-weight-bold blue-grey--text"
+                    >mdi-account-group</v-icon
+                >
+                <p>Sin grupo asignado</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -33,7 +42,8 @@ export default {
     computed:{
         ...mapState({
             profile: state => state.user.profile,
-            loaded: state => state.student.loaded
+            loaded: state => state.student.loaded,
+            group: state => state.student.group
         })
     },
     data() {
@@ -70,5 +80,6 @@ export default {
 }
 .loading{
     height: 85vh;
+    display: flex;
 }
 </style>
