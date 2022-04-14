@@ -5,7 +5,7 @@
                 <v-progress-circular
                     :size="60"
                     :width="7"
-                    color="academia-primary"
+                    color="primary"
                     class="ma-auto"
                     indeterminate
                 ></v-progress-circular>
@@ -13,13 +13,15 @@
         </v-row>
         <v-row v-else>
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">SELECCIONA UN EXAMEN</p>
-                <v-card>
+                <v-card flat outlined>
                     <v-card-text>
                         <v-toolbar dense flat>
+                            <v-icon>
+                                mdi-clipboard-check
+                            </v-icon>
                             <v-select
                                 v-model="exam_selected"
-                                color="academia-primary"
+                                color="primary"
                                 :items="exams"
                                 item-text="name"
                                 item-value="id"
@@ -27,7 +29,7 @@
                                 flat
                                 solo
                                 dense
-                                label="Examenes"
+                                label="Selecciona un examen"
                             ></v-select>
                         </v-toolbar>
                     </v-card-text>
@@ -36,29 +38,27 @@
         </v-row>
         <v-row v-if="students.length > 0 && exam_selected">
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">ALUMNOS</p>
-                <v-card flat color="background">
-                    <v-card-text class="px-2 py-0">
-                        <v-list-item dense>
-                            <v-list-item-avatar></v-list-item-avatar>
-                            <v-list-item-content
-                                class="text-caption font-weight-bold blue-grey--text"
-                            >
-                                NOMBRE
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card-text>
-                </v-card>
-                <v-card v-for="student in students" :key="student.id">
-                    <v-card-text class="pa-2 mb-2">
-                        <v-list-item dense @click="openDialog(student.id)">
-                            <v-list-item-avatar>
-                                <v-icon>mdi-account-circle</v-icon>
+                <v-toolbar flat class="pl-0">
+                    <p class="my-1 font-weight-bold ml-0">Alumnos</p>
+                </v-toolbar>
+                <v-list>
+                    <v-divider></v-divider>
+                    <template v-for="(student, index) in students">
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="student.id"
+                            @click="openDialog(student.id)"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg">
+                                <v-icon dark>mdi-account-circle</v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title>
                                     {{ student.name }}
                                 </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Nombre
+                                </v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action 
                                 class="ml-0 mr-6 font-weight-medium" 
@@ -67,22 +67,22 @@
                                     'success--text': student.grade !== null && student.grade >= 60,
                                     'warning--text': student.grade !== null && student.grade < 60
                                 }">
-                                <span v-if="student.grade === null">PENDIENTE</span>
-                                <span v-else>
-                                    {{ (student.grade).toFixed(2) }}
-                                    <v-icon class="ml-3" v-if="student.feedback" color="success">mdi-text-box-check-outline</v-icon> 
-                                    <v-icon class="ml-3" v-else>mdi-checkbox-blank-outline</v-icon>
-                                </span>
+                                <p class="ma-0"> 
+                                    <span v-if="student.grade !== null">{{ (student.grade).toFixed(2) }}</span>
+                                    <span class="text-caption" v-else>PENDIENTE</span>
+                                    <v-icon class="ml-3" v-if="student.feedback" color="success">mdi-comment-check</v-icon> 
+                                    <v-icon class="ml-3" v-else>mdi-comment-outline</v-icon>
+                                </p>
                             </v-list-item-action>
                         </v-list-item>
-                    </v-card-text>
-                </v-card>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
             </v-col>
         </v-row>
         <v-dialog v-model="dialog" fullscreen persistent>
-
-            <v-card class="rounded-0" v-if="student_selected" color="academia-primary">
-                <v-toolbar dark color="academia-primary" flat dense>
+            <v-card class="rounded-0" v-if="student_selected" color="primary">
+                <v-toolbar dark color="primary" flat dense>
                     <v-spacer />
                     <v-btn icon dark @click="closeDialog">
                         <v-icon>mdi-close</v-icon>
@@ -99,10 +99,10 @@
                                         <p class="ma-1"> <span class="font-weight-black">Retroalimentación:</span></p>
                                         <p class="ma-1" v-if="feedback"> {{ feedback }}</p>
                                         <v-row v-else>
-                                            <v-col cols="10">
+                                            <v-col cols="12" md="10">
                                                 <v-text-field
                                                     v-model="feedback_model" 
-                                                    color="academia-primary"
+                                                    color="primary"
                                                     solo
                                                     outlined
                                                     flat
@@ -110,10 +110,10 @@
                                                     dense
                                                 />
                                             </v-col>
-                                            <v-col>
+                                            <v-col cols="12" md="2">
                                                 <v-btn 
                                                     @click="saveFeedback()"
-                                                    color="academia-primary">
+                                                    color="primary">
                                                     Finalizar
                                                 </v-btn>
                                             </v-col>
@@ -124,7 +124,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="12" md="6" v-for="(question, index) in actual_questions" :key="index">
-                                <v-card>
+                                <v-card style="height: 100%">
                                     <v-card-text>
                                         <p class="ma-0 py-3">
                                             {{ question.question }}
@@ -240,7 +240,7 @@ export default {
         }
     },
     async mounted() {
-        if(this.exams === null)
+        if(this.exams === null || this.exams.length === 0)
             this.getExams()
     },
 }

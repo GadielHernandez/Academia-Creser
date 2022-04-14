@@ -3,7 +3,7 @@
         <Navbar>
             <template v-slot:title>
                 <div>
-                    <h2>Alumnos</h2>
+                    <h2>Examenes</h2>
                 </div>
             </template>
         </Navbar>
