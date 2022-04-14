@@ -10,7 +10,7 @@
 
         </div>
         <sidebar v-if="view !== null"/>
-        <v-main class="main-background">
+        <v-main class="main-background" v-if="view !== null">
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
             </v-container>

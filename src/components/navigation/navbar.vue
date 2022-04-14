@@ -12,24 +12,38 @@
 
         <v-menu
             :close-on-content-click="false"
-            :nudge-width="200"
-            offset-y
+            offset-x
         >
             <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on" icon>
-                    <v-avatar>
-                        <v-icon>mdi-account-circle</v-icon>
-                    </v-avatar>
+                <v-btn v-bind="attrs" v-on="on" fab color="white">
+                    <img
+                        src="@/assets/icon.png"
+                    >
                 </v-btn>
             </template>
 
-            <v-card>
-                <v-card-text class="text-center">
-                    <v-icon x-large class="py-3" color="secondary">mdi-account-circle</v-icon>
-                    <p class="my-1 font-weight-bold">{{ profile.name }}</p>
-                    <p class="my-1">{{ profile.email }}</p>
+            <v-card width="300">
+                <v-img src="@/assets/background-login.png" cover width="300" height="100">
+                    <div class="d-flex" style="height: 100%">
+                        <v-img src="@/assets/logo.png" max-width="200" class="ma-auto"></v-img>
+                    </div>
+                </v-img>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <v-list-item>
+                        <v-list-item-avatar>
+                            <v-icon>
+                                mdi-account-circle
+                            </v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title>{{ profile.name }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ profile.email }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-card-text>
-                <v-list dense nav outlined>
+                <v-divider></v-divider>
+                <v-list dense nav>
                     <v-list-item @click="logout">
                         <v-list-item-content>
                             <v-list-item-title>Cerrar sesión</v-list-item-title>

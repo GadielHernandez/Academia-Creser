@@ -12,7 +12,7 @@ export default new Vuetify({
                 tertiary: '#3f51b5',
                 accent: '#f12b53',
                 background: '#f3f6f6',
-                // 'academia-primary': '#176cb0',
+                'creser-primary': '#2bb20f',
                 // 'academia-secondary': '#11b9c9',
                 // 'academia-tertiary': '#3f51b5',
                 // 'academia-accent': '#f12b53',
