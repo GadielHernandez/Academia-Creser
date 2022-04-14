@@ -11,10 +11,12 @@
         </v-col>
         <v-row v-else>
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">SELECCIONA UNA CLASE</p>
-                <v-card>
+                <v-card flat outlined>
                     <v-card-text>
                         <v-toolbar dense flat>
+                            <v-icon>
+                                mdi-video
+                            </v-icon>
                             <v-select
                                 v-model="lesson_selected"
                                 color="academia-primary"
@@ -25,11 +27,8 @@
                                 flat
                                 solo
                                 dense
-                                label="Clase"
+                                label="Selecciona una clase"
                             ></v-select>
-                            <v-spacer></v-spacer>
-                            <v-btn color="academia-primary" dark v-if="lesson_selected" :disabled="lessons.find( l => l.id === lesson_selected).type === ONLINE" @click="save">Guardar</v-btn>
-                            <v-btn color="academia-primary" disabled v-else >Guardar</v-btn>
                         </v-toolbar>
                     </v-card-text>
                 </v-card>
@@ -37,32 +36,28 @@
         </v-row>
         <v-row v-if="students.length > 0 && lesson_selected">
             <v-col>
-                <p class="secondary--text text-caption font-weight-bold">ALUMNOS</p>
-                <v-card flat color="background">
-                    <v-card-text class="px-2 py-0">
-                        <v-list-item dense>
-                            <v-list-item-avatar></v-list-item-avatar>
-                            <v-list-item-content
-                                class="text-caption font-weight-bold blue-grey--text"
-                            >
-                                NOMBRE
-                            </v-list-item-content>
-                            <v-list-item-action class="text-caption font-weight-bold blue-grey--text mr-14">
-                                SELECCIONA UNA OPCION
-                            </v-list-item-action>
-                        </v-list-item>
-                    </v-card-text>
-                </v-card>
-                <v-card v-for="student in students" :key="student.id">
-                    <v-card-text class="pa-2 mb-2">
-                        <v-list-item dense>
-                            <v-list-item-avatar>
-                                <v-icon>mdi-account-circle</v-icon>
+                <v-toolbar flat>
+                    <p class="my-1 font-weight-bold ml-3">Alumnos</p>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" dark v-if="lesson_selected" :disabled="lessons.find( l => l.id === lesson_selected).type === ONLINE" @click="save">Guardar</v-btn>
+                </v-toolbar>
+                <v-list>
+                    <v-divider></v-divider>
+                    <template v-for="(student, index) in students" >
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="student.id"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg">
+                                <v-icon dark>mdi-account-circle</v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title>
                                     {{ student.name }}
                                 </v-list-item-title>
+                                <v-list-item-subtitle class="text-caption">
+                                    Nombre
+                                </v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
                                 <v-chip-group>
@@ -87,8 +82,9 @@
                                 </v-chip-group>
                             </v-list-item-action>
                         </v-list-item>
-                    </v-card-text>
-                </v-card>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
             </v-col>
         </v-row>
         <div v-else-if="students.length > 0" class="no-students d-flex">
@@ -96,7 +92,7 @@
                 <v-icon x-large class="font-weight-bold blue-grey--text"
                     >mdi-clipboard-text</v-icon
                 >
-                <p>Selecciona una clase</p>
+                <p>Sin clase seleccionada</p>
             </div>
         </div>
         <div v-else class="no-students d-flex">
