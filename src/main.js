@@ -25,5 +25,7 @@ auth.onAuthStateChanged(async () => {
         await store.dispatch('user/fetchProfile')
         await store.dispatch('view/updateView', store.state.user.profile.level)
     }
+    else
+        location.href = location.href = "https://creser.fuentedevida.com.mx/login"
     
 })

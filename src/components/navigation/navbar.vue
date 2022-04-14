@@ -71,7 +71,7 @@ export default {
         async logout(){
             try {
                 await this.doLogout()
-                this.$router.push({ name: 'Login' })
+                location.href = "https://creser.fuentedevida.com.mx/login"
             } catch (error) {
                 console.log(error)
             }
