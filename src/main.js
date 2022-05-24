@@ -26,6 +26,6 @@ auth.onAuthStateChanged(async () => {
         await store.dispatch('view/updateView', store.state.user.profile.level)
     }
     else
-        location.href = location.href = "https://creser.fuentedevida.com.mx/login"
+        location.href = "https://creser.fuentedevida.com.mx/login"
     
 })

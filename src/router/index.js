@@ -3,18 +3,12 @@ import VueRouter from 'vue-router'
 import { authorization, levelValidation } from './middlewares'
 import UserRoutes from './UserRoutes'
 import TeacherRoutes from './TeacherRoutes'
-import Login from '../views/Login'
 
 Vue.use(VueRouter)
 
 const routes = [
     ...UserRoutes,
-    ...TeacherRoutes,
-    {
-        name: 'login',
-        path: '/login',
-        component: Login
-    }
+    ...TeacherRoutes
 ]
 
 const router = new VueRouter({
@@ -26,7 +20,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	const auth = authorization(to)
     if(!auth.approve)
-        return next(auth.redirect)
+        return location.href = "https://creser.fuentedevida.com.mx/login"
     
     const validLevel = levelValidation(to)
     if(!validLevel)

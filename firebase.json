@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "fdv-web-app",
+    "site": "academia-creser",
     "public": "dist",
     "ignore": [
       "firebase.json",
