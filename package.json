@@ -5,12 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "firebase": "^8.2.1",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.8.1",
     "vue-router": "^3.2.0",
     "vue-youtube": "^1.4.0",
     "vuetify": "^2.2.11",

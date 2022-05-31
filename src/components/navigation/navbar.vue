@@ -71,7 +71,7 @@ export default {
         async logout(){
             try {
                 await this.doLogout()
-                location.href = "https://creser.fuentedevida.com.mx/login"
+                location.href = "https://creser.fuentedevida.com.mx/logout"
             } catch (error) {
                 console.log(error)
             }

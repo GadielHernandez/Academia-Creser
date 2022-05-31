@@ -6,7 +6,9 @@
                 :width="7"
                 color="primary"
                 indeterminate
-            ></v-progress-circular>
+            >
+                <v-img src="@/assets/icon.png" />
+            </v-progress-circular>
 
         </div>
         <sidebar v-if="view !== null"/>
