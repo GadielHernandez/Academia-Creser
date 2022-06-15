@@ -3,12 +3,14 @@ import VueRouter from 'vue-router'
 import { authorization, levelValidation } from './middlewares'
 import UserRoutes from './UserRoutes'
 import TeacherRoutes from './TeacherRoutes'
+import AdminRoutes from './AdminRoutes'
 
 Vue.use(VueRouter)
 
 const routes = [
     ...UserRoutes,
-    ...TeacherRoutes
+    ...TeacherRoutes,
+    ...AdminRoutes
 ]
 
 const router = new VueRouter({

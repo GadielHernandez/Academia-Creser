@@ -8,7 +8,7 @@
                 <v-btn 
                     dark
                     @click="addNew"
-                    color="academia-primary">
+                    color="primary">
                     Añadir
                 </v-btn>
             </v-col>
@@ -22,16 +22,16 @@
                                 <tr v-for="e in exams" :key="e.id">
                                     <v-list-item>
                                         <v-list-item-icon>
-                                            <v-icon color="academia-primary">mdi-file-document-outline</v-icon>
+                                            <v-icon color="primary">mdi-file-document-outline</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{ e.name }} <v-chip x-small label outlined color="academia-primary" v-if="e.final"> Examen Final </v-chip></v-list-item-title>
+                                            <v-list-item-title>{{ e.name }} <v-chip x-small label outlined color="primary" v-if="e.final"> Examen Final </v-chip></v-list-item-title>
                                             <v-list-item-subtitle>{{ e.description }}</v-list-item-subtitle>
                                         </v-list-item-content>
                                         <v-list-item-content>
                                             <p class="ma-auto text-caption">
-                                                <v-chip small color="academia-primary" dark label class="mr-1">{{ Number.isInteger(e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? e.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
-                                                <v-chip small color="academia-primary" dark label class="mr-1">{{ e.questions.length }} preguntas</v-chip>
+                                                <v-chip small color="primary" dark label class="mr-1">{{ Number.isInteger(e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? e.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
+                                                <v-chip small color="primary" dark label class="mr-1">{{ e.questions.length }} preguntas</v-chip>
                                             </p>
                                         </v-list-item-content>
                                         <v-list-item-action>
@@ -55,7 +55,7 @@
 
 <script>
 import formExam from './exam_form'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import { FINAL } from '../../plugins/criteria-types'
 export default {
     name: 'Tasks',
@@ -82,9 +82,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getExams: 'admin/fetchExams',
-        }),
         addNew(){
             this.form_exams.exam = null
             this.form_exams.open = true
@@ -98,9 +95,6 @@ export default {
             this.form_exams.exam = null
             this.form_exams.open = false
         }
-    },
-    mounted() {
-        this.getExams()
-    },
+    }
 }
 </script>

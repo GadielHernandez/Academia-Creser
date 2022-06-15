@@ -7,7 +7,7 @@
             <v-col class="text-right">
                 <v-btn 
                     dark
-                    color="academia-primary"
+                    color="primary"
                     @click="addNew"
                     >
                     Añadir
@@ -31,7 +31,7 @@
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
+                                    <v-list-item-avatar tile color="secondary" class="rounded">
                                         <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -42,7 +42,7 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
+                                    <v-list-item-avatar tile color="secondary" class="rounded">
                                         <v-icon color="white"> mdi-calendar-range </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -55,7 +55,7 @@
                         <v-row>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
+                                    <v-list-item-avatar tile color="secondary" class="rounded">
                                         <v-icon color="white"> mdi-teach </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -67,7 +67,7 @@
                             </v-col>
                             <v-col class="pa-1">
                                 <v-list-item two-line>
-                                    <v-list-item-avatar tile color="academia-secondary" class="rounded">
+                                    <v-list-item-avatar tile color="secondary" class="rounded">
                                         <v-icon color="white"> mdi-account-supervisor-outline </v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
@@ -95,7 +95,7 @@
 <script>
 import formGroup from './group_form'
 import listUsers from './users_groups'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
     name:'groups',
     components: { formGroup, listUsers },
@@ -117,9 +117,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getGroups: 'admin/fetchGroups'
-        }),
         addNew(){
             this.form_group.group = null
             this.form_group.open = true
@@ -142,9 +139,6 @@ export default {
             this.form_group.group = null
             this.form_group.open = false
         }
-    },
-    mounted() {
-        this.getGroups()
-    },
+    }
 }
 </script>

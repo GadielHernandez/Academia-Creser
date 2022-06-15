@@ -1,9 +1,10 @@
-import { USER, TEACHER } from './user-types'
+import { USER, TEACHER, ADMIN } from './user-types'
 import router from "../router"
 
 export const INITAL_ROUTES = {
     [USER]: 'student-home',
-    [TEACHER]: 'teacher-home'
+    [TEACHER]: 'teacher-home',
+    [ADMIN]: 'admin-home'
 }
 
 export function createRoute(params) {

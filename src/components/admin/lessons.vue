@@ -7,7 +7,7 @@
             <v-col class="text-right">
                 <v-btn 
                     dark
-                    color="academia-primary"
+                    color="primary"
                      @click.stop="addNew">
                     Añadir
                 </v-btn>
@@ -22,8 +22,8 @@
                                 <tr v-for="l in lessons" :key="l.id">
                                     <v-list-item>
                                         <v-list-item-icon>
-                                            <v-icon v-if="l.type === FACETOFACE" color="academia-primary">mdi-account-group</v-icon>
-                                            <v-icon v-if="l.type === ONLINE" color="academia-primary">mdi-laptop</v-icon>
+                                            <v-icon v-if="l.type === FACETOFACE" color="primary">mdi-account-group</v-icon>
+                                            <v-icon v-if="l.type === ONLINE" color="primary">mdi-laptop</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ l.name }}</v-list-item-title>
@@ -31,9 +31,9 @@
                                         </v-list-item-content>
                                         <v-list-item-content>
                                             <p class="ma-auto text-caption">
-                                                <v-chip color="academia-primary" dark small label class="mr-1">{{ Number.isInteger(l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? l.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
-                                                <v-chip color="academia-primary" dark small label v-if="l.video_id" >Video</v-chip>
-                                                <v-chip color="academia-primary" dark small label v-else outlined>Sin video</v-chip>
+                                                <v-chip color="primary" dark small label class="mr-1">{{ Number.isInteger(l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? l.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (l.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
+                                                <v-chip color="primary" dark small label v-if="l.video_id" >Video</v-chip>
+                                                <v-chip color="primary" dark small label v-else outlined>Sin video</v-chip>
                                             </p>
                                         </v-list-item-content>
                                         <v-list-item-action>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { FACETOFACE, ONLINE } from '../../plugins/lessons-types'
 import formLesson from './lesson_form'
 export default {
@@ -78,9 +78,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getLessons: 'admin/fetchLessons',
-        }),
         addNew(){
             this.form_lesson.lesson = null
             this.form_lesson.open = true
