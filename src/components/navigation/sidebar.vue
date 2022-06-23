@@ -1,8 +1,8 @@
 <template>
     <v-navigation-drawer
         permanent
-        mini-variant
         mini-variant-width="100"
+        :mini-variant.sync="mini"
         expand-on-hover
         app
       >
@@ -20,61 +20,82 @@
         <sidebar-teacher v-if="view === TEACHER" class="menu"/>
         <sidebar-admin v-if="view === ADMIN" class="menu"/>
         
-        <v-divider v-if="atLeastUserIs(profile.level, ADMIN)"></v-divider>
-        <v-list dense nav class="mx-3" v-if="profile && !atLeastUserIs(profile.level, ADMIN)">
-            <v-list-item 
-                v-if="atLeastUserIs(profile.level, TEACHER) && view === TEACHER"
-                @click="doChangeView(USER)"    
-            >
+        <v-divider v-if="atLeastUserIs(profile.level, TEACHER)"></v-divider>
+        <v-list dense nav class="mx-3" v-if="atLeastUserIs(profile.level, TEACHER)">
+            <v-list-item v-if="mini">
                 <v-list-item-icon>
-                        <v-icon>mdi-swap-horizontal-circle</v-icon>
-                    </v-list-item-icon>
-                <v-list-item-content>
-                    <v-list-item-title>Vista de Alumno</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            <v-list-item 
-                v-if="atLeastUserIs(profile.level, TEACHER) && view === USER"
-                @click="doChangeView(TEACHER)" 
-            >
-                <v-list-item-icon>
-                        <v-icon>mdi-swap-horizontal-circle</v-icon>
+                    <v-icon v-if="view === USER">mdi-account-box</v-icon>
+                    <v-icon v-if="view === TEACHER">mdi-clipboard-account</v-icon>
+                    <v-icon v-if="view === ADMIN">mdi-shield-account</v-icon>
                 </v-list-item-icon>
+            </v-list-item>
+            <v-list-item v-else>
                 <v-list-item-content>
-                    <v-list-item-title>Vista de Maestro</v-list-item-title>
+                    <v-list-item-title v-if="view === USER">Alumno</v-list-item-title>
+                    <v-list-item-title v-if="view === TEACHER">Maestro</v-list-item-title>
+                    <v-list-item-title v-if="view === ADMIN">Admin</v-list-item-title>
+                    <v-list-item-subtitle>Vista actual</v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-action>
+                    <v-btn small depressed @click="dialogView = true">
+                        Cambiar
+                    </v-btn>
+                </v-list-item-action>
             </v-list-item>
         </v-list>
-        <v-menu offset-X class="mx-3">
-            <template v-slot:activator="{ on, attrs }">
-                <v-list-item v-bind="attrs" v-on="on">
-                    <v-list-item-icon>
-                        <v-icon>mdi-swap-horizontal-circle</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Cambiar vista</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </template>
-            <v-list>
-                <v-list-item>
-                    <v-list-item-icon>
-                        <v-icon>mdi-swap-horizontal-circle</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Vista de Alumno</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-icon>
-                        <v-icon>mdi-swap-horizontal-circle</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Vista de Maestro</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-menu>
+
+        <v-dialog v-model="dialogView" max-width="350">
+            <v-card>
+                <v-toolbar
+                    color="primary"
+                    dark
+                >
+                    Cambiar vista
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="dialogView = false">
+                        <v-icon small>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <v-card-text class="py-6">
+                    <v-card class="py-1">
+                        <v-list-item>
+                            <v-list-item-content>
+                                Vista de Alumno
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn small depressed color="success" :disabled="view === USER" @click="doChangeView(USER)">
+                                    Seleccionar
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-card>
+                    <v-card class="mt-4 py-1">
+                        <v-list-item>
+                            <v-list-item-content>
+                                Vista de Maestro
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn small depressed color="success" :disabled="view === TEACHER" @click="doChangeView(TEACHER)">
+                                    Seleccionar
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-card>
+                    <v-card class="mt-4 py-1" v-if="atLeastUserIs(profile.level, ADMIN)">
+                        <v-list-item>
+                            <v-list-item-content>
+                                Vista de Admin
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn small depressed color="success" :disabled="view === ADMIN" @click="doChangeView(ADMIN)">
+                                    Seleccionar
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-card>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-navigation-drawer>
 </template>
 <script>
@@ -99,6 +120,8 @@ export default {
     },
     data() {
         return {
+            mini: null,
+            dialogView: false,
             USER, TEACHER, ADMIN, atLeastUserIs
         }
     },
@@ -107,6 +130,7 @@ export default {
             changeView: 'view/updateView'
         }),
         doChangeView(level){
+            this.dialogView = false
             this.changeView(level)
         }
     }
@@ -121,7 +145,7 @@ export default {
     font-size: 40px;
 }
 .menu{
-    height: 81%;
+    height: 80%;
     display: flex;
 }
 </style>
