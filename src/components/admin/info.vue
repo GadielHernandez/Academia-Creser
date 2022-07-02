@@ -1,77 +1,141 @@
 <template>
     <div class="mx-1">
+        <p class="ml-0 my-3 primary--text font-weight-bold">Secciones</p>
         <v-row>
             <v-col>
-                <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                <v-hover v-slot="{ hover }">
+                    <v-card 
+                        flat 
+                        :color="hover ? 'secondary' : 'background'" 
+                        outlined 
+                        @click="$router.push({ name: 'admin-groups' })"
+                    >
+                        <v-card-text class="d-flex">
+                            <v-list-item dense>
+                                <v-list-item-avatar>
+                                    <v-icon :dark="hover">mdi-account-group</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content :class="{ 'white--text': hover }">
+                                    Grupos
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card-text>
+                    </v-card>
+                </v-hover>
             </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="pt-0">
-                <v-card>
-                    <v-card-text class="pa-3">
-                        <v-text-field
-                            v-if="!name_edit.editing"
-                            v-model="name"
-                            solo
-                            flat
-                            hide-details
-                            readonly
-                            append-icon="mdi-pencil"
-                            @click:append="editName()"
-                        />
-                        <v-text-field
-                            v-else
-                            v-model="name_edit.value"
-                            solo
-                            flat
-                            hide-details
-                            append-icon="mdi-close"
-                            @click:append="name_edit.editing = false"
-                        />
-                    </v-card-text>
-                    <v-card-actions v-if="name_edit.editing">
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary">Guardar</v-btn>
-                        <v-btn @click="name_edit.editing = false">Cancelar</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row>
             <v-col>
-                <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">CRITERIOS</p>
+                <v-hover v-slot="{ hover }">
+                    <v-card 
+                        flat 
+                        :color="hover ? 'secondary' : 'background'" 
+                        outlined 
+                        @click="$router.push({ name: 'admin-classes' })"
+                    >
+                        <v-card-text class="d-flex">
+                            <v-list-item dense>
+                                <v-list-item-avatar>
+                                    <v-icon :dark="hover">mdi-video</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content :class="{ 'white--text': hover }">
+                                    Clases
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card-text>
+                    </v-card>
+                </v-hover>
+            </v-col>
+            <v-col>
+                <v-hover v-slot="{ hover }">
+                    <v-card 
+                        flat 
+                        :color="hover ? 'secondary' : 'background'" 
+                        outlined 
+                        @click="$router.push({ name: 'admin-tasks' })"
+                    >
+                        <v-card-text class="d-flex">
+                            <v-list-item dense>
+                                <v-list-item-avatar>
+                                    <v-icon :dark="hover">mdi-clipboard-list-outline</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content :class="{ 'white--text': hover }">
+                                    Tareas
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card-text>
+                    </v-card>
+                </v-hover>
+            </v-col>
+            <v-col>
+                <v-hover v-slot="{ hover }">
+                    <v-card 
+                        flat 
+                        :color="hover ? 'secondary' : 'background'" 
+                        outlined 
+                        @click="$router.push({ name: 'admin-exams' })"
+                    >
+                        <v-card-text class="d-flex">
+                            <v-list-item dense>
+                                <v-list-item-avatar>
+                                    <v-icon :dark="hover">mdi-clipboard-check</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content :class="{ 'white--text': hover }">
+                                    Examenes
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card-text>
+                    </v-card>
+                </v-hover>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col class="pt-0">
-                <v-card>
-                    <v-card-text class="pa-3">
-                        <v-simple-table>
-                            <template v-slot:default>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Descripción</th>
-                                        <th class="text-left">Valor Total</th>
-                                        <th class="text-left">Valor por actividad</th>
-                                        <th class="text-left">Total de actividades</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="cr in criteria" :key="cr.name">
-                                        <td>{{ cr.name }}</td>
-                                        <td>{{ cr.value }}</td>
-                                        <td>{{ (cr.value/cr.number).toFixed(2) }}</td>
-                                        <td>{{ cr.number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nota Final</td>
-                                        <td>100</td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-card-text>
-                </v-card>
+        <p class="ml-0 my-3 primary--text font-weight-bold">Criterios de evaluación</p>
+        <v-row v-if="criteria.length > 0">
+            <v-col>
+                <v-list>
+                    <v-divider></v-divider>
+                    <template v-for="(cr, index) in criteria" >
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="cr.name"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                                <v-icon dark>mdi-check-circle</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    Nombre
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="font-weight-medium">
+                                    {{ cr.name }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    Numero de items
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="font-weight-medium">
+                                    {{ cr.number }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    Valor por item
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="font-weight-medium">
+                                    {{ (cr.value/cr.number).toFixed(2)}}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    Valor total
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="font-weight-medium">
+                                    {{ cr.value }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
             </v-col>
         </v-row>
     </div>
@@ -83,23 +147,8 @@ export default {
     name: 'info',
     computed:{
         ...mapState({
-            name: state => state.admin.info ? state.admin.info.name : null,
             criteria: state => state.admin.info ? state.admin.info.criteria : []
         })
-    },
-    data() {
-        return {
-            name_edit: {
-                value: '',
-                editing: false
-            }
-        }
-    },
-    methods: {
-        editName(){
-            this.name_edit.value = this.name
-            this.name_edit.editing = true
-        }
-    },
+    }
 }
 </script>
