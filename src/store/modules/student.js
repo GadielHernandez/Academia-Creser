@@ -50,7 +50,7 @@ const actions = {
         user_progress[EXAMS] = []
         user_progress[TASKS] = []
 
-        const criterias = Object.keys(user_group.progress)
+        const criterias = user_group.progress ? Object.keys(user_group.progress): []
         criterias.forEach( criteria => {
             const elements_ids = Object.keys(user_group.progress[criteria])
             elements_ids.forEach( id => {

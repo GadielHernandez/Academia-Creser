@@ -186,6 +186,7 @@ export default {
                 if(exam_feedback)
                     exam_feedback.forEach(student => {
                         const index = result.findIndex( std => std.id == student )
+                        if(index === -1) return
                         result[index].feedback = true
                     })
 

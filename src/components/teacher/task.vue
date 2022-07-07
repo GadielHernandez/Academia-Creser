@@ -181,12 +181,14 @@ export default {
                 
                 uploads.forEach(upload => {
                     const index = result.findIndex( std => std.id == upload.user )
+                    if(index === -1) return
                     result[index].status = 'ENTREGADA'
                 });
                 
                 if(task_feedback)
                     task_feedback.forEach(student => {
                         const index = result.findIndex( std => std.id == student )
+                        if(index === -1) return
                         result[index].status = 'REVISADA'
                     })
                 

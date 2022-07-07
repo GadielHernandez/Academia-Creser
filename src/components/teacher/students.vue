@@ -238,7 +238,7 @@ export default {
                     })
                 }
 
-                if(final_values){
+                if(final_values && exams[final_values.id]){
                     exams[final_values.id].forEach( user => {
                         final_obj[user.user] = user
                     })

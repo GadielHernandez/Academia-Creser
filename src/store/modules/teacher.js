@@ -2,7 +2,7 @@ import { ATTENDANCE } from '../../plugins/criteria-types'
 import { db, auth, timeServer, FieldValue } from '../../plugins/firebase'
 
 const state = {
-    id: null,
+    id: 'JgoBlXYdaGKpGF5tV98x',
     course: {
         active: false,
         ends: null,
@@ -22,9 +22,9 @@ const state = {
 const getters = {}
 
 const actions = {
-    fetchCourse({ commit }){
+    fetchCourse({ commit, state }){
         return new Promise((resolve, reject) => {
-            db.collection(`users/${auth.currentUser.uid}/groups`).where('active', '==', true).get()
+            db.collection(`users/${auth.currentUser.uid}/groups`).where('course', '==', state.id).get()
             .then( async resp => {
                 if(resp.docs.length === 0) {
                     commit('UPDATE_STATUS', false)
@@ -36,12 +36,29 @@ const actions = {
                 let course_data = await db.doc(`courses/${group.data().course}`).get()
                 commit('UPDATE_ID', group.data().course)
                 commit('UPDATE_COURSE', { id: group.id, ...group_data.data(), ...course_data.data() })
-
-                if(group.data().tasks)
-                    commit('UPDATE_FEEDBACKS', {
-                        tasks: group.data().tasks,
-                        exams: group.data().exams
+                
+                const otherTeachers = group_data.data().teachers.filter( t => t.id !== auth.currentUser.uid)
+                const allFeedbacks = { tasks: group.data().tasks || {}, exams: group.data().exams  || {}}
+                const combinateFeedbacks = (obj1, obj2) => {
+                    Object.keys(obj2).forEach( key => {
+                        obj1[key] 
+                            ? obj1[key] = [...obj1[key], obj2[key]]
+                            : obj1[key] = obj2[key] 
                     })
+                    return obj1
+                }
+                if(otherTeachers.length > 0){
+                    const teachersFeedbacksPromises = otherTeachers.map( t => 
+                        db.doc(`users/${t.id}/groups/${group.id}`).get()
+                    ) 
+                    const teachersFeedbacks = await Promise.all(teachersFeedbacksPromises)
+                    teachersFeedbacks.forEach( t => {
+                        if(!t.exists) return
+                        if(t.data().tasks) combinateFeedbacks(allFeedbacks.tasks, t.data().tasks)
+                        if(t.data().exams) combinateFeedbacks(allFeedbacks.exams, t.data().exams)
+                    })
+                }
+                commit('UPDATE_FEEDBACKS', allFeedbacks)
                 
                 commit('UPDATE_STATUS', true)
                 return resolve()

@@ -47,12 +47,12 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-subtitle class="text-caption">
-                                Maestro:
+                                Maestros:
                             </v-list-item-subtitle>
                             <v-list-item-title
                                 class="text-caption font-weight-medium"
                             >
-                                {{ group.teacher.name }}
+                                {{ group.teachers.map( t => t.name).join(', ') }}
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
