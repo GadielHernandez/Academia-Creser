@@ -1,25 +1,20 @@
 <template>
     <div>
         <v-card>
-            <div class="py-4 px-4">
-                <p class="secondary--text text-caption font-weight-bold">BUSCAR ALUMNOS POR EMAIL</p>
-                <v-row>
-                    <v-col cols="9" md="10">
-                        <v-text-field
-                            v-model="email"
-                            placeholder="email"
-                            hide-details
-                            solo
-                            class="academia-primary"
-                        />
-                    </v-col>
-                    <v-col cols="3" md="2">
-                        <v-btn dark block color="academia-primary" style="height: 100%" @click="findUser">
-                            <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </div>
+            <v-toolbar flat>
+                <v-text-field
+                    v-model="email"
+                    placeholder="Buscar alumno por email"
+                    hide-details
+                    solo
+                    class="primary"
+                    dense
+                />
+                <v-spacer></v-spacer>
+                <v-btn dark color="primary" @click="findUser">
+                    <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+            </v-toolbar>
             <v-divider></v-divider>
             <v-card-text style="min-height: 100px;">
                 <v-list v-if="user && !not_found">
@@ -39,19 +34,23 @@
                     <v-icon>mdi-at</v-icon>
                     <p class="ma-0">Correo no registrado</p>
                 </div>
+                <div class="text-center py-6" v-if="already_added">
+                    <v-icon>mdi-at</v-icon>
+                    <p class="ma-0">Correo ya añadido</p>
+                </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions class="px-4">
                 <v-spacer></v-spacer>
-                <v-btn @click="close">Cancelar</v-btn>
-                <v-btn color="academia-primary" :disabled="!user" :loading="saving" @click="save">Guardar</v-btn>
+                <v-btn @click="close" text color="primary">Cancelar</v-btn>
+                <v-btn color="primary" :disabled="!user" :loading="saving" @click="save">Guardar</v-btn>
             </v-card-actions>
         </v-card>
     </div>
 </template>
 
 <script>
-import { USER } from '../../plugins/user-types'
+// import { USER } from '../../plugins/user-types'
 import { mapActions } from 'vuex'
 export default {
     name: 'addUserGroup',
@@ -61,6 +60,7 @@ export default {
             email: null,
             user: null,
             not_found: false,
+            already_added: false,
             saving: false
         }
     },
@@ -74,8 +74,10 @@ export default {
                 const user = await this.fetchUser(this.email)
                 if(user === null)
                     this.not_found = true
-                else if(user.level !== USER)
-                    this.not_found = true
+                // else if(user.level !== USER)
+                //     this.not_found = true
+                else if(user.alreadyAdded)
+                    this.already_added = true
                 else{
                     this.not_found = false
                     this.user = user
@@ -104,6 +106,8 @@ export default {
         close(){
             this.email = null
             this.user = null
+            this.already_added = false
+            this.not_found = false
             this.$emit('close')
         }
     },

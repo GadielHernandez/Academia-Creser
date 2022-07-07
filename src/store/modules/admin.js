@@ -78,13 +78,17 @@ const actions = {
             .catch( () => reject() )
         })
     },
-    fetchUser( ctx, email){
+    fetchUser( { state }, email){
         return new Promise((resolve, reject) => {
             db.collection('users').where('email' ,'==', email.replace(/\s/g, '')).get()
             .then( res => {
                 if(res.docs.length === 0) resolve(null)
-                else resolve({ id: res.docs[0].id, ...res.docs[0].data() })
-                return
+                const user = { id: res.docs[0].id, ...res.docs[0].data() }
+                db.doc(`users/${res.docs[0].id}/courses/${state.course}`).get()
+                .then( doc => {
+                    if(doc.exists) user.alreadyAdded = true
+                    return resolve(user)
+                })
             })
             .catch( () => reject() )
         })
