@@ -244,6 +244,22 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    async deleteUserGroup({ commit }, payload){
+        const { group, user } = payload
+        return new Promise((resolve, reject) => {
+            db.doc(`courses/${state.course}/groups/${group}`).update({
+                students: firebase.firestore.FieldValue.arrayRemove(user)
+            })
+            .then( () => {
+                db.doc(`users/${user.id}/courses/${state.course}`).delete()
+                .then(() => {
+                    commit('DELETE_USER_GROUP', payload)
+                    return resolve()
+                })
+            })
+            .catch( () => reject() )
+        })
+    },
 }
 
 const mutations = {
@@ -311,6 +327,12 @@ const mutations = {
         if(!state.groups[index].students)
             state.groups[index].students = []
         state.groups[index].students.push(user)
+    },
+    DELETE_USER_GROUP(state, payload){
+        const { group, user } = payload
+        const index = state.groups.findIndex( g => g.id === group)
+        const indexUser = state.groups[index].students.findIndex( s => s.id === user.id )
+        state.groups[index].students.splice(indexUser, 1)
     }
 }
 
