@@ -1,87 +1,120 @@
 <template>
     <div class="mx-1">
-        <v-row>
-            <v-col class="d-flex">
-                <p class="secondary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE GRUPOS</p>
-            </v-col>
-            <v-col class="text-right">
-                <v-btn 
-                    dark
-                    color="primary"
-                    @click="addNew"
-                    >
-                    Añadir
-                </v-btn>
-            </v-col>
-        </v-row>
-        <v-row>
+        <v-row v-if="groups != null">
             <v-col v-for="group in groups" :key="group.id" cols="12" md="6">
                 <v-card>
+                    <v-list-item>
+                        <v-list-item-avatar color="primary">
+                            <v-icon dark>mdi-account</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                {{ group.name }}
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                                <span v-if="group.active">
+                                    Activo
+                                </span>
+                                <span v-else>
+                                    Cerrado
+                                </span>
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                            <v-icon color="success" v-if="group.active">
+                                mdi-checkbox-blank-circle
+                            </v-icon>
+                            <v-icon v-else>
+                                mdi-checkbox-blank-circle
+                            </v-icon>
+                        </v-list-item-action>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-toolbar dense flat class="text-caption">
+                        <span>Duración del grupo:</span>
+                        <v-spacer></v-spacer>
+                        <span >
+                            {{ new Date(group.starts).toLocaleString() }} 
+                            <v-icon>mdi-arrow-right-thin</v-icon> 
+                            {{ new Date(group.ends).toLocaleString() }}
+                        </span>
+                    </v-toolbar>
+                    <v-divider></v-divider>
+                    <v-toolbar dense flat class="text-caption">
+                        <span>Alumnos registrados:</span>
+                        <v-spacer></v-spacer>
+                        <span v-if="group.students">
+                            {{ group.students.length }}
+                        </span>
+                    </v-toolbar>
+                    <v-divider></v-divider>
+                    <v-toolbar dense flat class="text-caption">
+                        <span>Maestros:</span>
+                        <v-spacer></v-spacer>
+                        <span v-if="group.teachers">
+                            {{ group.teachers.map( t => t.name ).join(', ') }}
+                        </span>
+                    </v-toolbar>
+                    
                     <v-card-text>
-                        <v-toolbar dense flat>
-                            <p class="font-weight-bold my-auto">{{ group.name }}</p>
-                            <v-spacer></v-spacer>
-                            <v-btn icon @click="listUsers(group.id)">
-                                <v-icon>mdi-account-details</v-icon>
-                            </v-btn>
-                            <v-btn icon @click="editGroup(group.id)">
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                        </v-toolbar>
-                        <v-row>
-                            <v-col class="pa-1">
-                                <v-list-item two-line>
-                                    <v-list-item-avatar tile color="secondary" class="rounded">
-                                        <v-icon color="white"> mdi-calendar-range </v-icon>
-                                    </v-list-item-avatar>
+                        <v-menu offset-y>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="secondary"
+                                    block
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                Configuraciones
+                                </v-btn>
+                            </template>
+                            <v-list dense>
+                                <v-list-item @click="editGroup(group.id)" :disabled="!group.active">
                                     <v-list-item-content>
-                                        <v-list-item-subtitle class="text-caption">Inicio del curso</v-list-item-subtitle>
-                                        <v-list-item-title class="text-caption font-weight-medium">{{ new Date(group.starts).toLocaleString() }}</v-list-item-title>
+                                        Editar grupo
                                     </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-icon>
+                                            mdi-pencil
+                                        </v-icon>
+                                    </v-list-item-action>
                                 </v-list-item>
-                            </v-col>
-                            <v-col class="pa-1">
-                                <v-list-item two-line>
-                                    <v-list-item-avatar tile color="secondary" class="rounded">
-                                        <v-icon color="white"> mdi-calendar-range </v-icon>
-                                    </v-list-item-avatar>
+                                <v-list-item @click="listUsers(group.id)" >
                                     <v-list-item-content>
-                                        <v-list-item-subtitle class="text-caption">Fin del curso</v-list-item-subtitle>
-                                        <v-list-item-title class="text-caption font-weight-medium">{{ new Date(group.ends).toLocaleString() }}</v-list-item-title>
+                                        Administrar alumnos
                                     </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-icon>
+                                            mdi-account-details
+                                        </v-icon>
+                                    </v-list-item-action>
                                 </v-list-item>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col class="pa-1">
-                                <v-list-item two-line>
-                                    <v-list-item-avatar tile color="secondary" class="rounded">
-                                        <v-icon color="white"> mdi-teach </v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle class="text-caption">Maestro</v-list-item-subtitle>
-                                        <v-list-item-title class="text-caption font-weight-medium" v-if="group.teacher">{{ group.teacher.name }}</v-list-item-title>
-                                        <v-list-item-title class="text-caption font-weight-medium" v-else>Sin maestro</v-list-item-title>
+                                <v-list-item >
+                                    <v-list-item-content class="red--text" :disabled="!group.active">
+                                        Cerrar grupo
                                     </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-icon color="red">
+                                            mdi-close-circle-outline
+                                        </v-icon>
+                                    </v-list-item-action>
                                 </v-list-item>
-                            </v-col>
-                            <v-col class="pa-1">
-                                <v-list-item two-line>
-                                    <v-list-item-avatar tile color="secondary" class="rounded">
-                                        <v-icon color="white"> mdi-account-supervisor-outline </v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle class="text-caption">Numero de alumnos</v-list-item-subtitle>
-                                        <v-list-item-title class="text-caption font-weight-medium" v-if="group.students">{{ group.students.length }}</v-list-item-title>
-                                        <v-list-item-title class="text-caption font-weight-medium" v-else>0</v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-col>
-                        </v-row>
+                            </v-list>
+                        </v-menu>
                     </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
+        <v-row v-else class="d-flex loading">
+            <v-progress-circular
+                :size="60"
+                :width="7"
+                color="primary"
+                class="ma-auto"
+                indeterminate
+            ></v-progress-circular>
+        </v-row>
+
         <v-dialog v-model="form_group.open" max-width="600px">
             <formGroup :group="form_group.group" @close="closeForm"/>
         </v-dialog>
@@ -142,3 +175,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.empty{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 85vh;
+}
+</style>

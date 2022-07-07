@@ -1,8 +1,8 @@
 <template>
     <v-card>
-        <v-toolbar outlined flat>
-            <span class="text-h6" v-if="group">Editar grupo</span>
-            <span class="text-h6" v-else> Nueva clase </span>
+        <v-toolbar flat>
+            <span class="text-h6 ml-2" v-if="group">Editar grupo</span>
+            <span class="text-h6 ml-2" v-else> Nueva clase </span>
 
             <v-spacer></v-spacer>
 
@@ -10,21 +10,20 @@
                 <v-icon>mdi-close</v-icon>
             </v-btn>
         </v-toolbar>
+        <v-divider></v-divider>
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p
-                        class="secondary--text rounded-md ma-0 text-caption font-weight-bold"
-                    >
-                        NOMBRE
+                    <p class="ma-0 font-weight-bold">
+                        Nombre
                     </p>
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
+                <v-col >
                     <v-text-field
                         v-model="name"
-                        color="academia-primary"
+                        color="primary"
                         solo
                         outlined
                         flat
@@ -33,9 +32,9 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
-                        FECHA DE INICIO
+                <v-col class="pb-0">
+                    <p class="ma-0 font-weight-bold">
+                        Fecha de inicio
                     </p>
                 </v-col>
             </v-row>
@@ -54,7 +53,7 @@
                             <v-text-field
                                 v-model="starts.value"
                                 append-icon="mdi-calendar-blank"
-                                color="academia-primary"
+                                color="primary"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -66,10 +65,10 @@
                         </template>
                         <v-date-picker v-model="starts.value" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn text color="academia-primary" @click="starts.menu = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="starts.menu = false">Cancel</v-btn>
                             <v-btn
                                 text
-                                color="academia-primary"
+                                color="primary"
                                 @click="$refs.start.save(starts.value)"
                             >
                                 OK
@@ -80,8 +79,8 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
-                        FECHA DE FIN
+                    <p class="ma-0 font-weight-bold">
+                        Fecha de fin
                     </p>
                 </v-col>
             </v-row>
@@ -100,7 +99,7 @@
                             <v-text-field
                                 v-model="ends.value"
                                 append-icon="mdi-calendar-blank"
-                                color="academia-primary"
+                                color="primary"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -112,10 +111,10 @@
                         </template>
                         <v-date-picker v-model="ends.value" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn text color="academia-primary" @click="ends.menu = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="ends.menu = false">Cancel</v-btn>
                             <v-btn
                                 text
-                                color="academia-primary"
+                                color="primary"
                                 @click="$refs.ends.save(ends.value)"
                             >
                                 OK
@@ -126,51 +125,55 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">
-                        MAESTRO
+                    <p class="ma-0 font-weight-bold">
+                        Maestros
                     </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="pb-0">
                     <v-card outlined>
-                        <v-card-text class="pb-0">
-                            <v-toolbar v-if="teacher" outlined flat class="mb-3">
-                                <p class="ma-0">
-                                    <span class="secondary--text font-weight-bold">NOMBRE: </span> {{teacher.name}}
-                                </p>
-                            </v-toolbar>
+                        <v-toolbar flat>
                             <v-text-field
                                 v-model="emailTeacher"
-                                placeholder="Buscar por email"
-                                color="academia-primary"
+                                placeholder="Agregar por email"
+                                color="primary"
                                 solo
                                 outlined
                                 flat
                                 hide-details
+                                dense
                             />
+                            <v-spacer></v-spacer>
+                             <v-btn color="secondary" @click="findTeacher">Agregar</v-btn>
+                        </v-toolbar>
+                        <v-divider></v-divider>
+                        <v-card-text class="pa-0 pb-1">
+                            <v-list v-if="teachers.length > 0">
+                                <v-list-item v-for="teacher in teachers" :key="teacher.id" dense>
+                                    <v-list-item-avatar color="secondary">
+                                        <v-icon dark>mdi-account</v-icon>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        {{teacher.name}}
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
                         </v-card-text>
-                        <v-card-actions>
-                            <v-btn text color="primary ml-3" @click="findTeacher">Buscar</v-btn>
-                        </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn @click="saveChanges" color="academia-primary" block :disabled="name === '' || starts.value == null || ends.value == null || teacher == null">
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn block @click="close">
-                        Cancelar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="close" color="primary">
+                Cancelar
+            </v-btn>
+            <v-btn @click="saveChanges"  color="primary"  :disabled="name === '' || starts.value == null || ends.value == null || teachers.length === 0">
+                Guardar
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -193,7 +196,7 @@ export default {
                 value: null
             },
             emailTeacher: null,
-            teacher: null
+            teachers: []
         }
     },
     methods: {
@@ -213,28 +216,30 @@ export default {
                     name: this.name,
                     starts: start.getTime(),
                     ends: end.getTime(),
-                    teacher: {
-                        name: this.teacher.name,
-                        id: this.teacher.id
-                    }
+                    teachers: this.teachers
                 })
             else
                 await this.addGroup({
                     name: this.name,
                     starts: start.getTime(),
                     ends: end.getTime(),
-                    teacher: {
-                        name: this.teacher.name,
-                        id: this.teacher.id
-                    }
+                    teachers: this.teachers
                 })
             this.close()
         },
         async findTeacher(){
             if(!this.emailTeacher) return
             const user = await this.findUser(this.emailTeacher)
+            if(!user) return
+
+            const alreadyTeacher = this.teachers.find( t => t.id === user.id )
+            if(alreadyTeacher) return 
+
             if(user.level !== TEACHER) return
-            this.teacher = user
+            this.teachers.push({
+                id: user.id, 
+                name: user.name
+            })
         },
         setGroup() {
             const starts = new Date(this.group.starts)
@@ -245,7 +250,7 @@ export default {
             this.name = this.group.name
             this.starts.value = starts.toISOString().substr(0, 10)
             this.ends.value = ends.toISOString().substr(0, 10)
-            this.teacher = this.group.teacher
+            this.teachers = this.group.teachers
             this.emailTeacher = null
         },
         close() {

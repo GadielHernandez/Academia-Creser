@@ -125,16 +125,35 @@ const actions = {
             .catch( () => reject() )
         })
     },
-    updateGroup({ commit, state }, payload){
+    updateGroup({ commit, state, dispatch }, payload){
         const { id } = payload
         delete payload.id
         return new Promise((resolve, reject) => {
             db.doc(`courses/${state.course}/groups/${id}`).update(payload)
-            .then(() => {
+            .then(async () => {
                 commit('UPDATE_GROUP', { id: id, data: payload })
+                await dispatch('setTeachersGroup', {
+                    group: id,
+                    teachers: payload.teachers
+                })
                 return resolve()
             })
             .then( () => reject() )
+        })
+    },
+    setTeachersGroup({ state }, payload){
+        return new Promise((resolve, reject) => {
+            const updateTeachers = payload.teachers.map( teacher =>
+                db.doc(`users/${teacher.id}/groups/${payload.group}`).set({
+                    course: state.course,
+                    active: true
+                },
+                { merge: true }
+                )
+            )
+            Promise.all(updateTeachers)
+            .then( () => resolve() )
+            .catch( () => reject() )
         })
     },
     updateUser(ctx , payload){
