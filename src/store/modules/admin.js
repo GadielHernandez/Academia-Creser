@@ -136,10 +136,13 @@ const actions = {
             db.doc(`courses/${state.course}/groups/${id}`).update(payload)
             .then(async () => {
                 commit('UPDATE_GROUP', { id: id, data: payload })
-                await dispatch('setTeachersGroup', {
-                    group: id,
-                    teachers: payload.teachers
-                })
+
+                if(payload.teachers)
+                    await dispatch('setTeachersGroup', {
+                        group: id,
+                        teachers: payload.teachers
+                    })
+                    
                 return resolve()
             })
             .then( () => reject() )
@@ -199,11 +202,17 @@ const actions = {
             .catch( () => reject() )
         })
     },
-    addGroup({ commit }, payload){
+    addGroup({ commit, dispatch }, payload){
         return new Promise((resolve, reject) => {
             db.collection(`courses/${state.course}/groups`).add(payload)
-            .then( doc => {
+            .then( async doc => {
                 commit('ADD_GROUP', { id: doc.id, ...payload })
+
+                await dispatch('setTeachersGroup', {
+                    group: doc.id,
+                    teachers: payload.teachers
+                })
+
                 return resolve()
             })
             .catch( () => reject() )
@@ -248,6 +257,25 @@ const actions = {
             .catch( () => reject() )
         })
     },
+    deleteGroup({ state, dispatch, commit }, group){
+        return new Promise((resolve, reject) => {
+            const groupState = state.groups.find( g => g.id === group.id )
+            if(groupState.students && groupState.students.length > 0) 
+                return reject({ error: 'El grupo aun contiene alumnos' })
+            
+            db.doc(`courses/${state.course}/groups/${group.id}`).delete()
+            .then( async () => {
+                if(groupState.teachers)
+                    await dispatch('removeTeachersGroup', {
+                        group: group.id,
+                        teachers: groupState.teachers
+                    })
+                commit('DELETE_GROUP', group.id )
+                return resolve()
+            })
+            .catch(() => reject({ error: 'Error al eliminar' }))
+        })
+    },
     async deleteUserGroup({ commit }, payload){
         const { group, user } = payload
         return new Promise((resolve, reject) => {
@@ -261,6 +289,16 @@ const actions = {
                     return resolve()
                 })
             })
+            .catch( () => reject() )
+        })
+    },
+    removeTeachersGroup(ctx, payload){
+        return new Promise((resolve, reject) => {
+            const updateTeachers = payload.teachers.map( teacher =>
+                db.doc(`users/${teacher.id}/groups/${payload.group}`).delete()
+            )
+            Promise.all(updateTeachers)
+            .then( () => resolve() )
             .catch( () => reject() )
         })
     },
@@ -331,6 +369,10 @@ const mutations = {
         if(!state.groups[index].students)
             state.groups[index].students = []
         state.groups[index].students.push(user)
+    },
+    DELETE_GROUP(state, group){
+        const index = state.groups.findIndex( g => g.id === group)
+        state.groups.splice(index, 1)
     },
     DELETE_USER_GROUP(state, payload){
         const { group, user } = payload

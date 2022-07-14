@@ -1,5 +1,11 @@
 <template>
     <div class="mx-1">
+        <v-toolbar flat>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" small @click="addNew">
+                Crear grupo
+            </v-btn>
+        </v-toolbar>
         <v-row v-if="groups != null">
             <v-col v-for="group in groups" :key="group.id" cols="12" md="6">
                 <v-card>
@@ -89,6 +95,7 @@
                                         </v-icon>
                                     </v-list-item-action>
                                 </v-list-item>
+                                <v-divider></v-divider>
                                 <v-list-item >
                                     <v-list-item-content class="red--text" :disabled="!group.active">
                                         Cerrar grupo
@@ -96,6 +103,16 @@
                                     <v-list-item-action>
                                         <v-icon color="red">
                                             mdi-close-circle-outline
+                                        </v-icon>
+                                    </v-list-item-action>
+                                </v-list-item>
+                                <v-list-item @click="openDeleteConfirmation(group)">
+                                    <v-list-item-content class="red--text">
+                                        Elminar grupo
+                                    </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-icon color="red">
+                                            mdi-delete
                                         </v-icon>
                                     </v-list-item-action>
                                 </v-list-item>
@@ -122,16 +139,19 @@
         <v-dialog v-model="list_user.open" max-width="600px">
             <listUsers :group="list_user.group" @close="closeListUsers"/>
         </v-dialog>
+
+        <deleteGroup :group="groupToDelete" @close="groupToDelete = null"/>
     </div>
 </template>
 
 <script>
 import formGroup from './group_form'
 import listUsers from './users_groups'
+import deleteGroup from './delete_group.vue'
 import { mapState } from 'vuex'
 export default {
     name:'groups',
-    components: { formGroup, listUsers },
+    components: { formGroup, listUsers, deleteGroup },
     computed:{
         ...mapState({
             groups: state => state.admin.groups
@@ -146,7 +166,8 @@ export default {
             list_user: {
                 group: null,
                 open: false
-            }
+            },
+            groupToDelete: null
         }
     },
     methods: {
@@ -167,6 +188,9 @@ export default {
             const group = this.groups.find( g => g.id === id )
             this.form_group.group = group
             this.form_group.open = true
+        },
+        openDeleteConfirmation(group){
+            this.groupToDelete = group
         },
         closeForm(){
             this.form_group.group = null

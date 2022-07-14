@@ -149,7 +149,7 @@
                         </v-toolbar>
                         <v-divider></v-divider>
                         <v-card-text class="pa-0 pb-1">
-                            <v-list v-if="teachers.length > 0">
+                            <v-list v-if="teachers && teachers.length > 0">
                                 <v-list-item v-for="teacher in teachers" :key="teacher.id" dense>
                                     <v-list-item-avatar color="secondary">
                                         <v-icon dark>mdi-account</v-icon>
@@ -210,7 +210,7 @@ export default {
             const end = new Date(this.ends.value)
             start.setHours(0,0,0,0)
             end.setHours(0,0,0,0)
-            if(this.group.id)
+            if(this.group && this.group.id)
                 await this.editGroup({
                     id: this.group.id,
                     name: this.name,
@@ -223,7 +223,8 @@ export default {
                     name: this.name,
                     starts: start.getTime(),
                     ends: end.getTime(),
-                    teachers: this.teachers
+                    teachers: this.teachers,
+                    active: true
                 })
             this.close()
         },
@@ -274,7 +275,8 @@ export default {
         },
     },
     mounted() {
-        this.setGroup()
+        if (this.group)
+            this.setGroup()
     },
 }
 </script>

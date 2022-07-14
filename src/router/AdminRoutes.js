@@ -15,7 +15,7 @@ const Routes = [
     }),
     createRoute({
         name: 'admin-groups',
-        path: '/admin/goups',
+        path: '/admin/groups',
         view: GroupsView,
         level: ADMIN
     }),
