@@ -81,7 +81,7 @@
                         class="ma-auto font-weight-bold blue-grey--text"
                         >mdi-calendar-check-outline</v-icon
                     >
-                    <p>No hay tareas disponibles</p>
+                    <p>No hay clases disponibles</p>
                 </div>
             </v-col>
         </v-row>

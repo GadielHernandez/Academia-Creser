@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar outlined flat>
-            <span class="text-h6" v-if="task">Editar tareas</span>
+            <span class="text-h6" v-if="task">Editar tarea</span>
             <span class="text-h6" v-else> Nueva tarea </span>
 
             <v-spacer></v-spacer>
@@ -13,14 +13,16 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="ma-0 font-weight-bold">
+                        Nombre
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="name"
-                        color="academia-primary"
+                        color="primary"
                         solo
                         outlined
                         flat
@@ -30,14 +32,16 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Descripción
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="description"
-                        color="academia-primary"
+                        color="primary"
                         solo
                         outlined
                         flat
@@ -47,14 +51,16 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Tiempo de liberación
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="available_after"
-                        color="academia-primary"
+                        color="primary"
                         type="number"
                         solo
                         outlined
@@ -65,11 +71,13 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col class="d-flex">
-                    <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
+                <v-col class="pb-0">
+                    <p class="ma-0 font-weight-bold">
+                        Preguntas
+                    </p>
                 </v-col>
                 <v-col class="text-right">
-                    <v-btn icon @click="addQuestion" color="academia-primary">
+                    <v-btn icon @click="addQuestion" color="primary">
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </v-col>
@@ -78,7 +86,7 @@
                 <v-col>
                     <v-textarea 
                         v-for="(question, index) in questions" 
-                        color="academia-primary"
+                        color="primary"
                         v-model="question.question"
                         :key="index" 
                         rows="2"
@@ -89,21 +97,17 @@
                     ></v-textarea>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="academia-primary" block @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null">
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn block @click="close">
-                        Cancelar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="close" color="primary">
+                Cancelar
+            </v-btn>
+            <v-btn @click="saveChanges"  color="primary"  :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null">
+                Guardar
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
