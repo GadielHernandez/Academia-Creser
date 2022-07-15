@@ -13,7 +13,9 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="ma-0 font-weight-bold">
+                        Nombre
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
@@ -30,7 +32,9 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Descripción
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
@@ -47,7 +51,9 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIPO</p>
+                    <p class="ma-0 font-weight-bold">
+                        Tipo de clase
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
@@ -71,7 +77,9 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Tiempo de liberación
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
@@ -90,7 +98,9 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">VIDEO</p>
+                    <p class="ma-0 font-weight-bold">
+                        Video
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
@@ -98,22 +108,19 @@
                     <v-card outlined class="px-2">
                         <v-row v-if="!video.editing">
                             <v-col>
-                                <v-row>
-                                    <v-col>
-                                        <p class="mx-3 secondary--text rounded-md ma-0 text-caption font-weight-bold">URL</p>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col class="pt-0">
-                                        <p class="mx-3 ma-0 text-caption" v-if="video.url.length > 0"> {{ video.url }} </p>
-                                        <p class="mx-3 ma-0 text-caption" v-else> SIN VIDEO </p>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col>
-                                        <v-btn @click="editVideo" color="academia-secondary" class="mx-3">Cambiar</v-btn>
-                                    </v-col>
-                                </v-row>
+                                <v-list-item>
+                                    <v-list-item-avatar color="secondary">
+                                        <v-icon dark>mdi-video</v-icon>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        <span class="font-weight-bold">Url: </span>{{ video.url || 'Sin Video' }}
+                                    </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-btn @click="editVideo" class="mx-3" icon>
+                                            <v-icon>mdi-pencil</v-icon>
+                                        </v-btn>
+                                    </v-list-item-action>
+                                </v-list-item>
                             </v-col>
                         </v-row>
                         <v-row v-else>
@@ -130,10 +137,10 @@
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <v-col class="text-rigth">
-                                        <v-btn v-if="!video.valid" @click="checkUrl" color="academia-secondary" class="mx-3">Verificar</v-btn>
-                                        <v-btn v-else @click="closeEditVideo(true)" color="success"  class="mx-3">Guardar</v-btn>
+                                    <v-col class="text-right">
                                         <v-btn @click="closeEditVideo(false)" class="mx-3">Cancelar</v-btn>
+                                        <v-btn v-if="!video.valid" @click="checkUrl" color="secondary" class="mx-3">Verificar</v-btn>
+                                        <v-btn v-else @click="closeEditVideo(true)" color="success"  class="mx-3">Guardar</v-btn>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -141,21 +148,17 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn @click="saveChanges" color="academia-primary" block>
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn block @click="close">
-                        Cancelar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="close" color="primary">
+                Cancelar
+            </v-btn>
+            <v-btn @click="saveChanges"  color="primary"  :disabled="name === '' || description == '' || type == '' || video_id === null">
+                Guardar
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 

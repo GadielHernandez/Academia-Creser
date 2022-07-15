@@ -7,7 +7,7 @@
                 </div>
             </template>
         </Navbar>
-        <tasksPage v-if="lessons"/>
+        <lessonsPage v-if="lessons"/>
         <div v-else-if="!lessons" class="loading">
             <v-progress-circular
                 :size="60"
@@ -31,10 +31,10 @@
 <script>
 import Navbar from '../../components/navigation/navbar.vue'
 import { mapState, mapActions } from 'vuex'
-import tasksPage from '../../components/admin/tasks.vue'
+import lessonsPage from '../../components/admin/lessons.vue'
 export default {
     name:'Tasks',
-    components: { tasksPage, Navbar },
+    components: { lessonsPage, Navbar },
     computed:{
         ...mapState({
             lessons: state => state.admin.lessons
