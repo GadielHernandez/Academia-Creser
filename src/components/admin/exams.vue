@@ -1,53 +1,91 @@
 <template>
     <div class="mx-1">
-        <v-row>
-            <v-col class="d-flex">
-                <p class="secondary--text rounded-md my-auto mb-0 text-caption font-weight-bold">LISTA DE EXAMENES</p>
-            </v-col>
-            <v-col class="text-right">
-                <v-btn 
-                    dark
-                    @click="addNew"
-                    color="primary">
-                    Añadir
-                </v-btn>
+        <v-toolbar flat>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" small @click.stop="addNew">
+                Crear Examen
+            </v-btn>
+        </v-toolbar>
+        <v-row v-if="exams != null">
+            <v-col :class="{'empty': exams.length === 0}">
+                <v-list v-if="exams.length > 0" >
+                    <v-divider></v-divider>
+                    <template v-for="(exam, index) in exams" >
+                        <v-list-item
+                            class="rounded-lg py-2"
+                            :key="exam.id"
+                        >
+                            <v-list-item-avatar color="primary" tile class="rounded-lg">
+                                <v-icon dark>mdi-file-document-outline</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ exam.name }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{ exam.description }}
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <div class="d-flex">
+                                    <v-tooltip top >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-chip 
+                                                color="secondary" 
+                                                class="ma-auto mr-1" 
+                                                v-bind="attrs" 
+                                                v-on="on"
+                                            >   
+                                                <span style="font-size: 12px; width: 22px">{{ exam.questions.length }}</span>
+                                                <v-icon small>mdi-help-circle</v-icon>
+                                            </v-chip>
+                                        </template>
+                                        <span>Numero de preguntas</span>
+                                    </v-tooltip>
+                                    <v-tooltip top >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-chip 
+                                                color="secondary" 
+                                                class="ma-auto ml-1" 
+                                                v-bind="attrs" 
+                                                v-on="on"
+                                                
+                                            >
+                                                <span style="font-size: 12px; width: 20px"> {{ 
+                                                    Number.isInteger(exam.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) 
+                                                        ? exam.available_after / (( 1000 * 60 * 60 * 24 * 7 )) 
+                                                        : (exam.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1)
+                                                }} </span>
+                                                <v-icon small>mdi-calendar-start</v-icon>
+                                            </v-chip>
+                                        </template>
+                                        <span>Semana de liberación</span>
+                                    </v-tooltip>
+                                </div>
+                            </v-list-item-content>
+                            <v-list-item-action class="d-none d-md-block">
+                                <v-btn icon @click="edit(exam.id)">
+                                    <v-icon>mdi-pencil</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                        <v-divider :key="index"></v-divider>
+                    </template>
+                </v-list>
+                <div
+                    v-else
+                    class="font-weight-bold blue-grey--text text-center"
+                >
+                    <v-icon
+                        x-large
+                        class="ma-auto font-weight-bold blue-grey--text"
+                        >mdi-calendar-check-outline</v-icon
+                    >
+                    <p>No hay tareas disponibles</p>
+                </div>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col>
-                <v-card>
-                    <v-simple-table>
-                        <template v-slot:default>
-                            <tbody>
-                                <tr v-for="e in exams" :key="e.id">
-                                    <v-list-item>
-                                        <v-list-item-icon>
-                                            <v-icon color="primary">mdi-file-document-outline</v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ e.name }} <v-chip x-small label outlined color="primary" v-if="e.final"> Examen Final </v-chip></v-list-item-title>
-                                            <v-list-item-subtitle>{{ e.description }}</v-list-item-subtitle>
-                                        </v-list-item-content>
-                                        <v-list-item-content>
-                                            <p class="ma-auto text-caption">
-                                                <v-chip small color="primary" dark label class="mr-1">{{ Number.isInteger(e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))) ? e.available_after / (( 1000 * 60 * 60 * 24 * 7 )) : (e.available_after / (( 1000 * 60 * 60 * 24 * 7 ))).toFixed(1) }} semanas</v-chip>
-                                                <v-chip small color="primary" dark label class="mr-1">{{ e.questions.length }} preguntas</v-chip>
-                                            </p>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-btn icon @click="edit(e.id)">
-                                                <v-icon >mdi-pencil</v-icon>
-                                            </v-btn>
-                                        </v-list-item-action>
-                                    </v-list-item>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-simple-table>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-dialog v-model="form_exams.open" fullscreen>
+        <v-dialog v-model="form_exams.open" fullscreen scrollable>
             <formExam :exam="form_exams.exam" @close="closeForm"/>
         </v-dialog>
     </div>

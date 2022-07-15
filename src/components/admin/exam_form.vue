@@ -13,14 +13,16 @@
         <v-card-text>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">NOMBRE</p>
+                    <p class="ma-0 font-weight-bold">
+                        Nombre
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="name"
-                        color="academia-primary"
+                        color="primary"
                         solo
                         outlined
                         flat
@@ -30,14 +32,16 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">DESCRIPCION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Descripción
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="description"
-                        color="academia-primary"
+                        color="primary"
                         solo
                         outlined
                         flat
@@ -47,14 +51,16 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO LIMITE</p>
+                    <p class="ma-0 font-weight-bold">
+                        Limite de tiempo
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="limit_time"
-                        color="academia-primary"
+                        color="primary"
                         type="number"
                         solo
                         outlined
@@ -66,14 +72,16 @@
             </v-row>
             <v-row>
                 <v-col class="pb-0">
-                    <p class="secondary--text rounded-md ma-0 text-caption font-weight-bold">TIEMPO DE LIBERACION</p>
+                    <p class="ma-0 font-weight-bold">
+                        Tiempo de liberación
+                    </p>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="available_after"
-                        color="academia-primary"
+                        color="primary"
                         type="number"
                         solo
                         outlined
@@ -88,14 +96,14 @@
                     <p class="secondary--text rounded-md my-auto text-caption font-weight-bold">PREGUNTAS</p>
                 </v-col>
                 <v-col class="text-right">
-                    <v-btn icon @click="addQuestion" color="academia-primary">
+                    <v-btn icon @click="addQuestion" color="primary">
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </v-col>
             </v-row>
             <v-row class="mb-6">
                 <v-col v-for="(question, index) in questions" :key="index" cols="12" md="4">
-                    <v-card>
+                    <v-card class="h-100">
                         <v-card-text>
                             <p class="font-weight-bold d-flex">
                                 <span class="ma-auto ml-1">Pregunta {{ index + 1 }}</span>
@@ -106,7 +114,6 @@
                             <v-text-field
                                 v-for="(answer, index) in question.answers"
                                 :key="index"
-                                color="academia-primary"
                                 solo
                                 outlined
                                 flat
@@ -114,6 +121,7 @@
                                 dense
                                 readonly
                                 :value="answer"
+                                :append-icon="parseInt(question.correct) === index + 1 ? 'mdi-check' : null"
                                 class="mb-1"
                             />
                         </v-card-text>
@@ -121,12 +129,13 @@
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-card-actions class="buttons">
+        <v-divider></v-divider>
+        <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text @click="close">
+            <v-btn text @click="close" color="primary">
                 Cancelar
             </v-btn>
-            <v-btn color="academia-primary" @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null || limit_time === null">
+            <v-btn color="primary" @click="saveChanges" :disabled="questions === [] || questions.findIndex( q => q.question.length === 0 ) > -1 || name === '' || description === '' || available_after === null || limit_time === null">
                 Guardar
             </v-btn>
         </v-card-actions>
@@ -147,7 +156,7 @@
                             <v-select
                                 :items="question_form.answers.map( (ans, index) => index + 1 )"
                                 v-model="question_form.correct"
-                                color="academia-primary"
+                                color="primary"
                                 solo
                                 outlined
                                 flat
@@ -171,7 +180,7 @@
                             <v-text-field
                                 v-for="(answer, index) in question_form.answers"
                                 :key="index"
-                                color="academia-primary"
+                                color="primary"
                                 solo
                                 outlined
                                 flat
@@ -188,7 +197,7 @@
                     <v-btn text @click="closeAddQuestion">
                         Cancelar
                     </v-btn>
-                    <v-btn color="academia-primary" @click="saveQuestion" :disabled="question_form.answers.length < 2 || question_form.correct === null">
+                    <v-btn color="primary" @click="saveQuestion" :disabled="question_form.answers.length < 2 || question_form.correct === null">
                         Guardar
                     </v-btn>
                 </v-card-actions>
