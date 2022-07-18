@@ -46,7 +46,8 @@
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-chip 
                                                 color="secondary" 
-                                                class="ma-auto ml-1" 
+                                                class="ma-auto ml-1"
+                                                :class="{ 'mx-1': exam.final }" 
                                                 v-bind="attrs" 
                                                 v-on="on"
                                                 
@@ -60,6 +61,20 @@
                                             </v-chip>
                                         </template>
                                         <span>Semana de liberación</span>
+                                    </v-tooltip>
+                                    <v-tooltip top v-if="exam.final">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-chip 
+                                                color="secondary" 
+                                                class="ma-auto ml-1" 
+                                                v-bind="attrs" 
+                                                v-on="on"
+                                                
+                                            >
+                                                <span style="font-size: 12px">Examen final</span>
+                                            </v-chip>
+                                        </template>
+                                        <span>Exámen final</span>
                                     </v-tooltip>
                                 </div>
                             </v-list-item-content>
