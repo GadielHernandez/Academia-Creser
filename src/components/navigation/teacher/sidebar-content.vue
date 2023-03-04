@@ -73,7 +73,7 @@ export default {
 }
 .group{
     width: 100%;
-    margin: auto;
+    margin-top: 10px;
 }
 .selected{
     color: var(--v-primary-base) !important
