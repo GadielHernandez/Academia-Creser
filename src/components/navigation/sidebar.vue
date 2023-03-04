@@ -3,7 +3,6 @@
         permanent
         mini-variant-width="100"
         :mini-variant.sync="mini"
-        expand-on-hover
         app
       >
         <v-list-item class="logo mx-3">
@@ -11,7 +10,12 @@
                 <span class="logo-icon">&#127891;</span>
             </v-list-item-avatar>
 
-            <v-list-item-title class="text-h6 mt-1">Academia</v-list-item-title>
+            <v-list-item-title class="text-h6">Academia</v-list-item-title>
+            <v-list-item-action>
+                <v-btn icon @click="mini = !mini">
+                    <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+            </v-list-item-action>
         </v-list-item>
 
         <v-divider></v-divider>

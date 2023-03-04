@@ -97,7 +97,7 @@
         <v-row>
             <v-col>
                 <v-card outlined style="overflow: hidden">
-                    <v-card class="py-2 rounded-br-0 rounded-bl-0" color="primary" dark>
+                    <v-card class="py-2 rounded-br-0 rounded-bl-0" color="primary" dark flat>
                         <v-list-item>
                             <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
                                 <v-icon dark>mdi-equal-box</v-icon>
