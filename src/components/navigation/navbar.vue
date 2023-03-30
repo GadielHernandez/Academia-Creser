@@ -3,7 +3,7 @@
         outlined
         color="white" 
         flat
-        class="px-0 py-3 navbar mb-3"
+        class="px-0 py-4 navbar mb-3"
         height="unset"
     >
         <slot name="title" />

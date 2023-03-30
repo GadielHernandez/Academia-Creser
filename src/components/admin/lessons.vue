@@ -86,7 +86,7 @@
             </v-col>
         </v-row>
         <v-dialog v-model="form_lesson.open" max-width="600px">
-            <formLesson :lesson="form_lesson.lesson" @close="form_lesson.open = false"/>
+            <formLesson :lesson="form_lesson.lesson" @close="closeEdit"/>
         </v-dialog>
     </div>
 </template>
@@ -117,6 +117,10 @@ export default {
         addNew(){
             this.form_lesson.lesson = null
             this.form_lesson.open = true
+        },
+        closeEdit(){
+            this.form_lesson.lesson = null
+            this.form_lesson.open = false
         },
         edit(id){
             const lesson = this.lessons.find( l => l.id === id )

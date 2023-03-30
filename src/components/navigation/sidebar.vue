@@ -6,13 +6,31 @@
         app
       >
         <v-list-item class="logo mx-3">
-            <v-list-item-avatar>
-                <span class="logo-icon">&#127891;</span>
+            <v-list-item-avatar color="primary">
+                <v-icon dark>
+                    mdi-school
+                </v-icon>
             </v-list-item-avatar>
 
-            <v-list-item-title class="text-h6">Academia</v-list-item-title>
-            <v-list-item-action>
-                <v-btn icon @click="mini = !mini">
+            <v-list-item-title class="text-h6 primary--text">
+                Academia
+            </v-list-item-title>
+            
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item>
+            <v-list-item-icon class="my-auto" v-if="mini">
+                <v-btn icon @click="mini = false" small>
+                    <v-icon>mdi-chevron-right</v-icon>
+                </v-btn>
+            </v-list-item-icon>
+            <v-list-item-content >
+                <span class="ml-2 text-caption font-weight-medium">Menu</span>
+            </v-list-item-content>
+            <v-list-item-action v-if="!mini">
+                <v-btn icon @click="mini = true" small>
                     <v-icon>mdi-chevron-left</v-icon>
                 </v-btn>
             </v-list-item-action>
@@ -149,7 +167,7 @@ export default {
     font-size: 40px;
 }
 .menu{
-    height: 80%;
+    height: 72%;
     display: flex;
 }
 </style>

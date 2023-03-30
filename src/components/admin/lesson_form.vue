@@ -155,7 +155,7 @@
             <v-btn text @click="close" color="primary">
                 Cancelar
             </v-btn>
-            <v-btn @click="saveChanges"  color="primary"  :disabled="name === '' || description == '' || type == '' || video_id === null">
+            <v-btn @click="saveChanges"  color="primary"  :disabled="name === '' || description == '' || type == ''">
                 Guardar
             </v-btn>
         </v-card-actions>
