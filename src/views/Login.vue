@@ -42,7 +42,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import { auth } from '@/plugins/firebase'
 export default {
     name: 'Login',
     data() {
@@ -57,16 +57,17 @@ export default {
         async login(){
             try {
                 this.error = null
-                await this.doLogin({
-                    email: this.email,
-                    password: this.password
-                })
-                this.$router.push({ name: 'Home' })
+                await auth.signInWithEmailAndPassword(this.email, this.password)
+
+                // this.$router.push({ name: 'Home' })
             } catch (error) {
                 if(error.message)
                     this.error = error.message
             }
         }
+    },
+    mounted() {
+        console.log('mounted')
     },
 }
 </script>

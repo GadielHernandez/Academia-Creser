@@ -5,7 +5,7 @@ import store from '../store'
 export function authorization(to) {
     const requiresAuth = to.matched.some((r) => r.meta.requiresAuth)
 
-    if (requiresAuth && !auth.currentUser)
+    if (requiresAuth && !auth.currentUser && process.env.VUE_APP_ENV !== 'development')
         return { approve: false, redirect: '/login' }
 
     return { approve: true }

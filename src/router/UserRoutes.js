@@ -4,6 +4,7 @@ import HomeView from '../views/user/Home'
 import ClassesView from '../views/user/Lessons'
 import TasksView from '../views/user/Tasks'
 import ExamsView from '../views/user/Exams'
+import Login from '../views/Login'
 
 const Routes = [
     createRoute({
@@ -31,5 +32,14 @@ const Routes = [
         level: USER
     })
 ]
+
+if(process.env.VUE_APP_ENV === 'development'){
+    Routes.push(createRoute({
+        name: 'Login',
+        path: '/login',
+        view: Login,
+        level: USER
+    }))
+}
 
 export default Routes

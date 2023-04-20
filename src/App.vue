@@ -11,7 +11,7 @@
             </v-progress-circular>
 
         </div>
-        <sidebar v-if="view !== null"/>
+        <sidebar v-if="view !== null && user"/>
         <v-main class="main-background" v-if="view !== null">
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
@@ -35,7 +35,8 @@ export default {
     components: { sidebar },
     computed: {
         ...mapState({
-            view: (state) => state.view.actual
+            view: (state) => state.view.actual,
+            user: () => auth.currentUser
         })
     },
     data() {
