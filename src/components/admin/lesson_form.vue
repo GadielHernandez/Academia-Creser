@@ -106,45 +106,46 @@
             <v-row>
                 <v-col>
                     <v-card outlined class="px-2">
-                        <v-row v-if="!video.editing">
-                            <v-col>
-                                <v-list-item>
-                                    <v-list-item-avatar color="secondary">
-                                        <v-icon dark>mdi-video</v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content>
-                                        <span class="font-weight-bold">Url: </span>{{ video.url || 'Sin Video' }}
-                                    </v-list-item-content>
-                                    <v-list-item-action>
-                                        <v-btn @click="editVideo" class="mx-3" icon>
-                                            <v-icon>mdi-pencil</v-icon>
-                                        </v-btn>
-                                    </v-list-item-action>
-                                </v-list-item>
-                            </v-col>
-                        </v-row>
-                        <v-row v-else>
-                            <v-col>
-                                <v-row>
-                                    <v-col>
-                                        <v-text-field
-                                            v-model="video.edit_url"
-                                            solo
-                                            outlined
-                                            flat
-                                            hide-details
-                                        />
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col class="text-right">
-                                        <v-btn @click="closeEditVideo(false)" class="mx-3">Cancelar</v-btn>
-                                        <v-btn v-if="!video.valid" @click="checkUrl" color="secondary" class="mx-3">Verificar</v-btn>
-                                        <v-btn v-else @click="closeEditVideo(true)" color="success"  class="mx-3">Guardar</v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
+                        <v-toolbar flat v-if="!video.editing">
+                            <v-avatar color="secondary" size="35">
+                                <v-icon dark>mdi-video</v-icon>
+                            </v-avatar>
+                            <div class="py-2 ml-2">
+                                <p class="font-weight-bold text-caption mb-0">Url:</p>
+                                <p class="text-caption mb-0">{{ video.url || 'Sin Video' }}</p>
+                            </div>
+                        </v-toolbar>
+                        <v-text-field
+                            v-else
+                            class="pa-2"
+                            v-model="video.edit_url"
+                            solo
+                            outlined
+                            flat
+                            hide-details
+                        />
+                        <v-divider></v-divider>
+                        <v-card-actions v-if="video.editing">
+                            <v-spacer></v-spacer>
+                            <v-btn @click="closeEditVideo(false)" outlined small>
+                                Cancelar
+                            </v-btn>
+                            <v-btn v-if="!video.valid" @click="checkUrl" color="secondary" outlined small>
+                                Verificar
+                            </v-btn>
+                            <v-btn v-else @click="closeEditVideo(true)" color="success" outlined small>
+                                Guardar
+                            </v-btn>
+                        </v-card-actions>
+                        <v-card-actions v-else>
+                            <v-spacer></v-spacer>
+                            <v-btn @click="deleteVideo" outlined color="red" small>
+                                Eliminar
+                            </v-btn>
+                            <v-btn @click="editVideo" outlined color="primary" small>
+                                Editar
+                            </v-btn>
+                        </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
@@ -229,6 +230,10 @@ export default {
         editVideo(){
             this.video.edit_url = this.video.url
             this.video.editing = true
+        },
+        deleteVideo(){
+            this.video_id = null
+            this.video.url = ''
         },
         checkUrl(){
             const id = this.$youtube.getIdFromUrl(this.video.edit_url)
