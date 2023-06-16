@@ -10,7 +10,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col>
+            <v-col cols="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -33,7 +33,7 @@
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -58,7 +58,7 @@
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -171,70 +171,6 @@
                     </v-card-text>
                     
                 </v-card>
-                <!-- <v-card outlined flat>
-                    
-                    <v-divider class="d-none d-md-block"></v-divider>
-                    <v-card-text class="pa-0">
-                        <v-row class="d-none d-sm-flex px-3">
-                            <v-col cols="5" sm="5" class="py-0 text-center">
-                                <p class="text-caption my-0">Criterio de evaluación</p>
-                            </v-col>
-                            <v-col cols="4" sm="4" class="py-0 text-center">
-                                <p class="text-caption my-0">Avance</p>
-                            </v-col>
-                            <v-col cols="2" sm="2" class="py-0 text-center">
-                                <p class="text-caption my-0">Puntos</p>
-                            </v-col>
-                        </v-row>
-                        <v-divider></v-divider>
-                        <v-row
-                            class="py-2 px-3"
-                            v-for="cr in criteria"
-                            :key="cr.name"
-                        >
-                            <v-col cols="3" sm="1" md="1" class="center-vertical">
-                                <v-icon color="primary" class="ml-5">{{ cr.icon }}</v-icon>
-                            </v-col>
-                            <v-col cols="9" sm="3" md="4" class="center-vertical">
-                                <p class="ma-0">{{ cr.name }}</p>
-                            </v-col>
-                            <v-col cols="12" sm="4" md="4" class="center-vertical">
-                                <v-progress-linear
-                                    :value="cr.name === ATTENDANCE 
-                                        ? (cr.completed + cr.out_of_time + cr.not_attendance) / cr.number * 100
-                                        : cr.completed / cr.number * 100"
-                                    rounded
-                                    hide-details
-                                    color="secondary"
-                                    height="20"
-                                    class="text-caption"
-                                >
-                                    <template v-slot:default>
-                                        {{  
-                                            cr.name === ATTENDANCE 
-                                                ? cr.completed + cr.out_of_time + cr.not_attendance 
-                                                : cr.completed
-                                        }} 
-                                        de {{ cr.number }}
-                                    </template>
-                                </v-progress-linear>
-                            </v-col>
-                            <v-col cols="12" sm="2" md="2" class="center-vertical">
-                                <p class="ma-0 font-weight-bold primary--text text-h6 text-center">
-                                    {{ cr.points.toFixed(2) }} 
-                                    <span class="text-caption text--secondary"> 
-                                        / {{ cr.value }}
-                                    </span>
-                                </p>
-                            </v-col>
-                            <v-col class="text-center">
-                                <v-btn  color="white" x-small fab depressed class="text-center pa-0">
-                                    <v-icon small color="primary">mdi-dots-horizontal</v-icon>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
-                </v-card> -->
             </v-col>
         </v-row>
         <v-dialog v-model="moreInfo.show" max-width="600" scrollable>
@@ -478,8 +414,10 @@ export default {
                                 obj_crt.out_of_time = out_of_time.length
                                 obj_crt.not_attendance = not_attendance.length
 
-                                obj_crt.points =
-                                    (obj_crt.completed * cr.value) / cr.number
+                                obj_crt.points = (
+                                    obj_crt.completed * cr.value 
+                                    + obj_crt.out_of_time * cr.value
+                                ) / cr.number
                             } else {
                                 obj_crt.points = 0
                                 obj_crt.completed = 0
@@ -541,7 +479,7 @@ export default {
 
                     result.push(obj_crt)
                 })
-
+                
                 return result
             },
             total() {

@@ -80,6 +80,78 @@
         </v-row>
         <v-row v-if="progress.items && progress.items.length > 0">
             <v-col>
+                <v-card outlined>
+                    <v-toolbar flat>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                            solo
+                            flat
+                        ></v-text-field>
+                    </v-toolbar>
+                    <v-divider></v-divider>
+                    <v-data-table
+                        :headers="progress.headers"
+                        :items="progress.items"
+                        :search="search"
+                    >
+                        <template v-slot:item.name="{ item }">
+                            <v-list-item
+                                class="rounded-lg py-2"
+                                :key="item.id"
+                            >
+                                <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                                    <v-icon dark>mdi-account</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        {{ item.name }}
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle class="text-caption">
+                                        {{ item.email }}
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                        <template v-slot:item.attendances="{ item }">
+                            <v-chip small color="success">{{item.attendances}}</v-chip>
+                            <v-chip small color="warning mx-1">{{item.out_of_time}}</v-chip>
+                            <v-chip small color="red" dark>{{item.no_attendance}}</v-chip>
+                        </template>
+                        <template v-slot:item.exams="{ item }">
+                            <template v-for="(grade, index) in item.exams">
+                                <v-chip small :color="grade >= 0.70 ? 'success': 'warning'" :key="index">
+                                    {{parseInt(grade * 100)}}
+                                </v-chip>
+                            </template>
+                        </template>
+                        <template v-slot:item.tasks="{ item }">
+                            <span class="font-weight-bold text-caption">
+                                {{ item.tasks }}
+                            </span>
+                        </template>
+                        <template v-slot:item.final="{ item }">
+                            <span class="font-weight-bold text-caption">
+                                {{ item.final ?  item.final.grade : 'Pendiente'}}
+                            </span>
+                        </template>
+                        <template v-slot:item.grade="{ item }">
+                            <span 
+                            class="font-weight-bold"
+                            :class=" {
+                                'warning--text': item.grade <= 70,
+                                'green--text': item.grade > 70
+                            }">
+                                {{ item.grade }}
+                            </span>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-col>
+            <!-- <v-col>
                 <v-list>
                     <v-divider></v-divider>
                     <template v-for="(student, index) in progress.items" >
@@ -158,7 +230,7 @@
                         <v-divider :key="index"></v-divider>
                     </template>
                 </v-list>
-            </v-col>
+            </v-col> -->
         </v-row>
         <div v-else class="no-students d-flex">
             <div class="ma-auto font-weight-bold blue-grey--text text-center">
@@ -247,8 +319,6 @@ export default {
                 const headers = [
                     { text: 'Nombre', value: 'name' },
                     { text: 'Asistencias', value: 'attendances' },
-                    { text: 'Retardos', value: 'out_of_time' },
-                    { text: 'Faltas', value: 'no_attendance' },
                     { text: 'Examenes', value: 'exams' },
                     { text: 'Tareas', value: 'tasks' },
                     { text: 'Examen Final', value: 'final' },
@@ -262,14 +332,16 @@ export default {
                     attendances: attendaces_obj[student.id] ? attendaces_obj[student.id].attendances : 0,
                     out_of_time: attendaces_obj[student.id] ? attendaces_obj[student.id].out_of_time : 0,
                     no_attendance: attendaces_obj[student.id] ? attendaces_obj[student.id].no_attendance : 0,
-                    exams: exams_obj[student.id] ? exams_obj[student.id].answered : 0,
+                    exams: exams_obj[student.id] ? exams_obj[student.id].grades : [],
                     tasks: tasks_obj[student.id] ? tasks_obj[student.id].completed : 0,
                     final: final_obj[student.id] ? final_obj[student.id]: null,
                     grade: null
                 }))
 
                 items.forEach( student => {
-                    let attendaces_grade =  student.attendances * attendance_values.value / attendance_values.number
+                    const attendances_value =  student.attendances * attendance_values.value / attendance_values.number
+                    const att_out_of_time_value = student.out_of_time * attendance_values.value / attendance_values.number
+                    const attendaces_grade = attendances_value + att_out_of_time_value
                         
                     let exams_grade = 0
                     if(exams_obj[student.id])
@@ -291,7 +363,12 @@ export default {
                 }
             }
         }),
-    }
+    },
+    data() {
+        return {
+            search: '',
+        }
+    },
 }
 </script>
 
