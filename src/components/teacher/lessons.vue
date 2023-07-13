@@ -39,7 +39,7 @@
                         </v-col>
                         <v-col class="text-left text-sm-right d-flex" cols="12" md="3" sm="4">
                             <v-chip label small color="secondary" class="ma-auto mr-1">
-                                {{ actual_video.type === ONLINE ? 'CLASE ONLINE': 'CLASE PRESCENCIAL' }}
+                                {{ actual_video.type === FACETOFACE ? 'CLASE PRESENCIAL': 'CLASE ONLINE' }}
                             </v-chip>
                         </v-col>
                     </v-row>
