@@ -10,7 +10,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -33,7 +33,7 @@
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -52,13 +52,15 @@
                             <v-list-item-title
                                 class="text-caption font-weight-medium"
                             >
-                                {{ group.teachers.map( t => t.name).join(', ') }}
+                                {{
+                                    group.teachers.map((t) => t.name).join(', ')
+                                }}
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
                 <v-card class="py-2" flat color="background">
                     <v-list-item two-line>
                         <v-list-item-avatar
@@ -97,9 +99,19 @@
         <v-row>
             <v-col>
                 <v-card outlined style="overflow: hidden">
-                    <v-card class="py-2 rounded-br-0 rounded-bl-0" color="primary" dark flat>
+                    <v-card
+                        class="py-2 rounded-br-0 rounded-bl-0"
+                        color="primary"
+                        dark
+                        flat
+                    >
                         <v-list-item>
-                            <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                            <v-list-item-avatar
+                                color="primary"
+                                tile
+                                class="rounded-lg d-none d-md-block"
+                                dark
+                            >
                                 <v-icon dark>mdi-equal-box</v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -107,39 +119,61 @@
                                     Calificación
                                 </v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action  class="mr-0 mr-md-6">
-                                <v-list-item-title class="font-weight-bold text-h4 mx-auto">
-                                    {{total}} <span class="text-caption">/ 100 </span>
+                            <v-list-item-action class="mr-0 mr-md-6">
+                                <v-list-item-title
+                                    class="font-weight-bold text-h4 mx-auto"
+                                >
+                                    {{ total }}
+                                    <span class="text-caption">/ 100 </span>
                                 </v-list-item-title>
                             </v-list-item-action>
                         </v-list-item>
                     </v-card>
-                
+
                     <v-card-text class="pa-0 rounded-lg">
                         <v-list class="rounded-lg">
-                            <template v-for="(cr) in criteria">
+                            <template v-for="cr in criteria">
                                 <v-list-item
                                     class="rounded-lg py-2"
                                     :key="cr.name"
                                     @click="showMoreInfo(cr)"
                                 >
-                                    <v-list-item-avatar tile class="rounded-lg">
-                                        <v-icon color="primary">{{ cr.icon }}</v-icon>
+                                    <v-list-item-avatar
+                                        tile
+                                        class="rounded-lg d-none d-md-block"
+                                    >
+                                        <v-icon color="primary">{{
+                                            cr.icon
+                                        }}</v-icon>
                                     </v-list-item-avatar>
                                     <v-list-item-content style="max-width: 30%">
                                         <v-list-item-title>
                                             {{ cr.name }}
                                         </v-list-item-title>
-                                        <v-list-item-subtitle class="text-caption">
+                                        <v-list-item-subtitle
+                                            class="text-caption"
+                                        >
                                             Criterio
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
-                                    <v-list-item-content class="text-center" style="max-width: 30%" v-if="$vuetify.breakpoint.mdAndUp">
+                                    <v-list-item-content
+                                        class="text-center"
+                                        style="max-width: 30%"
+                                        v-if="$vuetify.breakpoint.mdAndUp"
+                                    >
                                         <v-list-item-title class="d-flex">
                                             <v-progress-linear
-                                                :value="cr.name === ATTENDANCE 
-                                                    ? (cr.completed + cr.out_of_time + cr.not_attendance) / cr.number * 100
-                                                    : cr.completed / cr.number * 100"
+                                                :value="
+                                                    cr.name === ATTENDANCE
+                                                        ? ((cr.completed +
+                                                              cr.out_of_time +
+                                                              cr.not_attendance) /
+                                                              cr.number) *
+                                                          100
+                                                        : (cr.completed /
+                                                              cr.number) *
+                                                          100
+                                                "
                                                 rounded
                                                 hide-details
                                                 color="secondary"
@@ -147,21 +181,33 @@
                                             >
                                             </v-progress-linear>
                                         </v-list-item-title>
-                                        <v-list-item-subtitle class="text-caption">
-                                            Progreso: {{  
-                                                cr.name === ATTENDANCE 
-                                                    ? cr.completed + cr.out_of_time + cr.not_attendance 
+                                        <v-list-item-subtitle
+                                            class="text-caption"
+                                        >
+                                            Progreso:
+                                            {{
+                                                cr.name === ATTENDANCE
+                                                    ? cr.completed +
+                                                      cr.out_of_time +
+                                                      cr.not_attendance
                                                     : cr.completed
-                                            }} 
+                                            }}
                                             /{{ cr.number }}
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
-                                    <v-spacer ></v-spacer>
+                                    <v-spacer></v-spacer>
                                     <v-list-item-action class="mr-0 mr-md-6">
-                                        <v-list-item-title class="primary--text text-h6 mx-auto">
-                                            {{ cr.points.toFixed(2) }} <span class="text-caption">/ {{ cr.value }}</span>
+                                        <v-list-item-title
+                                            class="primary--text text-h6 mx-auto"
+                                        >
+                                            {{ cr.points.toFixed(2) }}
+                                            <span class="text-caption"
+                                                >/ {{ cr.value }}</span
+                                            >
                                         </v-list-item-title>
-                                        <v-list-item-subtitle class="text-caption mx-auto">
+                                        <v-list-item-subtitle
+                                            class="text-caption mx-auto"
+                                        >
                                             puntos
                                         </v-list-item-subtitle>
                                     </v-list-item-action>
@@ -169,34 +215,45 @@
                             </template>
                         </v-list>
                     </v-card-text>
-                    
                 </v-card>
             </v-col>
         </v-row>
         <v-dialog v-model="moreInfo.show" max-width="600" scrollable>
             <v-card>
-                <v-toolbar
-                    color="primary"
-                    dark
-                    extended
-                    flat
-                >
-                    <p class="ml-3 mt-3 text-subtitle-1">{{ moreInfo.title }}</p>
+                <v-toolbar color="primary" dark extended flat>
+                    <p class="ml-3 mt-3 text-subtitle-1">
+                        {{ moreInfo.title }}
+                    </p>
                 </v-toolbar>
                 <v-card style="margin-top: -40px;" class="mx-6">
                     <v-card-text>
-                        <v-row class="text-center" >
+                        <v-row class="text-center">
                             <v-col>
-                                <p class="my-0 font-weight-bold">{{(moreInfo.values.value)}}</p>
+                                <p class="my-0 font-weight-bold">
+                                    {{ moreInfo.values.value }}
+                                </p>
                                 <p class="my-0 text-caption">Valor total</p>
                             </v-col>
                             <v-col>
-                                <p class="my-0 font-weight-bold">{{(moreInfo.values.value / moreInfo.values.number).toFixed(2)}}</p>
-                                <p class="my-0 text-caption">Valor individual</p>
+                                <p class="my-0 font-weight-bold">
+                                    {{
+                                        (
+                                            moreInfo.values.value /
+                                            moreInfo.values.number
+                                        ).toFixed(2)
+                                    }}
+                                </p>
+                                <p class="my-0 text-caption">
+                                    Valor individual
+                                </p>
                             </v-col>
                             <v-col>
-                                <p class="my-0 font-weight-bold">{{(moreInfo.values.number)}}</p>
-                                <p class="my-0 text-caption">Numero de {{moreInfo.criteria}}</p>
+                                <p class="my-0 font-weight-bold">
+                                    {{ moreInfo.values.number }}
+                                </p>
+                                <p class="my-0 text-caption">
+                                    Numero de {{ moreInfo.criteria }}
+                                </p>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -204,9 +261,25 @@
                 <v-card-text style="height: 400px;" class="mt-5">
                     <div v-if="moreInfo.criteria === ATTENDANCE">
                         <v-tabs color="primary" fixed-tabs>
-                            <v-tab>{{moreInfo.data[ATTENDANCE].attendances.length}} Asistencias</v-tab>
-                            <v-tab>{{moreInfo.data[ATTENDANCE].out_of_time.length}} Retardos</v-tab>
-                            <v-tab>{{moreInfo.data[ATTENDANCE].not_attendances.length}} Faltas</v-tab>
+                            <v-tab
+                                >{{
+                                    moreInfo.data[ATTENDANCE].attendances.length
+                                }}
+                                Asistencias</v-tab
+                            >
+                            <v-tab
+                                >{{
+                                    moreInfo.data[ATTENDANCE].out_of_time.length
+                                }}
+                                Retardos</v-tab
+                            >
+                            <v-tab
+                                >{{
+                                    moreInfo.data[ATTENDANCE].not_attendances
+                                        .length
+                                }}
+                                Faltas</v-tab
+                            >
 
                             <v-tab-item>
                                 <v-list-item
@@ -270,8 +343,18 @@
 
                     <div v-if="moreInfo.criteria === TASKS">
                         <v-tabs color="primary" fixed-tabs>
-                            <v-tab>{{moreInfo.data[TASKS].answered.length}} Contestadas</v-tab>
-                            <v-tab>{{moreInfo.data[TASKS].not_answered.length}} No contestadas</v-tab>
+                            <v-tab
+                                >{{
+                                    moreInfo.data[TASKS].answered.length
+                                }}
+                                Contestadas</v-tab
+                            >
+                            <v-tab
+                                >{{
+                                    moreInfo.data[TASKS].not_answered.length
+                                }}
+                                No contestadas</v-tab
+                            >
 
                             <v-tab-item>
                                 <v-list-item
@@ -314,8 +397,18 @@
 
                     <div v-if="moreInfo.criteria === EXAMS">
                         <v-tabs color="primary" fixed-tabs>
-                            <v-tab>{{moreInfo.data[EXAMS].answered.length}} Contestados</v-tab>
-                            <v-tab>{{moreInfo.data[EXAMS].answered.not_answered}}  No contestados</v-tab>
+                            <v-tab
+                                >{{
+                                    moreInfo.data[EXAMS].answered.length
+                                }}
+                                Contestados</v-tab
+                            >
+                            <v-tab
+                                >{{
+                                    moreInfo.data[EXAMS].answered.not_answered
+                                }}
+                                No contestados</v-tab
+                            >
 
                             <v-tab-item>
                                 <v-list-item
@@ -414,10 +507,10 @@ export default {
                                 obj_crt.out_of_time = out_of_time.length
                                 obj_crt.not_attendance = not_attendance.length
 
-                                obj_crt.points = (
-                                    obj_crt.completed * cr.value 
-                                    + obj_crt.out_of_time * cr.value
-                                ) / cr.number
+                                obj_crt.points =
+                                    (obj_crt.completed * cr.value +
+                                        obj_crt.out_of_time * cr.value) /
+                                    cr.number
                             } else {
                                 obj_crt.points = 0
                                 obj_crt.completed = 0
@@ -479,7 +572,7 @@ export default {
 
                     result.push(obj_crt)
                 })
-                
+
                 return result
             },
             total() {
@@ -502,7 +595,7 @@ export default {
                 criteria: null,
                 title: '',
                 data: {},
-                values: {}
+                values: {},
             },
         }
     },
@@ -530,20 +623,42 @@ export default {
                 if (!this.lessons) await this.getLessons()
                 if (!this.moreInfo.data[this.ATTENDANCE]) {
                     this.moreInfo.data[this.ATTENDANCE] = {}
-                    this.moreInfo.data[this.ATTENDANCE].attendances = this.group.progress[this.ATTENDANCE].filter((a) => !a.out_of_time && !a.no_attendance )
-                    this.moreInfo.data[this.ATTENDANCE].not_attendances = this.group.progress[this.ATTENDANCE].filter((a) => a.no_attendance)
-                    this.moreInfo.data[this.ATTENDANCE].out_of_time = this.group.progress[this.ATTENDANCE].filter((a) => a.out_of_time)
-                    this.moreInfo.data[this.ATTENDANCE].attendances = this.moreInfo.data[this.ATTENDANCE].attendances.map((a) => 
-                    ({
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].attendances = this.group.progress[this.ATTENDANCE].filter(
+                        (a) => !a.out_of_time && !a.no_attendance
+                    )
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].not_attendances = this.group.progress[
+                        this.ATTENDANCE
+                    ].filter((a) => a.no_attendance)
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].out_of_time = this.group.progress[this.ATTENDANCE].filter(
+                        (a) => a.out_of_time
+                    )
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].attendances = this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].attendances.map((a) => ({
                         ...a,
                         ...this.lessons.find((l) => l.id === a.id),
                     }))
-                    this.moreInfo.data[this.ATTENDANCE].not_attendances = this.moreInfo.data[this.ATTENDANCE].not_attendances.map((a) => ({
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].not_attendances = this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].not_attendances.map((a) => ({
                         ...a,
                         ...this.lessons.find((l) => l.id === a.id),
                     }))
-                    this.moreInfo.data[this.ATTENDANCE].out_of_time = this.moreInfo.data[this.ATTENDANCE].out_of_time.map((a) =>
-                    ({
+                    this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].out_of_time = this.moreInfo.data[
+                        this.ATTENDANCE
+                    ].out_of_time.map((a) => ({
                         ...a,
                         ...this.lessons.find((l) => l.id === a.id),
                     }))

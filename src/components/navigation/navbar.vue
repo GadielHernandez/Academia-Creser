@@ -1,31 +1,46 @@
 <template>
     <v-app-bar
         outlined
-        color="white" 
+        color="white"
         flat
         class="px-0 py-4 navbar mb-3"
         height="unset"
     >
+        <v-app-bar-nav-icon
+            v-if="$vuetify.breakpoint.smAndDown"
+            @click="openSidebar"
+        />
+        <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
         <slot name="title" />
-        
+
         <v-spacer></v-spacer>
 
-        <v-menu
-            :close-on-content-click="false"
-            offset-x
-        >
+        <v-menu :close-on-content-click="false" offset-x>
             <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on" fab color="white">
-                    <img
-                        src="@/assets/icon.png"
-                    >
+                <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    fab
+                    color="white"
+                    :depressed="$vuetify.breakpoint.smAndDown"
+                >
+                    <img src="@/assets/icon.png" />
                 </v-btn>
             </template>
 
             <v-card width="300">
-                <v-img src="@/assets/background-login.png" cover width="300" height="100">
+                <v-img
+                    src="@/assets/background-login.png"
+                    cover
+                    width="300"
+                    height="100"
+                >
                     <div class="d-flex" style="height: 100%">
-                        <v-img src="@/assets/logo.png" max-width="200" class="ma-auto"></v-img>
+                        <v-img
+                            src="@/assets/logo.png"
+                            max-width="200"
+                            class="ma-auto"
+                        ></v-img>
                     </div>
                 </v-img>
                 <v-divider></v-divider>
@@ -37,8 +52,12 @@
                             </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title>{{ profile.name }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ profile.email }}</v-list-item-subtitle>
+                            <v-list-item-title>{{
+                                profile.name
+                            }}</v-list-item-title>
+                            <v-list-item-subtitle>{{
+                                profile.email
+                            }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                 </v-card-text>
@@ -59,29 +78,33 @@
 </template>
 
 <script>
+import emitter from 'tiny-emitter/instance'
 import { mapActions, mapState } from 'vuex'
 export default {
     name: 'navbar',
     props: ['height'],
-    computed:{
-        ...mapState({ profile: state => state.user.profile })
+    computed: {
+        ...mapState({ profile: (state) => state.user.profile }),
     },
     methods: {
         ...mapActions({ doLogout: 'user/logout' }),
-        async logout(){
+        openSidebar() {
+            emitter.emit('toogle-sidebar', true)
+        },
+        async logout() {
             try {
                 await this.doLogout()
-                location.href = "https://creser.fuentedevida.com.mx/logout"
+                location.href = 'https://creser.fuentedevida.com.mx/logout'
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
     },
 }
 </script>
 
 <style scoped>
-header.navbar > div{
+header.navbar > div {
     padding-left: 0 !important;
     padding-right: 0;
 }

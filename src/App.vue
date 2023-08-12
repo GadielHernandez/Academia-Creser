@@ -9,9 +9,8 @@
             >
                 <v-img src="@/assets/icon.png" />
             </v-progress-circular>
-
         </div>
-        <sidebar v-if="view !== null && user"/>
+        <sidebar v-if="view !== null && user" />
         <v-main class="main-background" v-if="view !== null">
             <v-container v-if="auth.currentUser" fluid class="px-md-16">
                 <router-view></router-view>
@@ -22,7 +21,6 @@
         <!-- <v-footer class="d-md-none d-block" app v-if="auth.currentUser">
             <bottomNav/>
         </v-footer> -->
-        
     </v-app>
 </template>
 
@@ -36,36 +34,37 @@ export default {
     computed: {
         ...mapState({
             view: (state) => state.view.actual,
-            user: () => auth.currentUser
-        })
+            user: () => auth.currentUser,
+        }),
     },
     data() {
         return {
             mini: true,
-            auth
+            auth,
         }
     },
 }
 </script>
 
 <style>
-html, body {
+html,
+body {
     height: 100%;
     width: 100%;
 }
-.main-background{
+.main-background {
     background-color: white;
 }
-.v-card{
+.v-card {
     border-radius: 15px !important;
 }
-.v-footer{
+.v-footer {
     bottom: 0 !important;
 }
-.h-100{
+.h-100 {
     height: 100%;
 }
-.loading_view{
+.loading_view {
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -73,7 +72,7 @@ html, body {
     flex-direction: column;
     justify-content: center;
 }
-.center-vertical{
+.center-vertical {
     display: flex;
     flex-direction: column;
     justify-content: center;
