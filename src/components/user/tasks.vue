@@ -26,7 +26,7 @@
                                     {{ task.description }}
                                 </v-list-item-subtitle>
                             </v-list-item-content>
-                            <v-list-item-action>
+                            <v-list-item-action class="d-flex">
                                 <v-chip
                                     label
                                     small
@@ -52,8 +52,38 @@
                                 >
                                     CERRADA
                                 </v-chip>
-                                <v-chip label small v-else>
-                                    PENDIENTE
+                                <v-chip label small v-else-if="!task.expired">
+                                    CIERRA EN:
+                                    <span v-if="task.remainingTime > 604800000">
+                                        {{
+                                            parseInt(
+                                                task.remainingTime / 604800000
+                                            )
+                                        }}
+                                        SEMANAS
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            task.remainingTime > 86400000
+                                        "
+                                    >
+                                        {{
+                                            parseInt(
+                                                task.remainingTime / 86400000
+                                            )
+                                        }}
+                                        DIAS
+                                    </span>
+                                    <span
+                                        v-else-if="task.remainingTime > 3600000"
+                                    >
+                                        {{
+                                            parseInt(
+                                                task.remainingTime / 3600000
+                                            )
+                                        }}
+                                        HORAS
+                                    </span>
                                 </v-chip>
                             </v-list-item-action>
                         </v-list-item>

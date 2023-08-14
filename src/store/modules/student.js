@@ -104,13 +104,25 @@ const actions = {
                 .where('available_after', '<', now - state.group.starts)
                 .get()
                 .then((tasks) => {
+                    const startTime = state.group.starts
                     const list_tasks = tasks.docs.map((l) => {
                         const data = l.data()
+                        const { available_after } = data
                         return {
                             id: l.id,
+                            availableAt: available_after + startTime,
+                            expiredAt:
+                                tasksExpirationTime +
+                                startTime +
+                                available_after,
+                            remainingTime:
+                                tasksExpirationTime +
+                                startTime +
+                                available_after -
+                                now,
                             expired:
                                 tasksExpirationTime <
-                                now - state.group.starts - data.available_after,
+                                now - startTime - available_after,
                             ...data,
                         }
                     })
