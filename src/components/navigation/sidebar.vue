@@ -19,9 +19,9 @@
             </v-list-item-title>
         </v-list-item>
 
-        <v-divider></v-divider>
+        <v-divider class="d-none d-md-block"></v-divider>
 
-        <v-list-item>
+        <v-list-item class="d-none d-md-block">
             <v-list-item-icon class="my-auto" v-if="mini">
                 <v-btn icon @click="mini = false" small>
                     <v-icon>mdi-chevron-right</v-icon>
@@ -37,11 +37,11 @@
             </v-list-item-action>
         </v-list-item>
 
-        <v-divider></v-divider>
-
-        <sidebar-user v-if="view === USER" class="menu" />
-        <sidebar-teacher v-if="view === TEACHER" class="menu" />
-        <sidebar-admin v-if="view === ADMIN" class="menu" />
+        <div class="d-none d-md-block">
+            <sidebar-user v-if="view === USER" class="menu" />
+            <sidebar-teacher v-if="view === TEACHER" class="menu" />
+            <sidebar-admin v-if="view === ADMIN" class="menu" />
+        </div>
 
         <v-divider v-if="atLeastUserIs(profile.level, TEACHER)"></v-divider>
         <v-list
@@ -79,6 +79,14 @@
                 </v-list-item-action>
             </v-list-item>
         </v-list>
+
+        <v-divider class="d-block d-md-none"></v-divider>
+
+        <div class="d-block d-md-none">
+            <sidebar-user v-if="view === USER" class="menu" />
+            <sidebar-teacher v-if="view === TEACHER" class="menu" />
+            <sidebar-admin v-if="view === ADMIN" class="menu" />
+        </div>
 
         <v-dialog v-model="dialogView" max-width="350">
             <v-card>

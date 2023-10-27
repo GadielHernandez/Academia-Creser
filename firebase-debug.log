@@ -1,0 +1,95 @@
+[debug] [2023-10-24T03:20:05.287Z] ----------------------------------------------------------------------
+[debug] [2023-10-24T03:20:05.288Z] Command:       /usr/local/bin/node /Users/Radika/Documents/Academia-Creser/node_modules/.bin/firebase deploy
+[debug] [2023-10-24T03:20:05.289Z] CLI Version:   12.4.8
+[debug] [2023-10-24T03:20:05.289Z] Platform:      darwin
+[debug] [2023-10-24T03:20:05.289Z] Node Version:  v16.16.0
+[debug] [2023-10-24T03:20:05.290Z] Time:          Mon Oct 23 2023 22:20:05 GMT-0500 (Central Daylight Time)
+[debug] [2023-10-24T03:20:05.290Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-10-24T03:20:05.292Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-10-24T03:20:05.370Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-10-24T03:20:05.370Z] > authorizing via signed-in user (dev.fdv.mty@gmail.com)
+[debug] [2023-10-24T03:20:05.370Z] [iam] checking project fdv-web-app for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-10-24T03:20:05.371Z] > refreshing access token with scopes: []
+[debug] [2023-10-24T03:20:05.372Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-10-24T03:20:05.372Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-10-24T03:20:05.529Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-10-24T03:20:05.529Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2023-10-24T03:20:05.579Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-10-24T03:20:05.579Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-10-24T03:20:05.622Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/fdv-web-app:testIamPermissions [none]
+[debug] [2023-10-24T03:20:05.622Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/fdv-web-app:testIamPermissions x-goog-quota-user=projects/fdv-web-app
+[debug] [2023-10-24T03:20:05.622Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/fdv-web-app:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-10-24T03:20:06.056Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/fdv-web-app:testIamPermissions 200
+[debug] [2023-10-24T03:20:06.057Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/fdv-web-app:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-10-24T03:20:06.058Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/fdv-web-app [none]
+[debug] [2023-10-24T03:20:06.346Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/fdv-web-app 200
+[debug] [2023-10-24T03:20:06.346Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/fdv-web-app {"projectId":"fdv-web-app","projectNumber":"562771708754","displayName":"fdv-web-app","name":"projects/fdv-web-app","resources":{"hostingSite":"fdv-web-app","realtimeDatabaseInstance":"fdv-web-app-default-rtdb","storageBucket":"fdv-web-app.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_19923fa5-1046-44b1-800f-788a18cf8be9"}
+[info] 
+[info] === Deploying to 'fdv-web-app'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2023-10-24T03:20:06.352Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions [none]
+[debug] [2023-10-24T03:20:06.352Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2023-10-24T03:20:07.595Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions 200
+[debug] [2023-10-24T03:20:07.595Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions {"name":"projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[academia-creser]: beginning deploy... 
+[info] i  hosting[academia-creser]: found 10 files in dist 
+[debug] [2023-10-24T03:20:07.605Z] [hosting] uploading with 200 concurrency
+[debug] [2023-10-24T03:20:08.125Z] [hosting] hash cache [ZGlzdA] stored for 10 files
+[debug] [2023-10-24T03:20:08.126Z] [hosting][hash queue][FINAL] {"max":512,"min":10,"avg":82.5,"active":0,"complete":10,"success":10,"errored":0,"retried":0,"total":10,"elapsed":518}
+[debug] [2023-10-24T03:20:08.126Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2:populateFiles [none]
+[debug] [2023-10-24T03:20:08.126Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2:populateFiles {"files":{"/favicon.png":"c6de97cac09bd0d608813dc489b08ec570aa9e4373a21cd8a06b7b34eab18e71","/index.html":"5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8","/css/app.2f73b835.css":"07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3","/img/logo.de4b0bfa.png":"b701ff6e197239a2851e8f48071dc64a1b977d7b255367396c05e12180876bcc","/js/app.5516aefe.js":"6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9","/img/background-login.9cd3f55a.png":"e0546fa4d5ed26351994160e135a9d0054a90adae5a873f4c7ee33eb9f62145a","/css/chunk-vendors.d74d9aa6.css":"23c166640495108783e3ffeecafd2c5d82e53f685cb8c51bcf147d1e4ae4e08d","/js/app.5516aefe.js.map":"6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044","/js/chunk-vendors.348e24fd.js":"7d3f6db763fc6106a88ed00d24f108999aac268d5c38a3ad6573e33fd39b9173","/js/chunk-vendors.348e24fd.js.map":"2f118190e936c0faf3a7dfda4e3bd74a9611a3d8a8b8a0b7efe1daa575a6d6ee"}}
+[debug] [2023-10-24T03:20:08.819Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2:populateFiles 200
+[debug] [2023-10-24T03:20:08.819Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2:populateFiles {"uploadRequiredHashes":["07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3","6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044","5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8","6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files"}
+[debug] [2023-10-24T03:20:08.821Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3 [none]
+[debug] [2023-10-24T03:20:08.821Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3 [stream]
+[debug] [2023-10-24T03:20:08.822Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044 [none]
+[debug] [2023-10-24T03:20:08.822Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044 [stream]
+[debug] [2023-10-24T03:20:08.823Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8 [none]
+[debug] [2023-10-24T03:20:08.823Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8 [stream]
+[debug] [2023-10-24T03:20:08.824Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9 [none]
+[debug] [2023-10-24T03:20:08.824Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9 [stream]
+[debug] [2023-10-24T03:20:08.825Z] [hosting][populate queue][FINAL] {"max":697,"min":697,"avg":697,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":701}
+[debug] [2023-10-24T03:20:08.825Z] [hosting] uploads queued: 4
+[debug] [2023-10-24T03:20:09.642Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3 200
+[debug] [2023-10-24T03:20:09.642Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/07b57a905bef623ffcafea2ceb8757be5ea9b883bfff02d0988b617e7beddab3 [stream]
+[debug] [2023-10-24T03:20:09.643Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044 200
+[debug] [2023-10-24T03:20:09.643Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6411e83f80193bf65eea573904c8856d296dd97219080a783684c6d8803d0044 [stream]
+[debug] [2023-10-24T03:20:09.645Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8 200
+[debug] [2023-10-24T03:20:09.645Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/5a1546ff7a5e42bd6f4a54e6440680afe2efa7edf284ae9144ac8f02e37f1cc8 [stream]
+[debug] [2023-10-24T03:20:09.702Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9 200
+[debug] [2023-10-24T03:20:09.702Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/academia-creser/versions/f9550ec59d91c5f2/files/6c2fba3458c7b82669a8f6b19cac461f1c7524e0dd48d088b7c83d6c84821cf9 [stream]
+[debug] [2023-10-24T03:20:09.702Z] [hosting][upload queue][FINAL] {"max":882,"min":823,"avg":838.5,"active":0,"complete":4,"success":4,"errored":0,"retried":0,"total":4,"elapsed":883}
+[info] ✔  hosting[academia-creser]: file upload complete 
+[debug] [2023-10-24T03:20:09.704Z] [hosting] deploy completed after 2106ms
+[debug] [2023-10-24T03:20:09.704Z] [
+  {
+    "config": {
+      "site": "academia-creser",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    "version": "projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2"
+  }
+]
+[info] i  hosting[academia-creser]: finalizing version... 
+[debug] [2023-10-24T03:20:09.706Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions/f9550ec59d91c5f2 updateMask=status%2Cconfig
+[debug] [2023-10-24T03:20:09.707Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions/f9550ec59d91c5f2 {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2023-10-24T03:20:10.560Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions/f9550ec59d91c5f2 200
+[debug] [2023-10-24T03:20:10.560Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/versions/f9550ec59d91c5f2 {"name":"projects/562771708754/sites/academia-creser/versions/f9550ec59d91c5f2","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2023-10-24T03:20:06.931403Z","createUser":{"email":"dev.fdv.mty@gmail.com"},"finalizeTime":"2023-10-24T03:20:10.568125Z","finalizeUser":{"email":"dev.fdv.mty@gmail.com"}}
+[debug] [2023-10-24T03:20:10.561Z] [hosting] finalized version for academia-creser:[object Object]
+[info] ✔  hosting[academia-creser]: version finalized 
+[info] i  hosting[academia-creser]: releasing new version... 
+[debug] [2023-10-24T03:20:10.561Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/channels/live/releases versionName=projects%2F562771708754%2Fsites%2Facademia-creser%2Fversions%2Ff9550ec59d91c5f2
+[debug] [2023-10-24T03:20:10.561Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/academia-creser/channels/live/releases {}

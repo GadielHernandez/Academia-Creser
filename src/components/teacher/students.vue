@@ -18,7 +18,9 @@
                             <v-list-item-title
                                 class="text-caption font-weight-medium"
                             >
-                                {{ new Date(course.starts).toLocaleDateString()  }}
+                                {{
+                                    new Date(course.starts).toLocaleDateString()
+                                }}
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
@@ -99,11 +101,13 @@
                         :search="search"
                     >
                         <template v-slot:item.name="{ item }">
-                            <v-list-item
-                                class="rounded-lg py-2"
-                                :key="item.id"
-                            >
-                                <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
+                            <v-list-item class="rounded-lg py-2" :key="item.id">
+                                <v-list-item-avatar
+                                    color="primary"
+                                    tile
+                                    class="rounded-lg"
+                                    dark
+                                >
                                     <v-icon dark>mdi-account</v-icon>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
@@ -117,14 +121,26 @@
                             </v-list-item>
                         </template>
                         <template v-slot:item.attendances="{ item }">
-                            <v-chip small color="success">{{item.attendances}}</v-chip>
-                            <v-chip small color="warning mx-1">{{item.out_of_time}}</v-chip>
-                            <v-chip small color="red" dark>{{item.no_attendance}}</v-chip>
+                            <v-chip small color="success">{{
+                                item.attendances
+                            }}</v-chip>
+                            <v-chip small color="warning mx-1">{{
+                                item.out_of_time
+                            }}</v-chip>
+                            <v-chip small color="red" dark>{{
+                                item.no_attendance
+                            }}</v-chip>
                         </template>
                         <template v-slot:item.exams="{ item }">
                             <template v-for="(grade, index) in item.exams">
-                                <v-chip small :color="grade >= 0.70 ? 'success': 'warning'" :key="index">
-                                    {{parseInt(grade * 100)}}
+                                <v-chip
+                                    small
+                                    :color="
+                                        grade >= 0.7 ? 'success' : 'warning'
+                                    "
+                                    :key="index"
+                                >
+                                    {{ parseInt(grade * 100) }}
                                 </v-chip>
                             </template>
                         </template>
@@ -135,106 +151,38 @@
                         </template>
                         <template v-slot:item.final="{ item }">
                             <span class="font-weight-bold text-caption">
-                                {{ item.final ?  item.final.grade : 'Pendiente'}}
+                                {{
+                                    item.final
+                                        ? parseInt(item.final.grade * 100)
+                                        : 'Pendiente'
+                                }}
+                            </span>
+                        </template>
+                        <template v-slot:item.extra="{ item }">
+                            <span class="font-weight-bold text-caption">
+                                {{ item.extra }}
                             </span>
                         </template>
                         <template v-slot:item.grade="{ item }">
-                            <span 
-                            class="font-weight-bold"
-                            :class=" {
-                                'warning--text': item.grade <= 70,
-                                'green--text': item.grade > 70
-                            }">
+                            <span
+                                class="font-weight-bold"
+                                :class="{
+                                    'warning--text': item.grade <= 70,
+                                    'green--text': item.grade > 70,
+                                }"
+                            >
                                 {{ item.grade }}
                             </span>
                         </template>
                     </v-data-table>
                 </v-card>
             </v-col>
-            <!-- <v-col>
-                <v-list>
-                    <v-divider></v-divider>
-                    <template v-for="(student, index) in progress.items" >
-                        <v-list-item
-                            class="rounded-lg py-2"
-                            :key="student.id"
-                        >
-                            <v-list-item-avatar color="primary" tile class="rounded-lg" dark>
-                                <v-icon dark>mdi-account</v-icon>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ student.name }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle class="text-caption">
-                                    Nombre
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                            <v-list-item-content v-if="$vuetify.breakpoint.mdAndUp">
-                                <v-list-item-title>
-                                    {{ student.email }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle class="text-caption">
-                                    Correo
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                            <v-list-item-action>
-                                <v-list-item-title class="font-weight-bold">
-                                    <span :class="{
-                                        'warning--text': student.grade <= 70,
-                                        'green--text': student.grade > 70
-                                    }">{{ student.grade }}</span>
-                                    <v-menu
-                                        open-on-hover
-                                        top
-                                        offset-y
-                                    >
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-icon 
-                                                small
-                                                v-bind="attrs"
-                                                v-on="on"
-                                                class="ml-1"
-                                            >mdi-information-outline</v-icon>
-                                        </template>
-
-                                        <v-card>
-                                            <v-card-text>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Asistencias: {{ student.attendances }}
-                                                </p>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Retardos: {{ student.out_of_time }}
-                                                </p>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Faltas: {{ student.no_attendance }}
-                                                </p>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Tareas: {{ student.tasks }}
-                                                </p>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Examenes: {{ student.exams }}
-                                                </p>
-                                                <p class="mb-1 text-caption font-weight-bold">
-                                                    Examen final: {{ student.final ?  student.final.grade : 'No'}}
-                                                </p>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-menu>
-                                </v-list-item-title>
-                                <v-list-item-subtitle class="text-caption">
-                                    Calificación
-                                </v-list-item-subtitle>
-                            </v-list-item-action>
-                        </v-list-item>
-                        <v-divider :key="index"></v-divider>
-                    </template>
-                </v-list>
-            </v-col> -->
         </v-row>
         <div v-else class="no-students d-flex">
             <div class="ma-auto font-weight-bold blue-grey--text text-center">
-                <v-icon x-large class="font-weight-bold blue-grey--text">mdi-account-supervisor-circle</v-icon>
+                <v-icon x-large class="font-weight-bold blue-grey--text"
+                    >mdi-account-supervisor-circle</v-icon
+                >
                 <p>No hay alumnos registrados</p>
             </div>
         </div>
@@ -243,125 +191,180 @@
 
 <script>
 import { mapState } from 'vuex'
-import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../plugins/criteria-types'
+import {
+    ATTENDANCE,
+    EXAMS,
+    TASKS,
+    FINAL,
+    EXTRAS,
+} from '../../plugins/criteria-types'
 
 export default {
     name: 'Students',
     computed: {
         ...mapState({
-            course: state => ({
+            course: (state) => ({
                 starts: state.teacher.course.starts,
-                ends: state.teacher.course.ends
+                ends: state.teacher.course.ends,
             }),
             progress: (state) => {
                 const students = state.teacher.course.students
                 const progress = state.teacher.course.progress
                 const criteria = state.teacher.course.criteria
-                if(!students || !progress || !criteria) return []
-                
+                if (!students || !progress || !criteria) return []
+
                 const attendances = progress[ATTENDANCE]
                 const attendaces_obj = {}
-                const attendance_values = criteria.find( c => c.name === ATTENDANCE)
+                const attendance_values = criteria.find(
+                    (c) => c.name === ATTENDANCE
+                )
                 const exams = progress[EXAMS]
                 const exams_obj = {}
-                const exams_values = criteria.find( c => c.name === EXAMS)
+                const exams_values = criteria.find((c) => c.name === EXAMS)
                 const tasks = progress[TASKS]
                 const tasks_obj = {}
-                const tasks_values = criteria.find( c => c.name === TASKS)
+                const tasks_values = criteria.find((c) => c.name === TASKS)
                 const final_obj = {}
-                const final_values = criteria.find( c => c.name === FINAL)
+                const final_values = criteria.find((c) => c.name === FINAL)
+                const extras = progress[EXTRAS]
+                const extras_obj = {}
 
-                if(attendances){
-                    Object.keys(attendances).forEach( att => {
-                        attendances[att].forEach( user => {
-                            if(!attendaces_obj[user.user]) 
-                                attendaces_obj[user.user] = { attendances: 0, out_of_time: 0, no_attendance:0 }
-                            
-                            if(user.out_of_time)
+                if (attendances) {
+                    Object.keys(attendances).forEach((att) => {
+                        attendances[att].forEach((user) => {
+                            if (!attendaces_obj[user.user])
+                                attendaces_obj[user.user] = {
+                                    attendances: 0,
+                                    out_of_time: 0,
+                                    no_attendance: 0,
+                                }
+
+                            if (user.out_of_time)
                                 attendaces_obj[user.user].out_of_time += 1
-                            else if(user.no_attendance)
+                            else if (user.no_attendance)
                                 attendaces_obj[user.user].no_attendance += 1
-                            else
-                                attendaces_obj[user.user].attendances += 1
+                            else attendaces_obj[user.user].attendances += 1
                         })
                     })
                 }
-                
-                if(exams){
+
+                if (exams) {
                     const final_id = final_values ? final_values.id : null
-                    Object.keys(exams).forEach( exam => {
-                        if(exam === final_id) return
-                        exams[exam].forEach( user => {
-                            if(!exams_obj[user.user]) 
-                                exams_obj[user.user] = { answered: 0, grades: [] }
+                    Object.keys(exams).forEach((exam) => {
+                        if (exam === final_id) return
+                        exams[exam].forEach((user) => {
+                            if (!exams_obj[user.user])
+                                exams_obj[user.user] = {
+                                    answered: 0,
+                                    grades: [],
+                                }
                             exams_obj[user.user].answered += 1
                             exams_obj[user.user].grades.push(user.grade)
                         })
                     })
                 }
-                
-                if(tasks){
-                    Object.keys(tasks).forEach( task => {
-                        tasks[task].forEach( user => {
-                            if(!tasks_obj[user.user]) 
+
+                if (tasks) {
+                    Object.keys(tasks).forEach((task) => {
+                        tasks[task].forEach((user) => {
+                            if (!tasks_obj[user.user])
                                 tasks_obj[user.user] = { completed: 0 }
                             tasks_obj[user.user].completed += 1
                         })
                     })
                 }
 
-                if(final_values && exams && exams[final_values.id]){
-                    exams[final_values.id].forEach( user => {
+                if (final_values && exams && exams[final_values.id]) {
+                    exams[final_values.id].forEach((user) => {
                         final_obj[user.user] = user
                     })
                 }
-                
+
+                if (extras) {
+                    extras.forEach((extra) => {
+                        if (!extras_obj[extra.user]) extras_obj[extra.user] = 1
+                        else extras_obj[extra.user].extra += 1
+                    })
+                }
+
                 const headers = [
                     { text: 'Nombre', value: 'name' },
                     { text: 'Asistencias', value: 'attendances' },
                     { text: 'Examenes', value: 'exams' },
                     { text: 'Tareas', value: 'tasks' },
                     { text: 'Examen Final', value: 'final' },
-                    { text: 'Calificación', value: 'grade' }
+                    { text: 'Puntos extra', value: 'extra' },
+                    { text: 'Calificación', value: 'grade' },
                 ]
 
-                const items = students.map( student => ({
+                const items = students.map((student) => ({
                     id: student.id,
                     name: student.name,
                     email: student.email,
-                    attendances: attendaces_obj[student.id] ? attendaces_obj[student.id].attendances : 0,
-                    out_of_time: attendaces_obj[student.id] ? attendaces_obj[student.id].out_of_time : 0,
-                    no_attendance: attendaces_obj[student.id] ? attendaces_obj[student.id].no_attendance : 0,
-                    exams: exams_obj[student.id] ? exams_obj[student.id].grades : [],
-                    tasks: tasks_obj[student.id] ? tasks_obj[student.id].completed : 0,
-                    final: final_obj[student.id] ? final_obj[student.id]: null,
-                    grade: null
+                    attendances: attendaces_obj[student.id]
+                        ? attendaces_obj[student.id].attendances
+                        : 0,
+                    out_of_time: attendaces_obj[student.id]
+                        ? attendaces_obj[student.id].out_of_time
+                        : 0,
+                    no_attendance: attendaces_obj[student.id]
+                        ? attendaces_obj[student.id].no_attendance
+                        : 0,
+                    exams: exams_obj[student.id]
+                        ? exams_obj[student.id].grades
+                        : [],
+                    tasks: tasks_obj[student.id]
+                        ? tasks_obj[student.id].completed
+                        : 0,
+                    extra: extras_obj[student.id] ? extras_obj[student.id] : 0,
+                    final: final_obj[student.id] ? final_obj[student.id] : null,
+                    grade: null,
                 }))
 
-                items.forEach( student => {
-                    const attendances_value =  student.attendances * attendance_values.value / attendance_values.number
-                    const att_out_of_time_value = student.out_of_time * attendance_values.value / attendance_values.number
-                    const attendaces_grade = attendances_value + att_out_of_time_value
-                        
+                items.forEach((student) => {
+                    const attendances_value =
+                        (student.attendances * attendance_values.value) /
+                        attendance_values.number
+                    const att_out_of_time_value =
+                        (student.out_of_time * attendance_values.value) /
+                        attendance_values.number
+                    const attendaces_grade =
+                        attendances_value + att_out_of_time_value
+
                     let exams_grade = 0
-                    if(exams_obj[student.id])
-                        exams_obj[student.id].grades.forEach( g =>
-                            exams_grade += g * exams_values.value / exams_values.number
+                    if (exams_obj[student.id])
+                        exams_obj[student.id].grades.forEach(
+                            (g) =>
+                                (exams_grade +=
+                                    (g * exams_values.value) /
+                                    exams_values.number)
                         )
-                    
-                    let tasks_grade = student.tasks * tasks_values.value / tasks_values.number
-                    
+
+                    let tasks_grade =
+                        (student.tasks * tasks_values.value) /
+                        tasks_values.number
+
                     let final_grade = 0
-                    if(student.final) 
+                    if (student.final)
                         final_grade = student.final.grade * final_values.value
-                    
-                    student.grade = (attendaces_grade + exams_grade + tasks_grade + final_grade).toFixed(2)
+
+                    const extra = extras_obj[student.id]
+                        ? extras_obj[student.id]
+                        : 0
+
+                    student.grade = (
+                        attendaces_grade +
+                        exams_grade +
+                        tasks_grade +
+                        final_grade +
+                        extra
+                    ).toFixed(2)
                 })
                 return {
                     headers,
-                    items
+                    items,
                 }
-            }
+            },
         }),
     },
     data() {
@@ -373,7 +376,7 @@ export default {
 </script>
 
 <style scoped>
-    .no-students{
-        height: 70vh;
-    }
+.no-students {
+    height: 70vh;
+}
 </style>

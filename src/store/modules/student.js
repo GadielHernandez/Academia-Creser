@@ -1,5 +1,5 @@
 import { db, timeServer, auth, FieldValue } from '../../plugins/firebase'
-import { ATTENDANCE, TASKS, EXAMS } from '../../plugins/criteria-types'
+import { ATTENDANCE, TASKS, EXAMS, EXTRAS } from '../../plugins/criteria-types'
 
 const state = {
     loaded: false,
@@ -58,6 +58,7 @@ const actions = {
             ? Object.keys(user_group.progress)
             : []
         criterias.forEach((criteria) => {
+            if (criteria === EXTRAS) return
             const elements_ids = Object.keys(user_group.progress[criteria])
             elements_ids.forEach((id) => {
                 const completed = user_group.progress[criteria][id].find(
