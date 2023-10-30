@@ -19,29 +19,30 @@
             </v-list-item-title>
         </v-list-item>
 
-        <v-divider class="d-none d-md-block"></v-divider>
-
-        <v-list-item class="d-none d-md-block">
-            <v-list-item-icon class="my-auto" v-if="mini">
-                <v-btn icon @click="mini = false" small>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </v-btn>
-            </v-list-item-icon>
-            <v-list-item-content>
-                <span class="ml-2 text-caption font-weight-medium">Menu</span>
-            </v-list-item-content>
-            <v-list-item-action v-if="!mini">
-                <v-btn icon @click="mini = true" small>
-                    <v-icon>mdi-chevron-left</v-icon>
-                </v-btn>
-            </v-list-item-action>
-        </v-list-item>
-
-        <div class="d-none d-md-block">
+        <section class="d-none d-md-block">
+            <v-divider></v-divider>
+            <v-list-item>
+                <v-list-item-icon class="my-auto" v-if="mini">
+                    <v-btn icon @click="mini = false" small>
+                        <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
+                </v-list-item-icon>
+                <v-list-item-content>
+                    <span class="ml-2 text-caption font-weight-medium"
+                        >Menu</span
+                    >
+                </v-list-item-content>
+                <v-list-item-action v-if="!mini">
+                    <v-btn icon @click="mini = true" small>
+                        <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                </v-list-item-action>
+            </v-list-item>
+            <v-divider></v-divider>
             <sidebar-user v-if="view === USER" class="menu" />
             <sidebar-teacher v-if="view === TEACHER" class="menu" />
             <sidebar-admin v-if="view === ADMIN" class="menu" />
-        </div>
+        </section>
 
         <v-divider v-if="atLeastUserIs(profile.level, TEACHER)"></v-divider>
         <v-list
@@ -80,13 +81,12 @@
             </v-list-item>
         </v-list>
 
-        <v-divider class="d-block d-md-none"></v-divider>
-
-        <div class="d-block d-md-none">
+        <section class="d-block d-md-none">
+            <v-divider></v-divider>
             <sidebar-user v-if="view === USER" class="menu" />
             <sidebar-teacher v-if="view === TEACHER" class="menu" />
             <sidebar-admin v-if="view === ADMIN" class="menu" />
-        </div>
+        </section>
 
         <v-dialog v-model="dialogView" max-width="350">
             <v-card>
@@ -218,7 +218,7 @@ export default {
     font-size: 40px;
 }
 .menu {
-    height: 72%;
+    height: 75vh;
     display: flex;
 }
 </style>
