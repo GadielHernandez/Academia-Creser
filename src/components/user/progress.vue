@@ -462,7 +462,13 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { ATTENDANCE, EXAMS, TASKS, FINAL } from '../../plugins/criteria-types'
+import {
+    ATTENDANCE,
+    EXAMS,
+    TASKS,
+    FINAL,
+    EXTRAS,
+} from '../../plugins/criteria-types'
 import { FACETOFACE } from '../../plugins/lessons-types'
 export default {
     name: 'Progress',
@@ -479,7 +485,8 @@ export default {
                 icons[ATTENDANCE] = 'mdi-checkbox-marked-outline'
                 icons[TASKS] = 'mdi-lead-pencil'
                 icons[EXAMS] = 'mdi-clipboard-text'
-                icons[FINAL] = 'mdi-clipboard-text'
+                icons[FINAL] = 'mdi-clipboard-check'
+                icons[EXTRAS] = 'mdi-text-box-plus-outline'
 
                 const result = []
                 const progress = state.student.group.progress
@@ -568,6 +575,16 @@ export default {
                                 obj_crt.completed = 0
                             }
                             break
+
+                        case EXTRAS:
+                            if (progress[cr.name] !== undefined) {
+                                obj_crt.completed = progress[cr.name].length
+                                obj_crt.points = obj_crt.completed
+                            } else {
+                                obj_crt.points = 0
+                                obj_crt.completed = 0
+                            }
+                            break
                     }
 
                     result.push(obj_crt)
@@ -578,6 +595,7 @@ export default {
             total() {
                 let total = 0
                 this.criteria.forEach((cr) => (total += cr.points))
+                if (total > 100) total = 100
                 return Math.round(total)
             },
         }),

@@ -35,7 +35,7 @@ const actions = {
 
         const course = await db.doc(`courses/${state.course_id}`).get()
         commit('UPDATE_COURSE', { id: course.id, ...course.data() })
-
+        console.log('course', { id: course.id, ...course.data() })
         if (!user_data || !user_data.group) {
             commit('UPDATE_STATUS', true)
             return
@@ -53,6 +53,7 @@ const actions = {
         user_progress[ATTENDANCE] = []
         user_progress[EXAMS] = []
         user_progress[TASKS] = []
+        user_progress[EXTRAS] = []
 
         const criterias = user_group.progress
             ? Object.keys(user_group.progress)
@@ -68,6 +69,11 @@ const actions = {
                     user_progress[criteria].push({ id, ...completed })
             })
         })
+
+        const extraPoints = user_group.progress[EXTRAS].filter(
+            (extraPoint) => extraPoint.user === user_id
+        )
+        user_progress[EXTRAS] = extraPoints
 
         user_group.progress = user_progress
         commit('UPDATE_GROUP', user_group)
